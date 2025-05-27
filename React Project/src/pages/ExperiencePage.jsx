@@ -7,38 +7,43 @@ import { Briefcase, Calendar, CheckSquare } from 'lucide-react';
 const experiences = [
   {
     company: "MilliPixels Interactive",
-    role: "Front-End Developer",
-    duration: "Jan 2022 - Present",
+    role: "Senior Frontend Developer",
+    duration: "Aug 2024 - Present",
     responsibilities: [
-      "Developed and maintained responsive web applications using React and Redux.",
+      "Developed and maintained responsive web applications using React and Next.js.",
+      "Imporved application performance and user experience through code optimization. Like reducing bundle size and implementing lazy loading.",
       "Collaborated with UI/UX designers to implement pixel-perfect interfaces.",
       "Optimized application performance and improved Lighthouse scores.",
-      "Integrated third-party APIs and services."
+      'Devloped Complex logic, to improve artcile struture based on requirements.',
+
     ],
-    technologies: ["React", "Redux", "JavaScript", "TailwindCSS", "REST APIs"]
+    technologies: ["React", "Next.js", "JavaScript", "ModularCSS", "REST APIs", "JEST", "Husky", "ESLint", "Prettier"]
   },
   {
     company: "Jio (via Quest Global)",
     role: "Software Engineer",
-    duration: "Jul 2020 - Dec 2021",
+    duration: "Aug 2021 - Aug 2024",
     responsibilities: [
       "Contributed to the development of large-scale enterprise applications.",
       "Worked in an Agile environment, participating in sprints and daily stand-ups.",
       "Focused on front-end components and state management.",
-      "Performed code reviews and mentored junior developers."
+      "Performed code reviews and mentored junior developers.",
+      "Handled Alomot 4 projects Jio Gausamriddhi",
     ],
-    technologies: ["React", "JavaScript ES6+", "Styled Components", "Webpack"]
+    technologies: ["React", "JavaScript ES6+", "Azure", "Styled Components", "Jio Design Sytem", "Next.js", "Kai Os",  "Webpack", "Redux"]
   },
   {
     company: "Tata Institute of Social Sciences (TISS)",
     role: "Project Intern",
-    duration: "May 2019 - Jul 2019",
+    duration: "Jan 2019 - July 2021",
     responsibilities: [
-      "Assisted in developing a web portal for research data management.",
-      "Gained experience in full-stack development concepts.",
-      "Contributed to UI design and database interactions.",
+      "Developed user-friendly web applications using HTML, CSS, JavaScript, Django, and React.js, significantly enhancing the interactive elements of educational modules used by thousands of students.",
+      "Led the migration of legacy systems to a modern React-based architecture, improving system reliability and scalability, resulting in a 40% reduction in maintenance costs.",
+      "Collaborated closely with UX/UI designers to implement responsive design principles, increasing mobile user engagement by over 30%.",
+      "Conducted comprehensive code reviews and worked with the development team to uphold best practices and quality standards, leading to a 50% decrease in post-deployment issues.",
+      "Initiated and led a successful pilot integrating advanced JavaScript features and React hooks, improving application efficiency and maintainability."
     ],
-    technologies: ["HTML", "CSS", "JavaScript", "PHP", "MySQL"]
+    technologies: ["HTML", "CSS", "JavaScript", "JQuery", "Bootstrap", "React", "Node.js", "Material UI"]
   }
 ];
 
@@ -104,12 +109,7 @@ const ExperiencePage = () => {
           </motion.div>
         ))}
       </div>
-       <div className="mt-12 text-center">
-          <img 
-            className="rounded-lg shadow-lg w-full max-w-2xl mx-auto h-auto object-cover"
-            alt="Timeline graphic or abstract representation of career growth"
-           src="https://images.unsplash.com/photo-1582738098967-b8161ddfe161" />
-        </div>
+   
     </motion.div>
   );
 };
