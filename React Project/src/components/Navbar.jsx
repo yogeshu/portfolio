@@ -4,6 +4,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Menu, X, Moon, Sun, Code } from 'lucide-react';
+import { logEvent } from '../utils/analytics';
 
 const navItems = [
   { name: 'Home', path: '/' },
@@ -43,8 +44,10 @@ const Navbar = () => {
       to={to}
       className={`relative px-3 py-2 text-sm font-medium rounded-md transition-colors duration-300
         ${location.pathname === to ? 'text-primary' : 'text-foreground/80 hover:text-primary/80'}`}
-      onClick={() => setIsOpen(false)}
-    >
+      onClick={() => {
+        setIsOpen(false);
+        logEvent('navigation_click', { page: to }); // <-- Add this line
+      }}    >
       {children}
       {location.pathname === to && (
         <motion.div
@@ -74,7 +77,7 @@ const Navbar = () => {
             </Button>
           </div>
           <div className="md:hidden flex items-center">
-             <Button variant="ghost" size="icon" onClick={toggleTheme} aria-label="Toggle theme" className="mr-2">
+            <Button variant="ghost" size="icon" onClick={toggleTheme} aria-label="Toggle theme" className="mr-2">
               {darkMode ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
             </Button>
             <Button variant="ghost" size="icon" onClick={toggleMenu} aria-label="Toggle menu">
@@ -100,4 +103,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
-  

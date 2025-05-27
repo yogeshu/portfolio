@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import Layout from '@/components/Layout';
 import HomePage from '@/pages/HomePage';
@@ -11,9 +11,20 @@ import TestimonialsPage from '@/pages/TestimonialsPage';
 import BlogPage from '@/pages/BlogPage';
 import ContactPage from '@/pages/ContactPage';
 import { AnimatePresence } from 'framer-motion';
+import { initGA, logPageView } from '@/utils/analytics';
 
 const AnimatedRoutes = () => {
   const location = useLocation();
+
+  useEffect(() => {
+    initGA();
+  }, []);
+
+  useEffect(() => {
+    logPageView(location.pathname + location.search);
+
+  }, [location]);
+
   return (
     <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
@@ -42,4 +53,3 @@ function App() {
 }
 
 export default App;
-  

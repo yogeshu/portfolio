@@ -1,11 +1,13 @@
 
 import { Github, Linkedin, Mail, Download } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { logEvent } from '@/utils/analytics';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   const handleDownloadCV = () => {
+    logEvent('User', 'Download CV', 'User downloaded CV from footer');
     const link = document.createElement('a');
     link.href = '/Yogesh_Bhavsar_Resume.pdf'; // Update with your actual CV file path in public folder
     link.download = 'Yogesh_Bhavsar_Resume_React_Developer.pdf';
