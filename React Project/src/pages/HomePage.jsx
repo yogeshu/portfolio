@@ -1,5 +1,4 @@
 
-import React from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -66,12 +65,12 @@ const HomePage = () => {
         transition={{ duration: 0.5, delay: 0.8, ease: "easeOut" }}
         className="mt-12 flex space-x-6"
       >
-        <a href="https://github.com/yourusername" target="_blank" rel="noopener noreferrer" aria-label="GitHub Profile">
+        <a href="https://github.com/yogeshu" target="_blank" rel="noopener noreferrer" aria-label="GitHub Profile">
           <Button variant="ghost" size="icon" className="text-foreground/70 hover:text-primary transition-colors">
             <Github className="h-7 w-7" />
           </Button>
         </a>
-        <a href="https://linkedin.com/in/yourusername" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn Profile">
+        <a href="https://www.linkedin.com/in/yogeshbhavsarui/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn Profile">
           <Button variant="ghost" size="icon" className="text-foreground/70 hover:text-primary transition-colors">
             <Linkedin className="h-7 w-7" />
           </Button>
