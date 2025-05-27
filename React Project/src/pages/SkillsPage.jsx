@@ -8,10 +8,10 @@ const technicalSkills = [
   { name: "JavaScript (ES6+)", level: 90, icon: <Code className="text-yellow-400" /> },
   { name: "React", level: 95, icon: <Code className="text-blue-400" /> },
   { name: "Redux / Redux Toolkit", level: 85, icon: <Code className="text-purple-400" /> },
-  { name: "Next.js (Conceptual)", level: 70, icon: <Code className="text-gray-400" /> },
+  { name: "Next.js 13 + ", level: 80, icon: <Code className="text-gray-400" /> },
   { name: "HTML5", level: 95, icon: <Code className="text-orange-500" /> },
   { name: "CSS3 / SASS", level: 90, icon: <Palette className="text-pink-500" /> },
-  { name: "TailwindCSS", level: 88, icon: <Palette className="text-teal-400" /> },
+  { name: "TailwindCSS", level: 20, icon: <Palette className="text-teal-400" /> },
   { name: "Git / GitHub", level: 85, icon: <Code className="text-red-500" /> },
   { name: "REST APIs", level: 80, icon: <Settings className="text-green-500" /> },
   { name: "Webpack / Vite", level: 75, icon: <Settings className="text-indigo-500" /> },
@@ -23,6 +23,29 @@ const softSkills = [
   { name: "Problem-Solving", icon: <Zap className="text-amber-500" /> },
   { name: "Adaptability", icon: <Settings className="text-violet-500" /> },
   { name: "Attention to Detail", icon: <Palette className="text-rose-500" /> },
+];
+const devTools = [
+  { name: "Git & GitHub", icon: <Code className="text-red-500" /> },
+ { name: "Bitbucket", icon: <Code className="text-blue-500" /> },
+  { name: "Azure DevOps", icon: <Settings className="text-blue-700" /> },
+  { name: "Jira", icon: <Settings className="text-indigo-500" /> },
+  { name: "Figma", icon: <Palette className="text-pink-400" /> },
+  { name: "Postman", icon: <Settings className="text-orange-400" /> },
+  { name: "VS Code", icon: <Code className="text-blue-400" /> },
+  { name: "Jest", icon: <Code className="text-green-500" /> },
+  { name: "Husky", icon: <Settings className="text-gray-500" /> },
+  { name: "ESLint", icon: <Settings className="text-yellow-500" /> },
+  { name: "Prettier", icon: <Settings className="text-purple-500" /> },
+];
+const aiTools = [
+  { name: "GitHub Copilot", icon: <Settings className="text-green-400" /> },
+  { name: "ChatGPT", icon: <MessageCircle className="text-emerald-500" /> },
+
+  { name: "Hugging Face", icon: <Settings className="text-blue-500" /> },
+  { name: "Claude 4", icon: <MessageCircle className="text-purple-500" /> },
+  { name: "Grammarly", icon: <Palette className="text-pink-500" /> },
+  { name: "Google Gemini", icon: <Settings className="text-red-500" /> },
+
 ];
 
 const SkillBar = ({ name, level, icon }) => (
@@ -98,15 +121,49 @@ const SkillsPage = () => {
                 </motion.li>
               ))}
             </ul>
-            <div className="mt-6">
-              <img 
-                className="rounded-lg shadow-md w-full h-auto object-cover"
-                alt="Team collaborating around a desk"
-               src="https://images.unsplash.com/photo-1637622124152-33adfabcc923" />
-            </div>
+
           </CardContent>
         </Card>
-      </div>
+      </div>  <Card className="shadow-xl transform hover:scale-105 transition-transform duration-300 max-w-2xl mx-auto">
+        <CardHeader>
+          <CardTitle>Productivity & Dev Tools</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <ul className="flex flex-wrap gap-4">
+            {devTools.map((tool, idx) => (
+              <li
+                key={tool.name}
+                className="flex items-center bg-secondary/30 dark:bg-secondary/20 rounded-lg px-4 py-2 text-foreground/90 text-sm hover:bg-primary/10 transition-colors"
+              >
+                {React.cloneElement(tool.icon, { className: `${tool.icon.props.className} mr-2 h-5 w-5` })}
+                {tool.name}
+              </li>
+            ))}
+          </ul>
+        </CardContent>
+      </Card>
+
+
+
+<Card className="shadow-xl transform hover:scale-105 transition-transform duration-300 max-w-2xl mx-auto">
+  <CardHeader>
+    <CardTitle>AI Tools</CardTitle>
+  </CardHeader>
+  <CardContent>
+    <ul className="flex flex-wrap gap-4">
+      {aiTools.map((tool) => (
+        <li
+          key={tool.name}
+          className="flex items-center bg-secondary/30 dark:bg-secondary/20 rounded-lg px-4 py-2 text-foreground/90 text-sm hover:bg-primary/10 transition-colors"
+        >
+          {React.cloneElement(tool.icon, { className: `${tool.icon.props.className} mr-2 h-5 w-5` })}
+          {tool.name}
+        </li>
+      ))}
+    </ul>
+  </CardContent>
+</Card>
+
     </motion.div>
   );
 };

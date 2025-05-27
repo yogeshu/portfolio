@@ -1,43 +1,90 @@
 
-import React from 'react';
 import { motion } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Github, ExternalLink } from 'lucide-react';
 
+import project1 from '@/assets/gausamriddhi_website.png';
+import project2 from '@/assets/gausamriddhi_portal.png';
+import project3 from '@/assets/imp.png';
+import project4 from '@/assets/placeholder.jpg';
+import project5 from '@/assets/clix.png';
+import project6 from '@/assets/clix_dashboard.png';
+import project7 from '@/assets/sangam.png';
+
 const projects = [
   {
-    title: "E-commerce Platform UI",
-    description: "A modern, responsive UI for an e-commerce website, focusing on user experience and performance. Built with React and TailwindCSS.",
-    imageToken: "Modern e-commerce website interface showing product listings",
-    technologies: ["React", "TailwindCSS", "Framer Motion", "Context API"],
+    title: "jiogausamriddhi.com",
+    description: `Developed a fast, SEO-optimized website using Next.js for Jio Gau Samriddhi, aimed at generating high-quality leads and expanding the digital presence of the initiative across India.
+
+Crafted a responsive, accessible, and content-focused design to effectively showcase the product's value to farmers, partners, and stakeholders, enhancing visibility and trust.
+
+Integrated performance best practices and clean UI/UX to ensure smooth navigation, quick load times, and higher engagement from mobile and rural users.`,
+    imageToken: "Screenshot of the Jio Gau Samriddhi website showcasing its clean design and responsive layout",
+    imageSrc: project1,
+    technologies: ["Next.js", "React", "Modular CSS", "Context API", "REST APIs", "Jio Design System"],
+    liveLink: "https://www.jiogausamriddhi.com/",
+    repoLink: "#"
+
+  },
+  {
+    title: "Cattle Management Dashboard",
+    description: "Engineered a robust cattle management portal using React, Material UI, and modular CSS, enabling efficient tracking and management of livestock-related data for farmers and internal teams. Designed and implemented scalable React systems, including reusable components, role-based access control, and intuitive navigation, to ensure a seamless user experience for diverse stakeholders. Integrated testing workflows with Jest, maintaining high code quality and reducing regressions through automated unit and integration tests. Built with performance and maintainability in mind, the dashboard supports real-time updates, detailed cattle records, and streamlined workflows for veterinary and productivity insights.",
+    imageToken: "Screenshot of a cattle management dashboard ",
+    imageSrc: project2,
+    technologies: ["React", "Redux", "Firebase", "Material UI", "Context API", "Modular CSS (conceptual)", "Jest"],
+    liveLink: "https://www.jiogausamriddhi.com/portal/login",
+    repoLink: "#"
+  },
+  {
+    title: "Input Market Place - Krishi Bazaar",
+    description: "Internal Project - Admin Dashboard -  Developed a comprehensive input marketplace platform for farmers/ retailers , enabling them to buy and sell agricultural inputs like seeds, fertilizers, and equipment. Focused on creating a user-friendly interface with responsive design principles to ensure accessibility across devices.",
+    imageToken: "Screen of Krishi Bazaer website As IMP in internal project",
+    imageSrc: project3,
+    technologies: ["React", "Redux", "Material UI", "Context API", "Modular CSS (conceptual)", "Jest"],
     liveLink: "#",
     repoLink: "#"
   },
   {
-    title: "Task Management App",
-    description: "A feature-rich task management application with drag-and-drop functionality, user authentication, and real-time updates.",
-    imageToken: "Clean interface of a task management application with boards and cards",
-    technologies: ["React", "Redux Toolkit", "Firebase", "Material UI (conceptual)"],
+    title: "Jio Gau Samriddhi Admin Dashboard",
+    description: "Internal Project - Admin Dashboard - Developed a comprehensive admin dashboard for Jio Gau Samriddhi, enabling efficient management of cattle data, user interactions, and performance analytics. Focused on creating a user-friendly interface with responsive design principles to ensure accessibility across devices.",
+    imageToken: "Screenshot of Jio Gau Samriddhi Admin Dashboard",
+    imageSrc: project4,
+    technologies: ["React", "Next.js", "Material UI", "Context API", "Modular CSS (conceptual)", "Jest"],
     liveLink: "#",
     repoLink: "#"
   },
+   {
+    title: "Sangam Biodata",
+    description: "Built Project Sangam, a modern matrimonial biodata generator using React and modular CSS; implemented customizable templates with Vedic astrology integration; enabled PDF download and shareable links for easy distribution; added authentication and user data handling via Firebase; and focused on an intuitive, mobile-first design to make biodata creation simple and culturally relevant.",
+    imageToken: "Screenshot of Sangam Biodata website",
+    imageSrc: project7,
+    technologies: ['React', "Modular CSS/SCSS", 'Firebase', 'Framer Motion'],
+    liveLink: "https://sangam-biodata.vercel.app/",
+    repoLink: "https://github.com/yogeshu/sangam-biodata"
+   },
+  
   {
-    title: "Portfolio Website Template",
-    description: "A customizable portfolio website template for developers, showcasing skills, projects, and experience. Focus on SEO and accessibility.",
-    imageToken: "Elegant portfolio website design for a developer",
-    technologies: ["React", "Next.js (conceptual)", "CSS Modules (conceptual)", "Vercel"],
-    liveLink: "#",
+    title: "TISS E-Library",
+    description: "Developed a comprehensive e-library platform for CLIx , enabling students and faculty to access a wide range of academic resources online. Focused on creating a user-friendly interface with responsive design principles to ensure accessibility across devices.",
+    imageToken: "Screenshot of TISS E-Library",
+    imageSrc: project5,
+    technologies: ['HTML', 'CSS', 'JavaScript', "Jquery", "Bootstrap", 'Django'],
+    liveLink: "https://clixoer.tiss.edu/home/e-library",
     repoLink: "#"
   },
   {
-    title: "Data Visualization Dashboard",
-    description: "An interactive dashboard for visualizing complex datasets, featuring various chart types and filtering options.",
-    imageToken: "Dashboard with various charts and graphs displaying data",
-    technologies: ["React", "D3.js (conceptual)", "Chart.js", "API Integration"],
-    liveLink: "#",
+    title: "Clix Dashboard",
+    description: "Developed a comprehensive dashboard for CLIx, data analytics and management platform, enabling educators to track student progress and engagement effectively. Focused on creating a user-friendly interface with responsive design principles to ensure accessibility across devices.",
+    imageToken: "Screenshot of Clix Dashboard",
+    imageSrc: project6,
+    technologies: ['React', 'Redux', 'Material UI', 'Modular CSS (conceptual)'],
+    liveLink: "https://clixdashboard.tiss.edu/home",
     repoLink: "#"
-  }
+
+  },
+
+
 ];
 
 const ProjectsPage = () => {
@@ -49,7 +96,7 @@ const ProjectsPage = () => {
       className="space-y-12 py-8"
     >
       <header className="text-center">
-        <h1 className="text-4xl md:text-5xl font-extrabold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">My Projects</h1>
+        <h1 className="text-4xl md:text-5xl  font-extrabold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">My Projects</h1>
         <p className="text-lg text-foreground/80 max-w-3xl mx-auto">
           A selection of projects that demonstrate my skills in responsive design, performance optimization, and creating accessible web experiences.
         </p>
@@ -65,10 +112,10 @@ const ProjectsPage = () => {
           >
             <Card className="h-full flex flex-col overflow-hidden group transform hover:shadow-2xl transition-all duration-300 ease-in-out hover:-translate-y-1">
               <div className="aspect-video overflow-hidden">
-                <img  
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" 
-                  alt={project.title}
-                 src="https://images.unsplash.com/photo-1638913971789-667874197280" />
+                <img
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  alt={project.imageToken}
+                  src={project.imageSrc} />
               </div>
               <CardHeader>
                 <CardTitle>{project.title}</CardTitle>
@@ -109,4 +156,3 @@ const ProjectsPage = () => {
 };
 
 export default ProjectsPage;
-  

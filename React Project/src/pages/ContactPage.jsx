@@ -95,15 +95,17 @@ const ContactPage = () => {
               <CardTitle>Other Ways to Connect</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <a href="mailto:yogesh.b@example.com" className="flex items-center p-3 rounded-lg hover:bg-secondary transition-colors">
+              <a href="mailto:yogeshbhavsar1994@gmail.com
+" className="flex items-center p-3 rounded-lg hover:bg-secondary transition-colors">
                 <Mail className="h-6 w-6 mr-3 text-primary" />
-                <span className="text-foreground/90">yogesh.b@example.com</span>
+                <span className="text-foreground/90">yogeshbhavsar1994@gmail.com
+</span>
               </a>
-              <a href="https://linkedin.com/in/yourusername" target="_blank" rel="noopener noreferrer" className="flex items-center p-3 rounded-lg hover:bg-secondary transition-colors">
+              <a href="https://www.linkedin.com/in/yogeshbhavsarui" target="_blank" rel="noopener noreferrer" className="flex items-center p-3 rounded-lg hover:bg-secondary transition-colors">
                 <Linkedin className="h-6 w-6 mr-3 text-blue-600" />
                 <span className="text-foreground/90">LinkedIn Profile</span>
               </a>
-              <a href="https://github.com/yourusername" target="_blank" rel="noopener noreferrer" className="flex items-center p-3 rounded-lg hover:bg-secondary transition-colors">
+              <a href="https://github.com/yogeshu" target="_blank" rel="noopener noreferrer" className="flex items-center p-3 rounded-lg hover:bg-secondary transition-colors">
                 <Github className="h-6 w-6 mr-3 text-gray-700 dark:text-gray-300" />
                 <span className="text-foreground/90">GitHub Profile</span>
               </a>

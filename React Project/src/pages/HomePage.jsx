@@ -70,7 +70,7 @@ const HomePage = () => {
             <Github className="h-7 w-7" />
           </Button>
         </a>
-        <a href="https://www.linkedin.com/in/yogeshbhavsarui/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn Profile">
+        <a href="https://www.linkedin.com/in/yogeshbhavsarui" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn Profile">
           <Button variant="ghost" size="icon" className="text-foreground/70 hover:text-primary transition-colors">
             <Linkedin className="h-7 w-7" />
           </Button>

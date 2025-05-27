@@ -22,9 +22,9 @@ const AnimatedRoutes = () => {
         <Route path="/experience" element={<ExperiencePage />} />
         <Route path="/projects" element={<ProjectsPage />} />
         <Route path="/skills" element={<SkillsPage />} />
-        <Route path="/testimonials" element={<TestimonialsPage />} />
+        {/* <Route path="/testimonials" element={<TestimonialsPage />} />
         <Route path="/blog" element={<BlogPage />} />
-        <Route path="/blog/:postId" element={<BlogPage />} /> {/* Placeholder for single blog post */}
+        <Route path="/blog/:postId" element={<BlogPage />} /> Placeholder for single blog post */}
         <Route path="/contact" element={<ContactPage />} />
       </Routes>
     </AnimatePresence>
