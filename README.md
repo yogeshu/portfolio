@@ -28,7 +28,7 @@ portfolio/
 │   └── lib/                 # Utility functions and helpers
 │       └── utils.ts         # Common utilities
 ├── public/                  # Static assets (images, fonts, etc.)
-├── next.config.ts          # Next.js configuration
+├── next.config.js          # Next.js configuration
 ├── tailwind.config.ts      # Tailwind CSS configuration
 ├── tsconfig.json           # TypeScript configuration
 ├── postcss.config.js       # PostCSS configuration

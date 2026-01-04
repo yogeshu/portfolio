@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import { cn } from '@/lib/utils';
 
 /**
  * Props for the Button component
@@ -43,13 +44,11 @@ export default function Button({
     lg: 'px-6 py-3 text-lg',
   };
   
-  const classes = `${baseStyles} ${variantStyles[variant]} ${sizeStyles[size]} ${className}`;
-  
   return (
     <button
       onClick={onClick}
       disabled={disabled}
-      className={classes}
+      className={cn(baseStyles, variantStyles[variant], sizeStyles[size], className)}
     >
       {children}
     </button>
