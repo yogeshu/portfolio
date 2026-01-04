@@ -63,6 +63,11 @@ build/Release
 
 # Next.js build output
 .next/
+out/
+
+# Next.js TypeScript
+*.tsbuildinfo
+next-env.d.ts
 
 # React Native
 .expo/
