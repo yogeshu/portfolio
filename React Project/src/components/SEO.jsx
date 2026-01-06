@@ -13,7 +13,7 @@ const SEO = () => {
         "image": "https://yogeshbhavsar.com/YogeshBhavsar.png",
         "jobTitle": "Senior Frontend Engineer / React Architect",
         "description":
-          "Senior Frontend Engineer with 8+ years of experience building scalable, high-performance web applications using React, Next.js, and modern frontend architecture. Focused on product thinking, performance, and long-term maintainability.",
+          "Senior Frontend Engineer with 7+ years of experience building scalable, high-performance web applications using React, Next.js, and modern frontend architecture. Focused on product thinking, performance, and long-term maintainability.",
         "sameAs": [
           "https://www.linkedin.com/in/yogeshbhavsarui",
           "https://github.com/yogeshu"
@@ -62,7 +62,7 @@ const SEO = () => {
       </title>
       <meta
         name="description"
-        content="Senior Frontend Engineer with 8+ years of experience in React, Next.js, and scalable UI architecture. I build fast, accessible, and maintainable web products."
+        content="Senior Frontend Engineer with 7+ years of experience in React, Next.js, and scalable UI architecture. I build fast, accessible, and maintainable web products."
       />
 
       {/* Open Graph */}

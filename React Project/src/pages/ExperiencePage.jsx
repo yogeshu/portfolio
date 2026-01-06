@@ -1,118 +1,182 @@
-
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Briefcase, Calendar, CheckSquare } from 'lucide-react';
+import { 
+  Briefcase, 
+  Calendar, 
+  CheckCircle2, 
+  Building2, 
+  Code2,
+  Trophy 
+} from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
 
 const experiences = [
   {
     company: "MilliPixels Interactive",
     role: "Senior Frontend Developer",
     duration: "Aug 2024 - Present",
+    current: true,
+    description: "Leading frontend architecture for ReachPlc's large-scale media applications.",
     responsibilities: [
-      "Developed and maintained responsive web applications using React and Next.js.",
-      "Imporved application performance and user experience through code optimization. Like reducing bundle size and implementing lazy loading.",
-      "Collaborated with UI/UX designers to implement pixel-perfect interfaces.",
-      "Optimized application performance and improved Lighthouse scores.",
-      'Devloped Complex logic, to improve artcile struture based on requirements.',
-
+      "Engineered responsive web architectures using React and Next.js, ensuring 100% VR test compliance.",
+      "Reduced bundle size by 25% through lazy loading, code splitting, and modular CSS migration.",
+      "Collaborated with UI/UX teams to translate Figma designs into pixel-perfect, accessible interfaces.",
+      "Optimized Core Web Vitals (Lighthouse), achieving consistent 90+ performance scores.",
+      "Refactored complex legacy logic to improve article structure and SEO rendering requirements."
     ],
-    technologies: ["React", "Next.js", "JavaScript", "ModularCSS", "REST APIs", "JEST", "Husky", "ESLint", "Prettier"]
+    technologies: ["React", "Next.js", "Modular CSS", "Jest", "Husky", "CI/CD"]
   },
   {
     company: "Jio (via Quest Global)",
     role: "Senior Software Engineer",
     duration: "Aug 2021 - Aug 2024",
+    current: false,
+    description: "Key contributor to Jio's agricultural and enterprise ecosystems.",
     responsibilities: [
-      "Contributed to the development of large-scale enterprise applications.",
-      "Worked in an Agile environment, participating in sprints and daily stand-ups.",
-      "Focused on front-end components and state management.",
-      "Performed code reviews and mentored junior developers.",
-      "Handled Alomot 4 projects Jio Gausamriddhi",
+      "Led frontend delivery for 4 major projects including Jio Gausamriddhi and Cattle Management Portal.",
+      "Architected scalable state management solutions using Redux and Context API for enterprise apps.",
+      "Mentored 5+ junior developers, conducting code reviews and enforcing strict linting standards.",
+      "Developed high-performance UI components for KaiOS and Web platforms using Jio Design System.",
+      "Operated in a high-velocity Agile environment with daily deployments and sprint planning."
     ],
-    technologies: ["React", "JavaScript ES6+", "Azure", "Styled Components", "Jio Design Sytem", "Next.js", "Kai Os",  "Webpack", "Redux"]
+    technologies: ["React", "Redux", "Azure", "KaiOS", "Webpack", "Jio Design System"]
   },
   {
     company: "Tata Institute of Social Sciences (TISS)",
-    role: "Software Engineer UX/UI",
+    role: "Software Engineer (UI/UX)",
     duration: "Jan 2019 - July 2021",
+    current: false,
+    description: "Full-cycle development for educational platforms used by thousands of rural students.",
     responsibilities: [
-      "Developed user-friendly web applications using HTML, CSS, JavaScript, Django, and React.js, significantly enhancing the interactive elements of educational modules used by thousands of students.",
-      "Led the migration of legacy systems to a modern React-based architecture, improving system reliability and scalability, resulting in a 40% reduction in maintenance costs.",
-      "Collaborated closely with UX/UI designers to implement responsive design principles, increasing mobile user engagement by over 30%.",
-      "Conducted comprehensive code reviews and worked with the development team to uphold best practices and quality standards, leading to a 50% decrease in post-deployment issues.",
-      "Initiated and led a successful pilot integrating advanced JavaScript features and React hooks, improving application efficiency and maintainability."
+      "Led the migration of legacy Django templates to modern React-based architecture, reducing maintenance costs by 40%.",
+      "Enhanced mobile engagement by 30% through responsive design implementation (Bootstrap/Material UI).",
+      "Standardized coding practices, resulting in a 50% decrease in post-deployment bugs.",
+      "Bridged the gap between UX design and Engineering to create offline-first educational modules."
     ],
-    technologies: ["HTML", "CSS", "JavaScript", "JQuery", "Bootstrap", "React", "Node.js", "Material UI"]
+    technologies: ["React", "Django", "jQuery", "Bootstrap", "Material UI"]
   }
 ];
 
 const ExperiencePage = () => {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
-      className="space-y-12 py-8"
-    >
-      <header className="text-center">
-        <h1 className="text-4xl md:text-5xl font-extrabold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">My Experience</h1>
-        <p className="text-lg text-foreground/80 max-w-3xl mx-auto">
-          A timeline of my professional journey, highlighting key roles, responsibilities, and achievements in the field of front-end development.
+    <div className="min-h-screen py-12 px-4 sm:px-6 lg:px-8 bg-background">
+      
+      {/* 1. Header Section */}
+      <motion.header 
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="text-center max-w-3xl mx-auto mb-16"
+      >
+        <div className="inline-flex items-center justify-center p-3 mb-4 rounded-full bg-primary/10 text-primary">
+          <Trophy className="w-6 h-6" />
+        </div>
+        <h1 className="text-4xl md:text-5xl font-extrabold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">
+          Professional Journey
+        </h1>
+        <p className="text-xl text-muted-foreground">
+          7+ years of delivering high-impact frontend solutions for 
+          <span className="text-foreground font-semibold"> EdTech</span>, 
+          <span className="text-foreground font-semibold"> IoT</span>, and 
+          <span className="text-foreground font-semibold"> Media/Publishing </span> 
+          giants.
         </p>
-      </header>
+      </motion.header>
 
-      <div className="space-y-8">
-        {experiences.map((exp, index) => (
-          <motion.div
-            key={index}
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: index * 0.2 }}
-          >
-            <Card className="overflow-hidden shadow-xl hover:shadow-2xl transition-shadow duration-300 ease-in-out group">
-              <CardHeader className="bg-secondary/30 dark:bg-secondary/20 p-6">
-                <div className="flex flex-col sm:flex-row justify-between sm:items-center">
-                  <CardTitle className="text-2xl mb-1 sm:mb-0 group-hover:text-accent transition-colors">{exp.role}</CardTitle>
-                  <div className="flex items-center text-sm text-muted-foreground">
-                    <Briefcase className="mr-2 h-4 w-4" /> {exp.company}
+      {/* 2. Timeline Layout */}
+      <div className="max-w-5xl mx-auto relative">
+        {/* Vertical Line */}
+        <div className="absolute left-4 md:left-8 top-0 bottom-0 w-0.5 bg-border hidden sm:block"></div>
+
+        <div className="space-y-12">
+          {experiences.map((exp, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+              className="relative pl-0 sm:pl-20"
+            >
+              {/* Timeline Dot (Desktop Only) */}
+              <div className="absolute left-4 md:left-8 top-8 -translate-x-1/2 w-4 h-4 rounded-full bg-background border-2 border-primary z-10 hidden sm:block">
+                {exp.current && (
+                  <span className="absolute inset-0 rounded-full bg-primary animate-ping opacity-75"></span>
+                )}
+                <div className={`w-full h-full rounded-full ${exp.current ? 'bg-primary' : 'bg-muted'}`}></div>
+              </div>
+
+              {/* Experience Card */}
+              <Card className={`relative border-l-4 shadow-lg hover:shadow-xl transition-all duration-300 ${exp.current ? 'border-l-primary ring-1 ring-primary/20' : 'border-l-muted-foreground/30'}`}>
+                
+                {/* Floating "Present" Badge for Mobile/Desktop */}
+                {exp.current && (
+                  <div className="absolute top-0 right-0 px-3 py-1 bg-primary text-primary-foreground text-xs font-bold rounded-bl-xl">
+                    CURRENT ROLE
                   </div>
-                </div>
-                <CardDescription className="flex items-center text-sm">
-                  <Calendar className="mr-2 h-4 w-4" /> {exp.duration}
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="p-6 space-y-4">
-                <div>
-                  <h4 className="font-semibold mb-2 text-primary">Key Responsibilities:</h4>
-                  <ul className="space-y-2 list-inside">
-                    {exp.responsibilities.map((resp, i) => (
-                      <li key={i} className="flex items-start">
-                        <CheckSquare className="h-5 w-5 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
-                        <span className="text-foreground/90">{resp}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-                <div>
-                  <h4 className="font-semibold mb-2 text-primary">Technologies Used:</h4>
-                  <div className="flex flex-wrap gap-2">
-                    {exp.technologies.map((tech, i) => (
-                      <span key={i} className="px-3 py-1 text-xs font-medium bg-primary/10 text-primary rounded-full">
-                        {tech}
-                      </span>
-                    ))}
+                )}
+
+                <CardHeader className="bg-secondary/5 pb-4">
+                  <div className="flex flex-col md:flex-row md:items-center justify-between gap-2">
+                    <div>
+                      <h3 className="text-2xl font-bold flex items-center gap-2">
+                        {exp.role}
+                      </h3>
+                      <div className="flex items-center text-muted-foreground mt-1 font-medium">
+                        <Building2 className="w-4 h-4 mr-2 text-primary" />
+                        {exp.company}
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-center text-sm font-semibold text-muted-foreground bg-background px-3 py-1 rounded-full border shadow-sm w-fit">
+                      <Calendar className="w-4 h-4 mr-2" />
+                      {exp.duration}
+                    </div>
                   </div>
-                </div>
-              </CardContent>
-            </Card>
-          </motion.div>
-        ))}
+                  
+                  {/* Brief Description */}
+                  <p className="mt-4 text-sm text-foreground/80 italic border-l-2 border-primary/30 pl-3">
+                    "{exp.description}"
+                  </p>
+                </CardHeader>
+
+                <CardContent className="pt-6">
+                  {/* Responsibilities Grid */}
+                  <div className="mb-6">
+                    <h4 className="text-sm font-bold uppercase tracking-wider text-muted-foreground mb-3 flex items-center gap-2">
+                      <Briefcase className="w-4 h-4" /> Impact & Deliverables
+                    </h4>
+                    <ul className="grid gap-3">
+                      {exp.responsibilities.map((resp, i) => (
+                        <li key={i} className="flex items-start group">
+                          <CheckCircle2 className="h-5 w-5 text-green-500 mr-3 mt-0.5 flex-shrink-0 group-hover:scale-110 transition-transform" />
+                          <span className="text-sm md:text-base text-foreground/90">{resp}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  {/* Tech Stack Footer */}
+                  <div className="pt-4 border-t border-dashed">
+                    <h4 className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-3 flex items-center gap-2">
+                      <Code2 className="w-4 h-4" /> Tech Environment
+                    </h4>
+                    <div className="flex flex-wrap gap-2">
+                      {exp.technologies.map((tech) => (
+                        <Badge key={tech} variant="secondary" className="px-3 py-1 bg-primary/5 hover:bg-primary/10 text-primary border-primary/10">
+                          {tech}
+                        </Badge>
+                      ))}
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.div>
+          ))}
+        </div>
       </div>
-   
-    </motion.div>
+    </div>
   );
 };
 
 export default ExperiencePage;
-  
