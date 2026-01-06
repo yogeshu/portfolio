@@ -21,7 +21,7 @@ const experiences = [
   },
   {
     company: "Jio (via Quest Global)",
-    role: "Software Engineer",
+    role: "Senior Software Engineer",
     duration: "Aug 2021 - Aug 2024",
     responsibilities: [
       "Contributed to the development of large-scale enterprise applications.",
@@ -34,7 +34,7 @@ const experiences = [
   },
   {
     company: "Tata Institute of Social Sciences (TISS)",
-    role: "Project Intern",
+    role: "Software Engineer UX/UI",
     duration: "Jan 2019 - July 2021",
     responsibilities: [
       "Developed user-friendly web applications using HTML, CSS, JavaScript, Django, and React.js, significantly enhancing the interactive elements of educational modules used by thousands of students.",

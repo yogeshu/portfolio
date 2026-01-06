@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Github, Linkedin, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import YogeshPic from '@/assets/YogeshBhavsar.jpg'; // Placeholder for your avatar image
+import YogeshPic from '@/assets/YogeshBhavsar.png'; // Placeholder for your avatar image
 
 const HomePage = () => {
   return (

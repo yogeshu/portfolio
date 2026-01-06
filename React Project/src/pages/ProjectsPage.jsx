@@ -54,7 +54,7 @@ Integrated performance best practices and clean UI/UX to ensure smooth navigatio
     liveLink: "#",
     repoLink: "#"
   },
-   {
+  {
     title: "Sangam Biodata",
     description: "Built Project Sangam, a modern matrimonial biodata generator using React and modular CSS; implemented customizable templates with Vedic astrology integration; enabled PDF download and shareable links for easy distribution; added authentication and user data handling via Firebase; and focused on an intuitive, mobile-first design to make biodata creation simple and culturally relevant.",
     imageToken: "Screenshot of Sangam Biodata website",
@@ -62,8 +62,8 @@ Integrated performance best practices and clean UI/UX to ensure smooth navigatio
     technologies: ['React', "Modular CSS/SCSS", 'Firebase', 'Framer Motion'],
     liveLink: "https://sangam-biodata.vercel.app/",
     repoLink: "https://github.com/yogeshu/sangam-biodata"
-   },
-  
+  },
+
   {
     title: "TISS E-Library",
     description: "Developed a comprehensive e-library platform for CLIx , enabling students and faculty to access a wide range of academic resources online. Focused on creating a user-friendly interface with responsive design principles to ensure accessibility across devices.",
@@ -90,63 +90,97 @@ Integrated performance best practices and clean UI/UX to ensure smooth navigatio
 const ProjectsPage = () => {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
-      className="space-y-12 py-8"
+      transition={{ duration: 0.4 }}
+      className="space-y-10 py-8"
     >
-      <header className="text-center">
-        <h1 className="text-4xl md:text-5xl  font-extrabold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">My Projects</h1>
-        <p className="text-lg text-foreground/80 max-w-3xl mx-auto">
-          A selection of projects that demonstrate my skills in responsive design, performance optimization, and creating accessible web experiences.
+      <header className="text-center space-y-3">
+        <h1 className="text-4xl md:text-5xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">
+          Selected Work
+        </h1>
+        <p className="text-foreground/70 max-w-2xl mx-auto">
+          Product-focused projects highlighting performance, UX judgment, and scalable front-end architecture.
         </p>
       </header>
 
-      <div className="grid md:grid-cols-2 lg:grid-cols-2 gap-8">
+      <div className="grid gap-6">
         {projects.map((project, index) => (
           <motion.div
             key={project.title}
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.4, delay: index * 0.15 }}
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.35, delay: index * 0.08 }}
           >
-            <Card className="h-full flex flex-col overflow-hidden group transform hover:shadow-2xl transition-all duration-300 ease-in-out hover:-translate-y-1">
-              <div className="aspect-video overflow-hidden">
-                <img
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                  alt={project.imageToken}
-                  src={project.imageSrc} />
-              </div>
-              <CardHeader>
-                <CardTitle>{project.title}</CardTitle>
-                <CardDescription className="h-20 overflow-y-auto text-foreground/80">{project.description}</CardDescription>
-              </CardHeader>
-              <CardContent className="flex-grow">
-                <h4 className="font-semibold mb-2 text-primary">Technologies Used:</h4>
-                <div className="flex flex-wrap gap-2">
-                  {project.technologies.map((tech) => (
-                    <span key={tech} className="px-2 py-1 text-xs font-medium bg-primary/10 text-primary rounded-full">
-                      {tech}
-                    </span>
-                  ))}
+            <Card className="group overflow-hidden transition-all hover:shadow-xl">
+              <div className="flex flex-col md:flex-row md:h-[320px]">
+
+                {/* Image */}
+                <div className="relative w-full aspect-[16/9] sm:aspect-[4/3] md:aspect-auto md:w-[35%] overflow-hidden">
+                  <img
+                    src={project.imageSrc}
+                    alt={project.imageToken}
+                    className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
                 </div>
-              </CardContent>
-              <CardFooter className="flex justify-end space-x-3 bg-secondary/20 dark:bg-secondary/10 p-4">
-                {project.liveLink !== "#" && (
-                  <Button variant="outline" size="sm" asChild>
-                    <a href={project.liveLink} target="_blank" rel="noopener noreferrer">
-                      Live Demo <ExternalLink className="ml-2 h-4 w-4" />
-                    </a>
-                  </Button>
-                )}
-                {project.repoLink !== "#" && (
-                  <Button variant="ghost" size="sm" asChild>
-                    <a href={project.repoLink} target="_blank" rel="noopener noreferrer">
-                      GitHub <Github className="ml-2 h-4 w-4" />
-                    </a>
-                  </Button>
-                )}
-              </CardFooter>
+
+
+                {/* Content */}
+                <div className="flex flex-col justify-between md:w-[65%] p-5">
+                  <div className="space-y-3">
+                    <h3 className="text-lg font-semibold">{project.title}</h3>
+
+                    <p className="text-sm text-foreground/75 line-clamp-3">
+                      {project.description}
+                    </p>
+
+                    <div className="flex flex-wrap gap-2 pt-1">
+                      {project.technologies.slice(0, 7).map((tech) => (
+                        <span
+                          key={tech}
+                          className="px-2 py-1 text-xs rounded-md bg-primary/10 text-primary"
+                        >
+                          {tech}
+                        </span>
+                      ))}
+                      {project.technologies.length > 7 && (
+                        <span className="text-xs text-foreground/50">
+                          +{project.technologies.length - 7} more
+                        </span>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Actions */}
+                  <div className="flex items-center justify-end gap-3 pt-4">
+                    {project.liveLink !== "#" && (
+                      <Button size="sm" asChild>
+                        <a
+                          href={project.liveLink}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          Live Demo <ExternalLink className="ml-1 h-4 w-4" />
+                        </a>
+                      </Button>
+                    )}
+                    {project.repoLink !== "#" && (
+                      <Button variant="ghost" size="icon" asChild>
+                        <a
+                          href={project.repoLink}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          aria-label="GitHub repository"
+                        >
+                          <Github className="h-4 w-4" />
+                        </a>
+                      </Button>
+                    )}
+                  </div>
+                </div>
+
+              </div>
             </Card>
           </motion.div>
         ))}
@@ -154,5 +188,6 @@ const ProjectsPage = () => {
     </motion.div>
   );
 };
+
 
 export default ProjectsPage;
