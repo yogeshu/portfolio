@@ -20,6 +20,7 @@ import {
   TrendingUp,
   BookOpen
 } from 'lucide-react';
+import WhyMeSection from '../components/ui/WhySection';
 
 // Animation Wrapper for "Reveal" effect
 const FadeIn = ({ children, delay = 0, className = "" }) => (
@@ -146,6 +147,7 @@ const ConsultingPage = () => {
             ))}
         </div>
       </header>
+<WhyMeSection/>
 
       {/* Pain Points */}
       <section id="expertise" className="py-24 border-t border-white/5 bg-slate-900/30 relative z-10">
