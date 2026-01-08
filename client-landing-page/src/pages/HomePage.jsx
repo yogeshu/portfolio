@@ -21,6 +21,7 @@ import {
   BookOpen
 } from 'lucide-react';
 import WhyMeSection from '../components/ui/WhySection';
+import { projectMix} from '../lib/caseConstant';
 
 // Animation Wrapper for "Reveal" effect
 const FadeIn = ({ children, delay = 0, className = "" }) => (
@@ -185,99 +186,125 @@ const ConsultingPage = () => {
           <p className="text-slate-400">Real projects where architecture drove revenue.</p>
         </FadeIn>
 
-        {/* Case Study 1 */}
-        <FadeIn className={`${glassPanelClass} rounded-2xl p-8 mb-8 group`}>
-          <div className="grid md:grid-cols-[2fr,1fr] gap-8">
-            <div>
-              <div className="flex items-center gap-3 mb-6">
-                <span className="bg-blue-500/10 text-blue-400 px-3 py-1 rounded text-xs font-bold uppercase">Enterprise Scale</span>
-                <h3 className="text-2xl font-bold text-white">Jio Gau Samriddhi Platform</h3>
-              </div>
-              <div className="space-y-4 mb-6">
-                <div className="flex items-start gap-3">
-                  <div className="w-6 h-6 rounded-full bg-red-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
-                    <XIcon size={12} className="text-red-400" />
-                  </div>
-                  <div>
-                    <strong className="text-white">The Challenge:</strong>
-                    <p className="text-slate-400 text-sm">Needed to expand digital presence across rural India with high-performance lead generation. Users had low-bandwidth devices.</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <div className="w-6 h-6 rounded-full bg-indigo-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
-                    <Check size={12} className="text-indigo-400" />
-                  </div>
-                  <div>
-                    <strong className="text-white">The Architecture:</strong>
-                    <p className="text-slate-400 text-sm">Built a Next.js static site for instant load times. Integrated Jio Design System for consistent UX. Optimized assets for rural 4G networks.</p>
-                  </div>
-                </div>
-              </div>
-              <div className="grid grid-cols-3 gap-4 mb-6 p-4 bg-slate-900/50 rounded-lg border border-white/5">
-                {[
-                    { val: "100%", label: "SEO Score" },
-                    { val: "4", label: "Projects Led" },
-                    { val: "Pan-India", label: "Scale" }
-                ].map((m, i) => (
-                    <div key={i}>
-                        <div className="text-2xl font-bold text-emerald-400 mb-1">{m.val}</div>
-                        <div className="text-xs text-slate-500">{m.label}</div>
-                    </div>
-                ))}
-              </div>
-            </div>
-            <div className="flex flex-col justify-center bg-slate-950/50 rounded-xl p-4 border border-white/5 text-center">
-              <TrendingUp size={64} className="text-slate-700 mb-4 mx-auto" />
-              <p className="text-slate-400 text-sm">Targeting millions of rural users with accessible UI.</p>
-            </div>
-          </div>
-        </FadeIn>
+       {projectMix.map((project) => (
+  <FadeIn 
+    key={project.id} 
+    className={`${glassPanelClass} rounded-2xl p-6 md:p-8 ${project.mb} group border border-white/5 hover:border-white/10 transition-colors duration-500`}
+  >
+    {/* Grid Layout Change: 
+      1. 'items-stretch' ensures both columns are the same height.
+      2. grid-cols-1 on mobile, 3 columns on desktop (2 for text, 1 for visual) 
+    */}
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
+      
+      {/* LEFT COLUMN: Content (Spans 2 columns) */}
+      <div className="md:col-span-2 flex flex-col justify-center">
+        
+        {/* Header Section */}
+        <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-6">
+          <span className={`${project.badgeBg} ${project.badgeText} px-3 py-1.5 rounded-md text-xs font-bold tracking-wider uppercase w-fit`}>
+            {project.badgeLabel}
+          </span>
+          <h3 className="text-2xl md:text-3xl font-bold text-white tracking-tight">
+            {project.title}
+          </h3>
+        </div>
 
-        {/* Case Study 2 */}
-        <FadeIn className={`${glassPanelClass} rounded-2xl p-8 group`}>
-          <div className="grid md:grid-cols-[2fr,1fr] gap-8">
-            <div>
-              <div className="flex items-center gap-3 mb-6">
-                <span className="bg-purple-500/10 text-purple-400 px-3 py-1 rounded text-xs font-bold uppercase">Fintech & Data</span>
-                <h3 className="text-2xl font-bold text-white">Technical Analysis Engine</h3>
-              </div>
-              <div className="space-y-4 mb-6">
-                <div className="flex items-start gap-3">
-                  <div className="w-6 h-6 rounded-full bg-red-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
-                     <XIcon size={12} className="text-red-400" />
-                  </div>
-                  <div>
-                    <strong className="text-white">The Challenge:</strong>
-                    <p className="text-slate-400 text-sm">Visualizing complex stock market data (Candlesticks, RSI, Relative Strength) on the web without crashing the browser.</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <div className="w-6 h-6 rounded-full bg-indigo-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
-                    <Check size={12} className="text-indigo-400" />
-                  </div>
-                  <div>
-                    <strong className="text-white">The Solution:</strong>
-                    <p className="text-slate-400 text-sm">Leveraged deep domain knowledge from my book <em>"Relative Strength With Technical Analysis"</em> to build custom React charting components.</p>
-                  </div>
-                </div>
-              </div>
-              <div className="flex flex-wrap gap-2">
-                {['D3.js / Charts', 'React Performance', 'Financial Modeling'].map(tag => (
-                   <span key={tag} className="px-3 py-1 bg-slate-800 rounded-full text-xs text-slate-300 border border-slate-700">{tag}</span>
-                ))}
-              </div>
+        {/* Challenge & Solution Grid */}
+        <div className="space-y-5 mb-8">
+          <div className="flex gap-4">
+            <div className="w-8 h-8 rounded-full bg-rose-500/10 flex items-center justify-center flex-shrink-0 border border-rose-500/20">
+              <XIcon size={14} className="text-rose-400" />
             </div>
-            <div className="flex flex-col justify-between">
-               <div className="bg-slate-950 rounded-xl aspect-video flex items-center justify-center border border-white/5 relative overflow-hidden mb-4">
-                  <div className="absolute inset-0 bg-gradient-to-tr from-emerald-500/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                  <BookOpen size={64} className="text-slate-700 group-hover:text-emerald-400 transition-colors duration-500" />
-               </div>
-               <a href="https://amazon.in/dp/B0DX2JYDK8" target="_blank" rel="noopener noreferrer" className="w-full py-3 bg-white text-black text-center font-bold rounded-lg hover:bg-slate-200 transition-all text-sm">
-                 View The Book →
-               </a>
+            <div>
+              <strong className="block text-white text-sm uppercase tracking-wide opacity-80 mb-1">The Challenge</strong>
+              <p className="text-slate-400 text-sm leading-relaxed">{project.challenge}</p>
             </div>
           </div>
-        </FadeIn>
+          
+          <div className="flex gap-4">
+            <div className="w-8 h-8 rounded-full bg-emerald-500/10 flex items-center justify-center flex-shrink-0 border border-emerald-500/20">
+              <Check size={14} className="text-emerald-400" />
+            </div>
+            <div>
+              <strong className="block text-white text-sm uppercase tracking-wide opacity-80 mb-1">{project.solution}</strong>
+              <p className="text-slate-400 text-sm leading-relaxed">{project.solutionDesc}</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Stats Row */}
+        {project.stats && (
+          <div className="grid grid-cols-3 gap-4 mb-6 p-4 bg-slate-950/30 rounded-xl border border-white/5">
+            {project.stats.map((m, i) => (
+              <div key={i} className="text-center sm:text-left">
+                <div className="text-xl md:text-2xl font-bold text-emerald-400 mb-0.5">{m.val}</div>
+                <div className="text-[10px] md:text-xs text-slate-500 font-medium uppercase tracking-wider">{m.label}</div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* Tags */}
+        {project.tags && (
+          <div className="flex flex-wrap gap-2 mt-auto">
+            {project.tags.map(tag => (
+              <span key={tag} className="px-3 py-1 bg-slate-800/50 hover:bg-slate-800 transition-colors rounded-full text-xs text-slate-300 border border-white/5">
+                {tag}
+              </span>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* RIGHT COLUMN: Visual/Action Area (Spans 1 column) */}
+      <div className="md:col-span-1 flex flex-col h-full">
+        {/* This container uses 'flex-1'. 
+           It will stretch to fill ALL available vertical empty space.
+        */}
+        <div className={`
+          relative flex-1 rounded-xl border border-white/5 overflow-hidden group/card
+          flex flex-col items-center justify-center p-6 text-center
+          ${project.rightIcon === "book" ? "bg-slate-950" : "bg-slate-950/30"}
+        `}>
+          
+          {/* Ambient Background Glow Effect */}
+          <div className="absolute inset-0 bg-gradient-to-tr from-emerald-500/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+
+          {/* Icon Logic */}
+          {project.rightIcon === "trending" && (
+            <>
+              <div className="p-4 rounded-full bg-slate-900 border border-white/5 mb-4 relative z-10 group-hover/card:scale-110 transition-transform duration-300">
+                <TrendingUp size={48} className="text-slate-600 group-hover/card:text-emerald-400 transition-colors duration-300" />
+              </div>
+              <p className="text-slate-400 text-sm relative z-10">{project.rightText}</p>
+            </>
+          )}
+
+          {project.rightIcon === "book" && (
+            <div className="relative z-10 transform group-hover/card:-translate-y-1 transition-transform duration-500">
+              <BookOpen size={64} className="text-slate-700 group-hover:text-emerald-400 transition-colors duration-500 mx-auto mb-2" />
+              <p className="text-xs text-slate-500 uppercase tracking-widest font-semibold">Read Excerpt</p>
+            </div>
+          )}
+        </div>
+
+        {/* Button (If 'book', render button outside the flexible container so it stays at bottom) */}
+        {project.rightIcon === "book" && (
+          <a 
+            href={project.rightLink} 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="mt-4 w-full py-3 bg-white text-black text-center font-bold rounded-xl hover:bg-emerald-400 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 text-sm shadow-lg shadow-white/5"
+          >
+            {project.rightLinkText}
+          </a>
+        )}
+      </div>
+
+    </div>
+  </FadeIn>
+))}
       </section>
 
       {/* Services */}
