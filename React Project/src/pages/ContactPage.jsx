@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
+// Import EmailJS
+import emailjs from '@emailjs/browser'; 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -20,12 +22,14 @@ import {
 
 const ContactPage = () => {
   const { toast } = useToast();
+  
   const [formData, setFormData] = useState({ 
     name: '', 
     email: '', 
-    subject: 'opportunity', // Default selection
+    subject: 'opportunity', 
     message: '' 
   });
+  
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [copied, setCopied] = useState(false);
 
@@ -48,20 +52,50 @@ const ContactPage = () => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Simulate API call (Replace with EmailJS or Formspree logic)
-    await new Promise(resolve => setTimeout(resolve, 1500));
+    // EmailJS Configuration
+    // Create a .env.local file to store these values
+    const serviceId = import.meta.env.VITE_PUBLIC_EMAILJS_SERVICE_ID;
+    const templateId = import.meta.env.VITE_PUBLIC_EMAILJS_TEMPLATE_ID;
+    const publicKey = import.meta.env.VITE_PUBLIC_EMAILJS_PUBLIC_KEY;
 
-    console.log("Form submitted:", formData);
-    toast({
-      title: "Message Sent Successfully",
-      description: "Thanks for reaching out. I usually respond within 24 hours.",
-      variant: "default", // You can use "success" if you have that variant
-    });
-    setFormData({ name: '', email: '', subject: 'opportunity', message: '' });
-    setIsSubmitting(false);
+    // Prepare template parameters to match your EmailJS template variables
+    const templateParams = {
+      from_name: formData.name,
+      from_email: formData.email,
+      subject_type: formData.subject, // Map this in EmailJS dashboard
+      message: formData.message,
+    };
+    if (formData.phone) {
+      setIsSubmitting(false);
+      return;
+    }
+
+    try {
+      await emailjs.send(serviceId, templateId, templateParams, publicKey);
+     
+      toast({
+        title: "Message Sent Successfully",
+        description: "Thanks for reaching out. I usually respond within 24 hours.",
+        variant: "default", // or "success" if you have it configured
+      });
+
+      // Reset form
+      setFormData({ name: '', email: '', subject: 'opportunity', message: '' });
+      
+    } catch (error) {
+      console.error("EmailJS Error:", error);
+      toast({
+        title: "Message Failed",
+        description: "Something went wrong. Please email me directly.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
+    // ... rest of your JSX remains exactly the same
     <div className="min-h-screen py-12 px-4 sm:px-6 lg:px-8 bg-background selection:bg-primary/20">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -69,10 +103,10 @@ const ContactPage = () => {
         transition={{ duration: 0.6 }}
         className="max-w-6xl mx-auto space-y-12"
       >
-        
-        {/* 1. HEADER SECTION: Status & Intro */}
+        {/* ... Header ... */}
         <header className="text-center space-y-6">
-          <motion.div 
+           {/* ... header content ... */}
+           <motion.div 
             initial={{ scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-green-500/10 border border-green-500/20 text-green-600 dark:text-green-400 text-sm font-medium"
@@ -94,7 +128,7 @@ const ContactPage = () => {
 
         <div className="grid md:grid-cols-12 gap-8 lg:gap-12 items-start">
           
-          {/* 2. CONTACT FORM (Main Column) */}
+          {/* 2. CONTACT FORM */}
           <motion.div
             className="md:col-span-7 lg:col-span-8"
             initial={{ opacity: 0, x: -20 }}
@@ -110,6 +144,7 @@ const ContactPage = () => {
               </CardHeader>
               <CardContent>
                 <form onSubmit={handleSubmit} className="space-y-6">
+                  {/* ... Inputs ... */}
                   <div className="grid md:grid-cols-2 gap-6">
                     <div className="space-y-2">
                       <Label htmlFor="name">Full Name</Label>
@@ -135,6 +170,19 @@ const ContactPage = () => {
                       />
                     </div>
                   </div>
+                  
+                  <div style={{ display: 'none' }}>
+                    <Label htmlFor="phone">Phone</Label>
+                    <Input 
+                      type="text" 
+                      id="phone" 
+                      value={formData.phone || ''} 
+                      onChange={handleChange} 
+                      placeholder="Your phone number" 
+                      className="bg-background/50"
+                      autoComplete="off"
+                    />
+                  </div>
 
                   <div className="space-y-2">
                     <Label htmlFor="subject">Inquiry Type</Label>
@@ -150,7 +198,6 @@ const ContactPage = () => {
                         <option value="consultation">Technical Consultation</option>
                         <option value="other">General Inquiry</option>
                       </select>
-                      {/* Custom Arrow for select */}
                       <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-muted-foreground">
                         <ArrowRight size={14} className="rotate-90" />
                       </div>
@@ -188,7 +235,7 @@ const ContactPage = () => {
             </Card>
           </motion.div>
 
-          {/* 3. SIDEBAR: Direct Info & Socials */}
+          {/* 3. SIDEBAR */}
           <motion.div
             className="md:col-span-5 lg:col-span-4 space-y-6"
             initial={{ opacity: 0, x: 20 }}
@@ -202,8 +249,7 @@ const ContactPage = () => {
                 <CardTitle className="text-xl">Quick Connect</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                
-                {/* Email with Copy Feature */}
+                {/* ... existing sidebar content ... */}
                 <div className="group flex items-center justify-between p-3 rounded-xl bg-muted/50 border border-transparent hover:border-primary/20 transition-all">
                   <div className="flex items-center gap-3 overflow-hidden">
                     <div className="p-2 bg-background rounded-lg text-primary shadow-sm">
@@ -211,7 +257,7 @@ const ContactPage = () => {
                     </div>
                     <div className="flex flex-col min-w-0">
                       <span className="text-xs text-muted-foreground font-medium uppercase tracking-wider">Email</span>
-                      <span className="text-sm font-semibold truncate">yogeshbhavsar1994@...</span>
+                      <span className="text-sm font-semibold truncate">yogeshbhavsar1994@gmail.com</span>
                     </div>
                   </div>
                   <Button
