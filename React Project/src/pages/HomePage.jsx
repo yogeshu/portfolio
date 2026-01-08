@@ -1,8 +1,6 @@
-import React from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Badge } from '@/components/ui/badge';
 import { 
   Github, 
   Linkedin, 
@@ -91,7 +89,7 @@ const HomePage = () => {
         >
           Senior Frontend <br className="hidden md:block" />
           <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary via-purple-500 to-accent">
-            Architect & Consultant
+           Consultant
           </span>
         </motion.h1>
 
@@ -105,7 +103,7 @@ const HomePage = () => {
           <span className="text-foreground font-semibold"> high-performance </span> 
           React/ Web applications. 
           <span className="block mt-2 text-sm opacity-80">
-            Specializing in Next.js, Architecture, and Data Visualization.
+            Specializing in React.js, Next.js, Architecture, Accessibility and Data Visualization.
           </span>
         </motion.p>
 
@@ -119,7 +117,7 @@ const HomePage = () => {
           </Button>
           
           <Button asChild variant="outline" size="lg" className="w-full sm:w-auto text-lg h-12 px-8 border-2 hover:bg-muted/50">
-            <a href="/Yogesh-Bhavsar-Resume.pdf" target="_blank" rel="noopener noreferrer">
+            <a href="/Yogesh_Bhavsar-React-Next_Developer.pdf" target="_blank" rel="noopener noreferrer">
               <FileText className="mr-2 h-5 w-5" />
               Download CV
             </a>
@@ -178,7 +176,7 @@ const HomePage = () => {
           variants={itemVariants}
           className="fixed left-6 bottom-0 hidden xl:flex flex-col gap-4 items-center after:content-[''] after:w-[1px] after:h-24 after:bg-border after:mt-4"
         >
-          <a href="https://github.com/yogeshbhavsar" target="_blank" rel="noopener noreferrer" className="p-2 hover:-translate-y-1 transition-transform text-muted-foreground hover:text-primary">
+          <a href="https://github.com/yogeshu" target="_blank" rel="noopener noreferrer" className="p-2 hover:-translate-y-1 transition-transform text-muted-foreground hover:text-primary">
             <Github className="w-6 h-6" />
           </a>
           <a href="https://linkedin.com/in/yogeshbhavsarui" target="_blank" rel="noopener noreferrer" className="p-2 hover:-translate-y-1 transition-transform text-muted-foreground hover:text-blue-600">

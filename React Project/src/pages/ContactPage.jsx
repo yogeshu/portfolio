@@ -1,12 +1,11 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useState } from 'react';
+import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/components/ui/use-toast';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { 
   Send, 
   Mail, 
@@ -269,7 +268,7 @@ const ContactPage = () => {
                 </a>
                 
                 <a 
-                  href="https://github.com/yogeshbhavsar" 
+                  href="https://github.com/yogeshu" 
                   target="_blank" 
                   rel="noopener noreferrer" 
                   className="flex items-center justify-between p-4 rounded-xl bg-gray-800/10 hover:bg-gray-800/20 text-gray-700 dark:text-gray-300 border border-transparent hover:border-gray-500/30 transition-all group"
