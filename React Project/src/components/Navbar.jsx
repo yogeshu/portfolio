@@ -22,7 +22,7 @@ const Navbar = () => {
   const [darkMode, setDarkMode] = useState(() => {
     const theme = localStorage.getItem('theme');
     if (theme) return theme === 'dark';
-    return window.matchMedia('(prefers-color-scheme: dark)').matches;
+    return true; // default to dark mode
   });
   const location = useLocation();
 
