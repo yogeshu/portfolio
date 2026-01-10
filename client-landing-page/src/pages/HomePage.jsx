@@ -71,7 +71,6 @@ const SERVICES = [
   }
 ];
 
-// FIXED: Removed duplicate "Development" step and re-ordered logically
 const PROCESS = [
   { 
     title: "Discovery & Strategy", 
@@ -116,6 +115,25 @@ const ConsultingPage = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [openFaq, setOpenFaq] = useState(null);
 
+  // --- ANALYTICS TRACKER HELPER ---
+  const trackEvent = (action, category, label, value = null) => {
+    try {
+      if (typeof window !== 'undefined' && window.gtag) {
+        window.gtag('event', action, {
+          event_category: category,
+          event_label: label,
+          value: value
+        });
+      }
+      // Optional: Log to console in development
+      if (process.env.NODE_ENV === 'development') {
+        console.log(`📡 Tracking: ${action} | ${category} | ${label}`);
+      }
+    } catch (err) {
+      console.warn("Tracking Error:", err);
+    }
+  };
+
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener('scroll', handleScroll);
@@ -125,6 +143,15 @@ const ConsultingPage = () => {
   const handleFormSubmit = (e) => {
     e.preventDefault();
     setIsSubmitting(true);
+    
+    // Capture Form Data for event (excluding PII like name/email usually)
+    const formData = new FormData(e.target);
+    const serviceType = formData.get('service_type');
+    const budget = formData.get('budget');
+
+    // Track the Conversion
+    trackEvent('form_submit', 'Contact', `Inquiry: ${serviceType}`, null);
+
     // Simulate API call
     setTimeout(() => {
         setIsSubmitting(false);
@@ -148,14 +175,19 @@ const ConsultingPage = () => {
       {/* Navbar */}
       <nav className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? 'bg-[#020617]/90 border-b border-white/5 backdrop-blur-xl py-3' : 'bg-transparent py-6'}`}>
         <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
-          <a href="#" className="text-xl font-bold tracking-tight text-white flex items-center gap-2 group">
+          <a href="#" onClick={() => trackEvent('click_logo', 'Navigation', 'Home')} className="text-xl font-bold tracking-tight text-white flex items-center gap-2 group">
             <span className="w-2 h-2 rounded-full bg-indigo-500 group-hover:shadow-[0_0_10px_rgba(99,102,241,0.8)] transition-shadow duration-300"></span>
             Yogesh Bhavsar
           </a>
 
           <div className="hidden md:flex gap-8 text-sm font-medium text-slate-400">
             {['Expertise', 'Work', 'Process', 'Services'].map((item) => (
-              <a key={item} href={`#${item.toLowerCase()}`} className="hover:text-white transition-colors relative group">
+              <a 
+                key={item} 
+                href={`#${item.toLowerCase()}`} 
+                onClick={() => trackEvent('click_nav_link', 'Navigation', item)}
+                className="hover:text-white transition-colors relative group"
+              >
                 {item}
                 <span className="absolute -bottom-1 left-0 w-0 h-px bg-indigo-500 transition-all duration-300 group-hover:w-full"></span>
               </a>
@@ -163,7 +195,11 @@ const ConsultingPage = () => {
           </div>
 
           <div className="hidden md:flex">
-            <a href="#contact" className="px-5 py-2.5 text-sm font-semibold bg-white text-slate-950 rounded-lg hover:bg-indigo-50 hover:text-indigo-900 transition-all shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:shadow-[0_0_25px_rgba(99,102,241,0.3)]">
+            <a 
+                href="#contact" 
+                onClick={() => trackEvent('click_cta', 'Navbar', 'Book Discovery Call')}
+                className="px-5 py-2.5 text-sm font-semibold bg-white text-slate-950 rounded-lg hover:bg-indigo-50 hover:text-indigo-900 transition-all shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:shadow-[0_0_25px_rgba(99,102,241,0.3)]"
+            >
               Book Discovery Call
             </a>
           </div>
@@ -191,13 +227,23 @@ const ConsultingPage = () => {
               <a 
                 key={item} 
                 href={`#${item.toLowerCase()}`} 
-                onClick={() => setIsMobileMenuOpen(false)}
+                onClick={() => {
+                    trackEvent('click_mobile_nav', 'Navigation', item);
+                    setIsMobileMenuOpen(false);
+                }}
                 className="text-3xl font-bold text-slate-300 hover:text-white transition-colors"
               >
                 {item}
               </a>
             ))}
-            <a href="#contact" onClick={() => setIsMobileMenuOpen(false)} className="px-8 py-4 bg-white text-slate-950 font-bold rounded-lg mt-4">
+            <a 
+                href="#contact" 
+                onClick={() => {
+                    trackEvent('click_cta', 'Mobile Menu', 'Book Consultation');
+                    setIsMobileMenuOpen(false);
+                }}
+                className="px-8 py-4 bg-white text-slate-950 font-bold rounded-lg mt-4"
+            >
               Book Consultation
             </a>
           </motion.div>
@@ -227,10 +273,18 @@ const ConsultingPage = () => {
           </p>
 
           <div className="flex flex-wrap gap-4">
-            <a href="#contact" className="px-8 py-4 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold rounded-lg transition-all flex items-center gap-2 shadow-lg hover:-translate-y-1">
+            <a 
+                href="#contact" 
+                onClick={() => trackEvent('click_cta', 'Hero', 'Discuss Project')}
+                className="px-8 py-4 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold rounded-lg transition-all flex items-center gap-2 shadow-lg hover:-translate-y-1"
+            >
                Discuss Your Project <ArrowRight size={18} />
             </a>
-            <a href="#work" className="px-8 py-4 bg-slate-900 hover:bg-slate-800 text-white font-medium rounded-lg transition-all border border-slate-700 hover:border-slate-500">
+            <a 
+                href="#work" 
+                onClick={() => trackEvent('click_cta', 'Hero', 'See My Work')}
+                className="px-8 py-4 bg-slate-900 hover:bg-slate-800 text-white font-medium rounded-lg transition-all border border-slate-700 hover:border-slate-500"
+            >
               See My Work
             </a>
           </div>
@@ -309,7 +363,14 @@ const ConsultingPage = () => {
                   <h3 className="text-2xl md:text-3xl font-bold text-white tracking-tight flex items-center gap-2">
                     {project.title}
                     {project.rightLink && (
-                       <a href={project.rightLink} target="_blank" className="text-slate-600 hover:text-white transition-colors"><ExternalLink size={20}/></a>
+                       <a 
+                        href={project.rightLink} 
+                        target="_blank" 
+                        onClick={() => trackEvent('click_external_link', 'Case Study', project.title)}
+                        className="text-slate-600 hover:text-white transition-colors"
+                        >
+                            <ExternalLink size={20}/>
+                        </a>
                     )}
                   </h3>
                 </div>
@@ -375,6 +436,7 @@ const ConsultingPage = () => {
                     href={project.rightLink} 
                     target="_blank" 
                     rel="noopener noreferrer" 
+                    onClick={() => trackEvent('click_external_link', 'Case Study', project.rightLinkText)}
                     className="mt-4 w-full py-3.5 bg-white text-slate-950 text-center font-bold rounded-xl hover:bg-indigo-50 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 text-sm shadow-[0_0_20px_rgba(255,255,255,0.1)]"
                   >
                     {project.rightLinkText}
@@ -386,7 +448,11 @@ const ConsultingPage = () => {
         ))}
 
         <FadeIn className="text-center mt-8">
-            <a href="#" className="inline-flex items-center gap-2 text-slate-500 hover:text-white transition-colors border-b border-transparent hover:border-indigo-500 pb-1 text-sm font-medium">
+            <a 
+                href="#" 
+                onClick={() => trackEvent('click_view_archive', 'Work', 'View Full Archive')}
+                className="inline-flex items-center gap-2 text-slate-500 hover:text-white transition-colors border-b border-transparent hover:border-indigo-500 pb-1 text-sm font-medium"
+            >
                 View Full Project Archive <ArrowRight size={16} />
             </a>
         </FadeIn>
@@ -459,6 +525,7 @@ const ConsultingPage = () => {
 
                 <a 
                   href="#contact" 
+                  onClick={() => trackEvent('click_service_select', 'Services', service.title)}
                   className={`block w-full py-3.5 text-center font-bold rounded-lg transition-all ${
                     service.popular 
                     ? 'bg-indigo-600 hover:bg-indigo-500 text-white shadow-lg shadow-indigo-500/25' 
@@ -484,7 +551,10 @@ const ConsultingPage = () => {
             {FAQS.map((faq, i) => (
                 <FadeIn key={i} delay={i * 0.05} className={`${glassPanelClass} rounded-xl overflow-hidden`}>
                     <button 
-                        onClick={() => setOpenFaq(openFaq === i ? null : i)}
+                        onClick={() => {
+                            setOpenFaq(openFaq === i ? null : i);
+                            if(openFaq !== i) trackEvent('toggle_faq', 'FAQ', `Open: ${faq.q}`);
+                        }}
                         className="w-full flex items-center justify-between p-6 text-left focus:outline-none"
                     >
                         <span className="font-bold text-slate-200">{faq.q}</span>
@@ -529,7 +599,11 @@ const ConsultingPage = () => {
                      <p className="text-sm text-indigo-300">Book a 15-min intro call directly on my calendar.</p>
                    </div>
                </div>
-               <a href="#" className="px-6 py-3 bg-white text-indigo-950 font-bold rounded-lg hover:bg-indigo-50 hover:shadow-lg transition-all whitespace-nowrap">
+               <a 
+                href="#" 
+                onClick={() => trackEvent('click_cta', 'Contact', 'Book Calendar')}
+                className="px-6 py-3 bg-white text-indigo-950 font-bold rounded-lg hover:bg-indigo-50 hover:shadow-lg transition-all whitespace-nowrap"
+                >
                   Book Time Now
                </a>
             </div>
@@ -610,10 +684,18 @@ const ConsultingPage = () => {
             
             <div className="flex gap-6">
                {[
-                   { icon: Linkedin, link: "https://linkedin.com/in/yogeshbhavsarui" },
-                   { icon: Github, link: "https://github.com/yogeshu" }
+                   { icon: Linkedin, link: "https://linkedin.com/in/yogeshbhavsarui", name: "LinkedIn" },
+                   { icon: Twitter, link: "#", name: "Twitter" },
+                   { icon: Github, link: "https://github.com/yogeshu", name: "GitHub" }
                ].map((s, i) => (
-                   <a key={i} href={s.link} target="_blank" rel="noopener noreferrer" className="p-3 rounded-full bg-slate-900 border border-white/5 text-slate-400 hover:text-white hover:bg-indigo-600 hover:border-indigo-600 transition-all duration-300">
+                   <a 
+                    key={i} 
+                    href={s.link} 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    onClick={() => trackEvent('click_social', 'Footer', s.name)}
+                    className="p-3 rounded-full bg-slate-900 border border-white/5 text-slate-400 hover:text-white hover:bg-indigo-600 hover:border-indigo-600 transition-all duration-300"
+                    >
                        <s.icon size={20} />
                    </a>
                ))}
