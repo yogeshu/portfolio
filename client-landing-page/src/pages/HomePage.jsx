@@ -1,14 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  Menu, X, ArrowRight, AlertTriangle, DollarSign, Rocket, 
-  Check, X as XIcon, CheckCircle2, Send, 
-  Linkedin, Twitter, Github, Calendar, TrendingUp, BookOpen, 
+import {
+  Menu, X, ArrowRight, AlertTriangle, DollarSign, Rocket,
+  Check, X as XIcon, CheckCircle2, Send,
+  Linkedin, Twitter, Github, Calendar, TrendingUp, BookOpen,
   Loader2, ExternalLink, GitBranch, Shield, Zap, HelpCircle, Code2, PenTool,
   Plus, Minus
 } from 'lucide-react';
 import WhyMeSection from '../components/ui/WhySection';
 import { projectMix } from '../lib/caseConstant';
+// Add these imports at the very top
+import { db } from '../firebase'; // Adjust path to where you saved firebase.js
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 
 // --- Reusable Animation Components ---
 const FadeIn = ({ children, delay = 0, className = "" }) => (
@@ -44,58 +47,58 @@ const EXPERTISE_CARDS = [
 ];
 
 const SERVICES = [
-  { 
-    id: 'audit', 
-    tag: 'FIX', 
-    title: 'Code/UI Audit', 
-    price: '$299', 
-    type: 'One-Time Check', 
-    features: ['Review your existing code', 'Find performance issues', 'UI/UX Improvement list', 'Video walkthrough of fixes'] 
+  {
+    id: 'audit',
+    tag: 'FIX',
+    title: 'Code/UI Audit',
+    price: '$299',
+    type: 'One-Time Check',
+    features: ['Review your existing code', 'Find performance issues', 'UI/UX Improvement list', 'Video walkthrough of fixes']
   },
-  { 
-    id: 'mvp', 
-    tag: 'BUILD', 
-    title: 'Web App Development', 
-    price: 'Project Based', 
+  {
+    id: 'mvp',
+    tag: 'BUILD',
+    title: 'Web App Development',
+    price: 'Project Based',
     type: 'Most Popular',
     popular: true,
-    features: ['React/Next.js Application', 'Mobile Responsive', 'Admin Dashboard', 'Deployment Setup'] 
+    features: ['React/Next.js Application', 'Mobile Responsive', 'Admin Dashboard', 'Deployment Setup']
   },
-  { 
-    id: 'monthly', 
-    tag: 'PARTNER', 
-    title: 'Dedicated Developer', 
-    price: 'Monthly', 
-    type: 'Retainer', 
-    features: ['Ongoing Feature Development', 'Bug Fixes & Maintenance', 'Direct Slack/WhatsApp Access', 'Flexible Hours'] 
+  {
+    id: 'monthly',
+    tag: 'PARTNER',
+    title: 'Dedicated Developer',
+    price: 'Monthly',
+    type: 'Retainer',
+    features: ['Ongoing Feature Development', 'Bug Fixes & Maintenance', 'Direct Slack/WhatsApp Access', 'Flexible Hours']
   }
 ];
 
 const PROCESS = [
-  { 
-    title: "Discovery & Strategy", 
-    icon: HelpCircle, 
-    desc: "We discuss your idea. I listen to what you need and tell you exactly what is possible within your budget." 
+  {
+    title: "Discovery & Strategy",
+    icon: HelpCircle,
+    desc: "We discuss your idea. I listen to what you need and tell you exactly what is possible within your budget."
   },
-  { 
-    title: "The Architecture Blueprint", 
-    icon: GitBranch, 
-    desc: "I don't just start coding. I design a scalable system map, choosing the right database, state management, and infrastructure." 
+  {
+    title: "The Architecture Blueprint",
+    icon: GitBranch,
+    desc: "I don't just start coding. I design a scalable system map, choosing the right database, state management, and infrastructure."
   },
-  { 
-    title: "Development & Weekly Builds", 
-    icon: Code2, 
-    desc: "Development begins. You get a link to view progress every Friday so you're never guessing where we are." 
+  {
+    title: "Development & Weekly Builds",
+    icon: Code2,
+    desc: "Development begins. You get a link to view progress every Friday so you're never guessing where we are."
   },
-  { 
-    title: "Refinement & QA", 
-    icon: PenTool, 
-    desc: "We test the app together. I polish the UI, fix bugs, ensure mobile responsiveness, and run performance scores." 
+  {
+    title: "Refinement & QA",
+    icon: PenTool,
+    desc: "We test the app together. I polish the UI, fix bugs, ensure mobile responsiveness, and run performance scores."
   },
-  { 
-    title: "Launch & Handoff", 
-    icon: Zap, 
-    desc: "I deploy your app to the live server and hand over all the code to you. You own everything." 
+  {
+    title: "Launch & Handoff",
+    icon: Zap,
+    desc: "I deploy your app to the live server and hand over all the code to you. You own everything."
   }
 ];
 
@@ -114,6 +117,8 @@ const ConsultingPage = () => {
   const [scrolled, setScrolled] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [openFaq, setOpenFaq] = useState(null);
+  const loadTime = useRef(Date.now()); // Tracks when the page loaded
+  const [isBot, setIsBot] = useState(false); // Flag for the honeypot
 
   // --- ANALYTICS TRACKER HELPER ---
   const trackEvent = (action, category, label, value = null) => {
@@ -140,31 +145,70 @@ const ConsultingPage = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
-    setIsSubmitting(true);
     
-    // Capture Form Data for event (excluding PII like name/email usually)
+    // --- SAFETY CHECK 1: The Honeypot ---
+    // If the hidden "bot_field" has a value, it's a bot.
     const formData = new FormData(e.target);
-    const serviceType = formData.get('service_type');
-    const budget = formData.get('budget');
-
-    // Track the Conversion
-    trackEvent('form_submit', 'Contact', `Inquiry: ${serviceType}`, null);
-
-    // Simulate API call
-    setTimeout(() => {
+    const honeypot = formData.get('bot_field'); 
+    
+    if (honeypot) {
+      console.warn("Bot detected: Honeypot filled.");
+      setIsSubmitting(true);
+      // FAKE SUCCESS: Trick the bot into thinking it worked so it stops trying
+      setTimeout(() => {
         setIsSubmitting(false);
         alert("Thanks! I'll be in touch shortly.");
         e.target.reset();
-    }, 2000);
-  };
+      }, 1000);
+      return; 
+    }
 
+    // --- SAFETY CHECK 2: The Speed Limit ---
+    // If submitted in under 3 seconds (3000ms), it's likely a script
+    const timeElapsed = Date.now() - loadTime.current;
+    if (timeElapsed < 3000) {
+       console.warn("Bot detected: Too fast.");
+       alert("You are typing too fast! Please wait a moment and try again.");
+       return;
+    }
+    // message should be at least 20 characters
+    const message = formData.get('message') || '';
+    if (message.length < 20) {
+      alert("Please provide a more detailed message (at least 20 characters).");
+      return;
+    }
+
+    // --- REAL SUBMISSION LOGIC ---
+    setIsSubmitting(true);
+    
+    const data = {
+      name: formData.get('name'),
+      email: formData.get('email'),
+      service_type: formData.get('service_type'),
+      budget: formData.get('budget'),
+      message: formData.get('message'),
+      timestamp: serverTimestamp(),
+    };
+
+    try {
+      await addDoc(collection(db, "contacts"), data);
+      trackEvent('form_submit', 'Contact', `Inquiry: ${data.service_type}`, null);
+      alert("Message received! I will get back to you within 12 hours.");
+      e.target.reset();
+    } catch (error) {
+      console.error("Error adding document: ", error);
+      alert("Something went wrong. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
   const glassPanelClass = "bg-slate-900/40 backdrop-blur-md border border-white/5 hover:border-indigo-500/30 transition-all duration-300 shadow-2xl";
 
   return (
     <div className="min-h-screen bg-[#020617] text-slate-200 font-sans selection:bg-indigo-500/30 selection:text-indigo-200 overflow-x-hidden relative">
-      
+
       {/* Dynamic Background */}
       <div className="fixed inset-0 z-0 pointer-events-none">
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff03_1px,transparent_1px),linear-gradient(to_bottom,#ffffff03_1px,transparent_1px)] bg-[size:32px_32px]"></div>
@@ -182,9 +226,9 @@ const ConsultingPage = () => {
 
           <div className="hidden md:flex gap-8 text-sm font-medium text-slate-400">
             {['Expertise', 'Work', 'Process', 'Services'].map((item) => (
-              <a 
-                key={item} 
-                href={`#${item.toLowerCase()}`} 
+              <a
+                key={item}
+                href={`#${item.toLowerCase()}`}
                 onClick={() => trackEvent('click_nav_link', 'Navigation', item)}
                 className="hover:text-white transition-colors relative group"
               >
@@ -195,10 +239,10 @@ const ConsultingPage = () => {
           </div>
 
           <div className="hidden md:flex">
-            <a 
-                href="#contact" 
-                onClick={() => trackEvent('click_cta', 'Navbar', 'Book Discovery Call')}
-                className="px-5 py-2.5 text-sm font-semibold bg-white text-slate-950 rounded-lg hover:bg-indigo-50 hover:text-indigo-900 transition-all shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:shadow-[0_0_25px_rgba(99,102,241,0.3)]"
+            <a
+              href="#contact"
+              onClick={() => trackEvent('click_cta', 'Navbar', 'Book Discovery Call')}
+              className="px-5 py-2.5 text-sm font-semibold bg-white text-slate-950 rounded-lg hover:bg-indigo-50 hover:text-indigo-900 transition-all shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:shadow-[0_0_25px_rgba(99,102,241,0.3)]"
             >
               Book Discovery Call
             </a>
@@ -213,7 +257,7 @@ const ConsultingPage = () => {
       {/* Mobile Menu Overlay */}
       <AnimatePresence>
         {isMobileMenuOpen && (
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, x: "100%" }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: "100%" }}
@@ -224,25 +268,25 @@ const ConsultingPage = () => {
               <X size={32} />
             </button>
             {['Expertise', 'Work', 'Process', 'Services'].map((item) => (
-              <a 
-                key={item} 
-                href={`#${item.toLowerCase()}`} 
+              <a
+                key={item}
+                href={`#${item.toLowerCase()}`}
                 onClick={() => {
-                    trackEvent('click_mobile_nav', 'Navigation', item);
-                    setIsMobileMenuOpen(false);
+                  trackEvent('click_mobile_nav', 'Navigation', item);
+                  setIsMobileMenuOpen(false);
                 }}
                 className="text-3xl font-bold text-slate-300 hover:text-white transition-colors"
               >
                 {item}
               </a>
             ))}
-            <a 
-                href="#contact" 
-                onClick={() => {
-                    trackEvent('click_cta', 'Mobile Menu', 'Book Consultation');
-                    setIsMobileMenuOpen(false);
-                }}
-                className="px-8 py-4 bg-white text-slate-950 font-bold rounded-lg mt-4"
+            <a
+              href="#contact"
+              onClick={() => {
+                trackEvent('click_cta', 'Mobile Menu', 'Book Consultation');
+                setIsMobileMenuOpen(false);
+              }}
+              className="px-8 py-4 bg-white text-slate-950 font-bold rounded-lg mt-4"
             >
               Book Consultation
             </a>
@@ -273,17 +317,17 @@ const ConsultingPage = () => {
           </p>
 
           <div className="flex flex-wrap gap-4">
-            <a 
-                href="#contact" 
-                onClick={() => trackEvent('click_cta', 'Hero', 'Discuss Project')}
-                className="px-8 py-4 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold rounded-lg transition-all flex items-center gap-2 shadow-lg hover:-translate-y-1"
+            <a
+              href="#contact"
+              onClick={() => trackEvent('click_cta', 'Hero', 'Discuss Project')}
+              className="px-8 py-4 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold rounded-lg transition-all flex items-center gap-2 shadow-lg hover:-translate-y-1"
             >
-               Discuss Your Project <ArrowRight size={18} />
+              Discuss Your Project <ArrowRight size={18} />
             </a>
-            <a 
-                href="#work" 
-                onClick={() => trackEvent('click_cta', 'Hero', 'See My Work')}
-                className="px-8 py-4 bg-slate-900 hover:bg-slate-800 text-white font-medium rounded-lg transition-all border border-slate-700 hover:border-slate-500"
+            <a
+              href="#work"
+              onClick={() => trackEvent('click_cta', 'Hero', 'See My Work')}
+              className="px-8 py-4 bg-slate-900 hover:bg-slate-800 text-white font-medium rounded-lg transition-all border border-slate-700 hover:border-slate-500"
             >
               See My Work
             </a>
@@ -292,26 +336,26 @@ const ConsultingPage = () => {
 
         {/* Stats Grid */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-24 pt-8 border-t border-white/5">
-            {STATS.map((stat, i) => (
-              <FadeIn key={i} delay={i * 0.1} className="p-4">
-                 <div className="text-3xl font-bold text-white mb-1">{stat.val}</div>
-                 <div className="text-sm text-slate-500 font-mono uppercase tracking-wide">{stat.label}</div>
-              </FadeIn>
-            ))}
+          {STATS.map((stat, i) => (
+            <FadeIn key={i} delay={i * 0.1} className="p-4">
+              <div className="text-3xl font-bold text-white mb-1">{stat.val}</div>
+              <div className="text-sm text-slate-500 font-mono uppercase tracking-wide">{stat.label}</div>
+            </FadeIn>
+          ))}
         </div>
       </header>
 
       {/* Experience Bar */}
       <section className="border-y border-white/5 bg-slate-950/30 relative z-20">
         <div className="max-w-7xl mx-auto px-6 py-10 flex flex-col md:flex-row items-center justify-center gap-8 md:gap-16">
-            <span className="text-xs font-bold text-slate-600 uppercase tracking-widest mb-4 md:mb-0">Previous Experience At</span>
-            <div className="flex flex-wrap justify-center gap-8 md:gap-12 opacity-50 grayscale hover:grayscale-0 transition-all duration-500">
-                {BRAND_LOGOS.map((logo, i) => (
-                    <span key={i} className={`text-slate-400 hover:text-white transition-colors cursor-default ${logo.style}`}>
-                        {logo.name}
-                    </span>
-                ))}
-            </div>
+          <span className="text-xs font-bold text-slate-600 uppercase tracking-widest mb-4 md:mb-0">Previous Experience At</span>
+          <div className="flex flex-wrap justify-center gap-8 md:gap-12 opacity-50 grayscale hover:grayscale-0 transition-all duration-500">
+            {BRAND_LOGOS.map((logo, i) => (
+              <span key={i} className={`text-slate-400 hover:text-white transition-colors cursor-default ${logo.style}`}>
+                {logo.name}
+              </span>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -349,9 +393,9 @@ const ConsultingPage = () => {
           <p className="text-slate-400 text-lg">Selected works where architecture drove revenue.</p>
         </FadeIn>
 
-       {projectMix.slice(0, 3).map((project, index) => (
-          <FadeIn 
-            key={project.id} 
+        {projectMix.slice(0, 3).map((project, index) => (
+          <FadeIn
+            key={project.id}
             className={`${glassPanelClass} rounded-2xl p-6 md:p-8 mb-12 group border border-white/5 hover:border-white/10 transition-colors duration-500`}
           >
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
@@ -363,14 +407,14 @@ const ConsultingPage = () => {
                   <h3 className="text-2xl md:text-3xl font-bold text-white tracking-tight flex items-center gap-2">
                     {project.title}
                     {project.rightLink && (
-                       <a 
-                        href={project.rightLink} 
-                        target="_blank" 
+                      <a
+                        href={project.rightLink}
+                        target="_blank"
                         onClick={() => trackEvent('click_external_link', 'Case Study', project.title)}
                         className="text-slate-600 hover:text-white transition-colors"
-                        >
-                            <ExternalLink size={20}/>
-                        </a>
+                      >
+                        <ExternalLink size={20} />
+                      </a>
                     )}
                   </h3>
                 </div>
@@ -432,10 +476,10 @@ const ConsultingPage = () => {
                 </div>
 
                 {project.rightIcon === "book" && (
-                  <a 
-                    href={project.rightLink} 
-                    target="_blank" 
-                    rel="noopener noreferrer" 
+                  <a
+                    href={project.rightLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     onClick={() => trackEvent('click_external_link', 'Case Study', project.rightLinkText)}
                     className="mt-4 w-full py-3.5 bg-white text-slate-950 text-center font-bold rounded-xl hover:bg-indigo-50 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 text-sm shadow-[0_0_20px_rgba(255,255,255,0.1)]"
                   >
@@ -448,13 +492,13 @@ const ConsultingPage = () => {
         ))}
 
         <FadeIn className="text-center mt-8">
-            <a 
-                href="#" 
-                onClick={() => trackEvent('click_view_archive', 'Work', 'View Full Archive')}
-                className="inline-flex items-center gap-2 text-slate-500 hover:text-white transition-colors border-b border-transparent hover:border-indigo-500 pb-1 text-sm font-medium"
-            >
-                View Full Project Archive <ArrowRight size={16} />
-            </a>
+          <a
+            href="#"
+            onClick={() => trackEvent('click_view_archive', 'Work', 'View Full Archive')}
+            className="inline-flex items-center gap-2 text-slate-500 hover:text-white transition-colors border-b border-transparent hover:border-indigo-500 pb-1 text-sm font-medium"
+          >
+            View Full Project Archive <ArrowRight size={16} />
+          </a>
         </FadeIn>
       </section>
 
@@ -474,7 +518,7 @@ const ConsultingPage = () => {
                 {i !== PROCESS.length - 1 && (
                   <div className="hidden md:block absolute top-8 left-1/2 w-full h-[2px] bg-gradient-to-r from-indigo-500/20 to-transparent z-0"></div>
                 )}
-                
+
                 <div className={`${glassPanelClass} p-6 rounded-xl relative z-10 h-full hover:-translate-y-2 duration-300`}>
                   <div className="w-16 h-16 rounded-full bg-slate-900 border border-white/10 flex items-center justify-center mb-6 group-hover:border-indigo-500/50 group-hover:text-indigo-400 text-slate-400 transition-all shadow-xl">
                     <step.icon size={28} />
@@ -504,7 +548,7 @@ const ConsultingPage = () => {
                     Most Popular
                   </div>
                 )}
-                
+
                 <div className="mb-6">
                   <div className={`text-xs font-bold font-mono mb-2 ${service.id === 'cto' ? 'text-emerald-400' : 'text-indigo-400'}`}>
                     {service.tag}
@@ -516,21 +560,20 @@ const ConsultingPage = () => {
 
                 <ul className="space-y-4 mb-8 text-sm text-slate-300 flex-1">
                   {service.features.map((item, idx) => (
-                      <li key={idx} className="flex items-start gap-3">
-                        <CheckCircle2 size={16} className={`mt-0.5 ${service.id === 'cto' ? 'text-emerald-400' : 'text-indigo-400'}`} /> 
-                        <span className="opacity-90">{item}</span>
-                      </li>
+                    <li key={idx} className="flex items-start gap-3">
+                      <CheckCircle2 size={16} className={`mt-0.5 ${service.id === 'cto' ? 'text-emerald-400' : 'text-indigo-400'}`} />
+                      <span className="opacity-90">{item}</span>
+                    </li>
                   ))}
                 </ul>
 
-                <a 
-                  href="#contact" 
+                <a
+                  href="#contact"
                   onClick={() => trackEvent('click_service_select', 'Services', service.title)}
-                  className={`block w-full py-3.5 text-center font-bold rounded-lg transition-all ${
-                    service.popular 
-                    ? 'bg-indigo-600 hover:bg-indigo-500 text-white shadow-lg shadow-indigo-500/25' 
-                    : 'bg-slate-800 hover:bg-slate-700 text-white border border-slate-700'
-                  }`}
+                  className={`block w-full py-3.5 text-center font-bold rounded-lg transition-all ${service.popular
+                      ? 'bg-indigo-600 hover:bg-indigo-500 text-white shadow-lg shadow-indigo-500/25'
+                      : 'bg-slate-800 hover:bg-slate-700 text-white border border-slate-700'
+                    }`}
                 >
                   {service.id === 'audit' ? 'Get Audited' : service.id === 'mvp' ? 'Start Your MVP' : 'Apply for Retainer'}
                 </a>
@@ -543,39 +586,39 @@ const ConsultingPage = () => {
       {/* FAQ Section - REPOSITIONED ABOVE CONTACT FORM */}
       <section className="py-24 max-w-4xl mx-auto px-6 relative z-10">
         <FadeIn className="mb-12 text-center">
-            <h2 className="text-3xl font-bold text-white mb-4">Common Questions</h2>
-            <p className="text-slate-400">Everything you need to know before booking a call.</p>
+          <h2 className="text-3xl font-bold text-white mb-4">Common Questions</h2>
+          <p className="text-slate-400">Everything you need to know before booking a call.</p>
         </FadeIn>
-        
+
         <div className="space-y-4">
-            {FAQS.map((faq, i) => (
-                <FadeIn key={i} delay={i * 0.05} className={`${glassPanelClass} rounded-xl overflow-hidden`}>
-                    <button 
-                        onClick={() => {
-                            setOpenFaq(openFaq === i ? null : i);
-                            if(openFaq !== i) trackEvent('toggle_faq', 'FAQ', `Open: ${faq.q}`);
-                        }}
-                        className="w-full flex items-center justify-between p-6 text-left focus:outline-none"
-                    >
-                        <span className="font-bold text-slate-200">{faq.q}</span>
-                        {openFaq === i ? <Minus size={20} className="text-indigo-400"/> : <Plus size={20} className="text-slate-500"/>}
-                    </button>
-                    <AnimatePresence>
-                        {openFaq === i && (
-                            <motion.div 
-                                initial={{ height: 0, opacity: 0 }}
-                                animate={{ height: "auto", opacity: 1 }}
-                                exit={{ height: 0, opacity: 0 }}
-                                className="overflow-hidden"
-                            >
-                                <div className="px-6 pb-6 text-slate-400 text-sm leading-relaxed border-t border-white/5 pt-4">
-                                    {faq.a}
-                                </div>
-                            </motion.div>
-                        )}
-                    </AnimatePresence>
-                </FadeIn>
-            ))}
+          {FAQS.map((faq, i) => (
+            <FadeIn key={i} delay={i * 0.05} className={`${glassPanelClass} rounded-xl overflow-hidden`}>
+              <button
+                onClick={() => {
+                  setOpenFaq(openFaq === i ? null : i);
+                  if (openFaq !== i) trackEvent('toggle_faq', 'FAQ', `Open: ${faq.q}`);
+                }}
+                className="w-full flex items-center justify-between p-6 text-left focus:outline-none"
+              >
+                <span className="font-bold text-slate-200">{faq.q}</span>
+                {openFaq === i ? <Minus size={20} className="text-indigo-400" /> : <Plus size={20} className="text-slate-500" />}
+              </button>
+              <AnimatePresence>
+                {openFaq === i && (
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: "auto", opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    className="overflow-hidden"
+                  >
+                    <div className="px-6 pb-6 text-slate-400 text-sm leading-relaxed border-t border-white/5 pt-4">
+                      {faq.a}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </FadeIn>
+          ))}
         </div>
       </section>
 
@@ -588,33 +631,43 @@ const ConsultingPage = () => {
           </FadeIn>
 
           <FadeIn className={`${glassPanelClass} p-8 md:p-12 rounded-2xl border border-white/10 shadow-2xl`}>
-            
+
             <div className="mb-8 p-6 bg-indigo-500/10 border border-indigo-500/20 rounded-xl flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
-               <div className="flex items-center gap-4">
-                   <div className="bg-indigo-600 p-3 rounded-full text-white shadow-lg shadow-indigo-500/30">
-                     <Calendar size={24} />
-                   </div>
-                   <div>
-                     <h3 className="font-bold text-white text-lg">Skip the email tag.</h3>
-                     <p className="text-sm text-indigo-300">Book a 15-min intro call directly on my calendar.</p>
-                   </div>
-               </div>
-               <a 
-                href="#" 
+              <div className="flex items-center gap-4">
+                <div className="bg-indigo-600 p-3 rounded-full text-white shadow-lg shadow-indigo-500/30">
+                  <Calendar size={24} />
+                </div>
+                <div>
+                  <h3 className="font-bold text-white text-lg">Skip the email tag.</h3>
+                  <p className="text-sm text-indigo-300">Book a 15-min intro call directly on my calendar.</p>
+                </div>
+              </div>
+              <a
+                href="#"
                 onClick={() => trackEvent('click_cta', 'Contact', 'Book Calendar')}
                 className="px-6 py-3 bg-white text-indigo-950 font-bold rounded-lg hover:bg-indigo-50 hover:shadow-lg transition-all whitespace-nowrap"
-                >
-                  Book Time Now
-               </a>
+              >
+                Book Time Now
+              </a>
             </div>
 
             <div className="relative flex py-6 items-center">
-                <div className="flex-grow border-t border-slate-800"></div>
-                <span className="flex-shrink-0 mx-4 text-slate-500 text-xs uppercase font-bold tracking-widest">Or send a message</span>
-                <div className="flex-grow border-t border-slate-800"></div>
+              <div className="flex-grow border-t border-slate-800"></div>
+              <span className="flex-shrink-0 mx-4 text-slate-500 text-xs uppercase font-bold tracking-widest">Or send a message</span>
+              <div className="flex-grow border-t border-slate-800"></div>
             </div>
 
             <form onSubmit={handleFormSubmit} className="space-y-6">
+              <div style={{ opacity: 0, position: 'absolute', top: 0, left: 0, height: 0, width: 0, zIndex: -1 }}>
+                <label htmlFor="bot_field">Website</label>
+                <input
+                  type="text"
+                  name="bot_field"
+                  id="bot_field"
+                  tabIndex={-1}
+                  autoComplete="off"
+                />
+              </div>
               <div className="grid md:grid-cols-2 gap-6">
                 <div className="space-y-2">
                   <label className="text-xs font-bold text-slate-400 uppercase tracking-wide">Your Name</label>
@@ -652,15 +705,15 @@ const ConsultingPage = () => {
                 <textarea name="message" required rows="5" className="w-full bg-slate-950/50 border border-slate-700/50 rounded-lg px-4 py-3 text-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all resize-none placeholder:text-slate-700" placeholder="Briefly describe your project, timeline, and current tech stack..."></textarea>
               </div>
 
-              <button 
-                type="submit" 
+              <button
+                type="submit"
                 disabled={isSubmitting}
                 className="w-full py-4 bg-indigo-600 hover:bg-indigo-500 disabled:bg-indigo-600/50 text-white font-bold rounded-lg shadow-lg shadow-indigo-500/25 transition-all transform active:scale-[0.99] flex items-center justify-center gap-2"
               >
                 {isSubmitting ? (
-                    <><Loader2 className="animate-spin" size={20}/> Sending...</>
+                  <><Loader2 className="animate-spin" size={20} /> Sending...</>
                 ) : (
-                    <>Send Inquiry <Send size={18} /></>
+                  <>Send Inquiry <Send size={18} /></>
                 )}
               </button>
             </form>
@@ -681,27 +734,27 @@ const ConsultingPage = () => {
                 Technical Partner for businesses that value speed, scalability, and revenue.
               </p>
             </div>
-            
+
             <div className="flex gap-6">
-               {[
-                   { icon: Linkedin, link: "https://linkedin.com/in/yogeshbhavsarui", name: "LinkedIn" },
-                   { icon: Twitter, link: "#", name: "Twitter" },
-                   { icon: Github, link: "https://github.com/yogeshu", name: "GitHub" }
-               ].map((s, i) => (
-                   <a 
-                    key={i} 
-                    href={s.link} 
-                    target="_blank" 
-                    rel="noopener noreferrer" 
-                    onClick={() => trackEvent('click_social', 'Footer', s.name)}
-                    className="p-3 rounded-full bg-slate-900 border border-white/5 text-slate-400 hover:text-white hover:bg-indigo-600 hover:border-indigo-600 transition-all duration-300"
-                    >
-                       <s.icon size={20} />
-                   </a>
-               ))}
+              {[
+                { icon: Linkedin, link: "https://linkedin.com/in/yogeshbhavsarui", name: "LinkedIn" },
+                { icon: Twitter, link: "#", name: "Twitter" },
+                { icon: Github, link: "https://github.com/yogeshu", name: "GitHub" }
+              ].map((s, i) => (
+                <a
+                  key={i}
+                  href={s.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => trackEvent('click_social', 'Footer', s.name)}
+                  className="p-3 rounded-full bg-slate-900 border border-white/5 text-slate-400 hover:text-white hover:bg-indigo-600 hover:border-indigo-600 transition-all duration-300"
+                >
+                  <s.icon size={20} />
+                </a>
+              ))}
             </div>
           </div>
-          
+
           <div className="border-t border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-slate-600 font-mono">
             <div>&copy; 2026 Yogesh Bhavsar. All rights reserved.</div>
             <a href="https://yogeshbhavsar.com" className="hover:text-indigo-400 transition-colors">← Back to Main Portfolio</a>
