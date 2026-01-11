@@ -287,7 +287,8 @@ const ConsultingPage = () => {
 
           <div className="hidden md:flex">
             <a 
-                href="#contact" 
+                href="https://app.cal.eu/yogeshbhavsar/discovery-call-project-fit" 
+                target="_blank"
                 onClick={() => trackEvent('click_cta', 'Navbar', 'Book Discovery Call')}
                 className="px-5 py-2.5 text-sm font-semibold bg-white text-slate-950 rounded-lg hover:bg-indigo-50 hover:text-indigo-900 transition-all shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:shadow-[0_0_25px_rgba(99,102,241,0.3)]"
             >
@@ -328,7 +329,8 @@ const ConsultingPage = () => {
               </a>
             ))}
             <a 
-                href="#contact" 
+                href="https://app.cal.eu/yogeshbhavsar/discovery-call-project-fit" 
+                target="_blank"
                 onClick={() => {
                     trackEvent('click_cta', 'Mobile Menu', 'Book Consultation');
                     setIsMobileMenuOpen(false);
@@ -691,7 +693,8 @@ const ConsultingPage = () => {
                    </div>
                </div>
                <a 
-                href="#" 
+                href="https://app.cal.eu/yogeshbhavsar/discovery-call-project-fit" 
+                target="_blank"
                 onClick={() => trackEvent('click_cta', 'Contact', 'Book Calendar')}
                 className="px-6 py-3 bg-white text-indigo-950 font-bold rounded-lg hover:bg-indigo-50 hover:shadow-lg transition-all whitespace-nowrap"
                 >
