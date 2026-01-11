@@ -1,7 +1,7 @@
 import React from 'react';
 
 const GoogleAnalytics = () => {
-  const GA_MEASUREMENT_ID = 'G-XXXXXXXXXX'; // REPLACE THIS WITH YOUR ACTUAL ID
+  const GA_MEASUREMENT_ID = 'G-16CGV8G7LW';
 
   return (
     <>

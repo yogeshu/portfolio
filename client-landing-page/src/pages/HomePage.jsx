@@ -204,9 +204,9 @@ const ConsultingPage = () => {
        showToast("You're typing incredibly fast! Please wait a moment.", "warning");
        return;
     }
-    // 3. Message Should be more than 20 chars
+    // 3. Message Should be more than 10 chars
     const message = formData.get('message') || '';
-    if (message.length < 20) {
+    if (message.length < 10) {
         showToast("Please provide more details in your message.", "warning");
         return;
     }
