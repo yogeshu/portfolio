@@ -11,6 +11,18 @@ import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import { db } from '../firebase'; // Ensure you have created this file as discussed
 import WhyMeSection from '../components/ui/WhySection';
 import { projectMix } from '../lib/caseConstant';
+import { 
+  trackConversion, 
+  trackEngagement, 
+  trackNavigation, 
+  trackFormInteraction,
+  trackContent,
+  trackPageView,
+  initScrollTracking,
+  initTimeTracking,
+  trackEnhancedConversion,
+  trackError
+} from '../utils/analytics';
 
 // --- Reusable Animation Components ---
 const FadeIn = ({ children, delay = 0, className = "" }) => (
@@ -151,21 +163,14 @@ const ConsultingPage = () => {
   // NEW: Spam Protection Refs
   const loadTime = useRef(Date.now());
   const [isBot, setIsBot] = useState(false);
-
-  // --- ANALYTICS TRACKER HELPER ---
-  const trackEvent = (action, category, label, value = null) => {
-    try {
-      if (typeof window !== 'undefined' && window.gtag) {
-        window.gtag('event', action, {
-          event_category: category,
-          event_label: label,
-          value: value
-        });
-      }
-    } catch (err) {
-      console.warn("Tracking Error:", err);
-    }
-  };
+  
+  // Form interaction tracking
+  const [formStarted, setFormStarted] = useState(false);
+  const [filledFields, setFilledFields] = useState(0);
+  const contactFormRef = useRef(null);
+  const hasViewedContactForm = useRef(false);
+  const hasViewedPricing = useRef(false);
+  const pricingViewTime = useRef(null);
 
   // Helper to show toast
   const showToast = (message, type = 'success') => {
@@ -174,10 +179,81 @@ const ConsultingPage = () => {
   };
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 50);
+    // Track initial page view
+    trackPageView('Freelance Developer - Yogesh Bhavsar');
+    
+    // Initialize scroll tracking
+    const cleanupScroll = initScrollTracking();
+    
+    // Initialize time on page tracking
+    const cleanupTime = initTimeTracking();
+    
+    // Track form abandonment on page unload
+    const handleBeforeUnload = () => {
+      if (formStarted && filledFields > 0) {
+        trackFormInteraction.formAbandon(filledFields);
+      }
+    };
+    
+    // Scroll handler for navbar
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 50);
+      
+      // Track when contact form comes into view
+      if (contactFormRef.current && !hasViewedContactForm.current) {
+        const rect = contactFormRef.current.getBoundingClientRect();
+        if (rect.top < window.innerHeight && rect.bottom > 0) {
+          hasViewedContactForm.current = true;
+          trackEnhancedConversion.contactFormView();
+        }
+      }
+      
+      // Track pricing section view time
+      const pricingSection = document.getElementById('services');
+      if (pricingSection && !hasViewedPricing.current) {
+        const rect = pricingSection.getBoundingClientRect();
+        if (rect.top < window.innerHeight && rect.bottom > 0) {
+          hasViewedPricing.current = true;
+          pricingViewTime.current = Date.now();
+          trackEngagement.sectionView('Services/Pricing');
+        }
+      }
+      
+      // Track if user spent time on pricing
+      if (hasViewedPricing.current && pricingViewTime.current) {
+        const timeSpent = Math.floor((Date.now() - pricingViewTime.current) / 1000);
+        if (timeSpent > 10) { // 10 seconds
+          trackEnhancedConversion.viewPricing(timeSpent);
+          pricingViewTime.current = null; // Track only once
+        }
+      }
+    };
+    
     window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+      if (cleanupScroll) cleanupScroll();
+      if (cleanupTime) cleanupTime();
+    };
+  }, [formStarted, filledFields]);
+
+  // Track form field interactions
+  const handleFieldFocus = (fieldName) => {
+    if (!formStarted) {
+      setFormStarted(true);
+      trackFormInteraction.formStart();
+    }
+    trackFormInteraction.fieldFocus(fieldName);
+  };
+  
+  const handleFieldBlur = (e) => {
+    if (e.target.value) {
+      setFilledFields(prev => prev + 1);
+    }
+  };
 
   // --- FORM HANDLER WITH FIREBASE & SPAM CHECK ---
   const handleFormSubmit = async (e) => {
@@ -202,12 +278,14 @@ const ConsultingPage = () => {
     const timeElapsed = Date.now() - loadTime.current;
     if (timeElapsed < 3000) {
        showToast("You're typing incredibly fast! Please wait a moment.", "warning");
+       trackFormInteraction.validationError('speed_check', 'too_fast');
        return;
     }
     // 3. Message Should be more than 10 chars
     const message = formData.get('message') || '';
     if (message.length < 10) {
         showToast("Please provide more details in your message.", "warning");
+        trackFormInteraction.validationError('message', 'too_short');
         return;
     }
 
@@ -226,15 +304,18 @@ const ConsultingPage = () => {
       // Send to Firebase
       await addDoc(collection(db, "contacts"), data);
       
-      // Track Event
-      trackEvent('form_submit', 'Contact', `Inquiry: ${data.service_type}`, null);
+      // Track Conversion Events
+      trackConversion.formSubmit(data.service_type, data.budget);
       
       // Show Success Toast
       showToast("Message received! I'll reply within 12 hours.", "success");
       e.target.reset();
+      setFormStarted(false);
+      setFilledFields(0);
     } catch (error) {
       console.error("Error:", error);
       showToast("Something went wrong. Please email me directly.", "error");
+      trackError.formError(error.message);
     } finally {
       setIsSubmitting(false);
     }
@@ -276,7 +357,7 @@ const ConsultingPage = () => {
               <a 
                 key={item} 
                 href={`#${item.toLowerCase()}`} 
-                onClick={() => trackEvent('click_nav_link', 'Navigation', item)}
+                onClick={() => trackNavigation.click(item, item.toLowerCase())}
                 className="hover:text-white transition-colors relative group"
               >
                 {item}
@@ -289,7 +370,8 @@ const ConsultingPage = () => {
             <a 
                 href="https://app.cal.eu/yogeshbhavsar/discovery-call-project-fit" 
                 target="_blank"
-                onClick={() => trackEvent('click_cta', 'Navbar', 'Book Discovery Call')}
+                rel="noopener noreferrer"
+                onClick={() => trackConversion.bookCall('Navbar')}
                 className="px-5 py-2.5 text-sm font-semibold bg-white text-slate-950 rounded-lg hover:bg-indigo-50 hover:text-indigo-900 transition-all shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:shadow-[0_0_25px_rgba(99,102,241,0.3)]"
             >
               Book Discovery Call
@@ -320,7 +402,7 @@ const ConsultingPage = () => {
                 key={item} 
                 href={`#${item.toLowerCase()}`} 
                 onClick={() => {
-                    trackEvent('click_mobile_nav', 'Navigation', item);
+                    trackNavigation.click(`Mobile - ${item}`, item.toLowerCase());
                     setIsMobileMenuOpen(false);
                 }}
                 className="text-3xl font-bold text-slate-300 hover:text-white transition-colors"
@@ -331,8 +413,9 @@ const ConsultingPage = () => {
             <a 
                 href="https://app.cal.eu/yogeshbhavsar/discovery-call-project-fit" 
                 target="_blank"
+                rel="noopener noreferrer"
                 onClick={() => {
-                    trackEvent('click_cta', 'Mobile Menu', 'Book Consultation');
+                    trackConversion.bookCall('Mobile Menu');
                     setIsMobileMenuOpen(false);
                 }}
                 className="px-8 py-4 bg-white text-slate-950 font-bold rounded-lg mt-4"
@@ -368,14 +451,17 @@ const ConsultingPage = () => {
           <div className="flex flex-wrap gap-4">
             <a 
                 href="#contact" 
-                onClick={() => trackEvent('click_cta', 'Hero', 'Discuss Project')}
+                onClick={() => {
+                  trackNavigation.click('Discuss Project CTA', 'contact');
+                  trackEngagement.sectionView('Hero CTA Click');
+                }}
                 className="px-8 py-4 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold rounded-lg transition-all flex items-center gap-2 shadow-lg hover:-translate-y-1"
             >
                Discuss Your Project <ArrowRight size={18} />
             </a>
             <a 
                 href="#work" 
-                onClick={() => trackEvent('click_cta', 'Hero', 'See My Work')}
+                onClick={() => trackNavigation.click('See My Work', 'work')}
                 className="px-8 py-4 bg-slate-900 hover:bg-slate-800 text-white font-medium rounded-lg transition-all border border-slate-700 hover:border-slate-500"
             >
               See My Work
@@ -458,8 +544,12 @@ const ConsultingPage = () => {
                     {project.rightLink && (
                        <a 
                         href={project.rightLink} 
-                        target="_blank" 
-                        onClick={() => trackEvent('click_external_link', 'Case Study', project.title)}
+                        target="_blank"
+                        rel="noopener noreferrer" 
+                        onClick={() => {
+                          trackNavigation.externalLink(project.rightLink, 'Case Study');
+                          trackContent.caseStudyView(project.title);
+                        }}
                         className="text-slate-600 hover:text-white transition-colors"
                         >
                             <ExternalLink size={20}/>
@@ -529,7 +619,10 @@ const ConsultingPage = () => {
                     href={project.rightLink} 
                     target="_blank" 
                     rel="noopener noreferrer" 
-                    onClick={() => trackEvent('click_external_link', 'Case Study', project.rightLinkText)}
+                    onClick={() => {
+                      trackNavigation.externalLink(project.rightLink, 'Case Study Book');
+                      trackContent.viewWork(project.rightLinkText);
+                    }}
                     className="mt-4 w-full py-3.5 bg-white text-slate-950 text-center font-bold rounded-xl hover:bg-indigo-50 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 text-sm shadow-[0_0_20px_rgba(255,255,255,0.1)]"
                   >
                     {project.rightLinkText}
@@ -543,7 +636,10 @@ const ConsultingPage = () => {
         <FadeIn className="text-center mt-8">
             <a 
                 href="#" 
-                onClick={() => trackEvent('click_view_archive', 'Work', 'View Full Archive')}
+                onClick={(e) => {
+                  e.preventDefault();
+                  trackContent.viewWork('Full Project Archive');
+                }}
                 className="inline-flex items-center gap-2 text-slate-500 hover:text-white transition-colors border-b border-transparent hover:border-indigo-500 pb-1 text-sm font-medium"
             >
                 View Full Project Archive <ArrowRight size={16} />
@@ -618,7 +714,10 @@ const ConsultingPage = () => {
 
                 <a 
                   href="#contact" 
-                  onClick={() => trackEvent('click_service_select', 'Services', service.title)}
+                  onClick={() => {
+                    trackConversion.selectService(service.title);
+                    trackNavigation.click(`Select Service - ${service.title}`, 'contact');
+                  }}
                   className={`block w-full py-3.5 text-center font-bold rounded-lg transition-all ${
                     service.popular 
                     ? 'bg-indigo-600 hover:bg-indigo-500 text-white shadow-lg shadow-indigo-500/25' 
@@ -645,8 +744,11 @@ const ConsultingPage = () => {
                 <FadeIn key={i} delay={i * 0.05} className={`${glassPanelClass} rounded-xl overflow-hidden`}>
                     <button 
                         onClick={() => {
+                            const isOpening = openFaq !== i;
                             setOpenFaq(openFaq === i ? null : i);
-                            if(openFaq !== i) trackEvent('toggle_faq', 'FAQ', `Open: ${faq.q}`);
+                            if(isOpening) {
+                              trackContent.faqOpen(faq.q);
+                            }
                         }}
                         className="w-full flex items-center justify-between p-6 text-left focus:outline-none"
                     >
@@ -695,7 +797,8 @@ const ConsultingPage = () => {
                <a 
                 href="https://app.cal.eu/yogeshbhavsar/discovery-call-project-fit" 
                 target="_blank"
-                onClick={() => trackEvent('click_cta', 'Contact', 'Book Calendar')}
+                rel="noopener noreferrer"
+                onClick={() => trackConversion.bookCall('Contact Section - Calendar CTA')}
                 className="px-6 py-3 bg-white text-indigo-950 font-bold rounded-lg hover:bg-indigo-50 hover:shadow-lg transition-all whitespace-nowrap"
                 >
                   Book Time Now
@@ -708,7 +811,7 @@ const ConsultingPage = () => {
                 <div className="flex-grow border-t border-slate-800"></div>
             </div>
 
-            <form onSubmit={handleFormSubmit} className="space-y-6 relative">
+            <form onSubmit={handleFormSubmit} className="space-y-6 relative" ref={contactFormRef}>
               
               {/* --- HONEYPOT FIELD (SPAM PROTECTION) --- */}
               <div style={{ opacity: 0, position: 'absolute', top: 0, left: 0, height: 0, width: 0, zIndex: -1 }}>
@@ -719,17 +822,39 @@ const ConsultingPage = () => {
               <div className="grid md:grid-cols-2 gap-6">
                 <div className="space-y-2">
                   <label className="text-xs font-bold text-slate-400 uppercase tracking-wide">Your Name</label>
-                  <input type="text" name="name" required className="w-full bg-slate-950/50 border border-slate-700/50 rounded-lg px-4 py-3 text-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all placeholder:text-slate-700" placeholder="John Doe" />
+                  <input 
+                    type="text" 
+                    name="name" 
+                    required 
+                    onFocus={() => handleFieldFocus('name')}
+                    onBlur={handleFieldBlur}
+                    className="w-full bg-slate-950/50 border border-slate-700/50 rounded-lg px-4 py-3 text-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all placeholder:text-slate-700" 
+                    placeholder="John Doe" 
+                  />
                 </div>
                 <div className="space-y-2">
                   <label className="text-xs font-bold text-slate-400 uppercase tracking-wide">Work Email</label>
-                  <input type="email" name="email" required className="w-full bg-slate-950/50 border border-slate-700/50 rounded-lg px-4 py-3 text-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all placeholder:text-slate-700" placeholder="john@company.com" />
+                  <input 
+                    type="email" 
+                    name="email" 
+                    required 
+                    onFocus={() => handleFieldFocus('email')}
+                    onBlur={handleFieldBlur}
+                    className="w-full bg-slate-950/50 border border-slate-700/50 rounded-lg px-4 py-3 text-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all placeholder:text-slate-700" 
+                    placeholder="john@company.com" 
+                  />
                 </div>
               </div>
 
               <div className="space-y-2">
                 <label className="text-xs font-bold text-slate-400 uppercase tracking-wide">Project Type</label>
-                <select name="service_type" required className="w-full bg-slate-950/50 border border-slate-700/50 rounded-lg px-4 py-3 text-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all appearance-none">
+                <select 
+                  name="service_type" 
+                  required 
+                  onFocus={() => handleFieldFocus('service_type')}
+                  onBlur={handleFieldBlur}
+                  className="w-full bg-slate-950/50 border border-slate-700/50 rounded-lg px-4 py-3 text-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all appearance-none"
+                >
                   <option value="">Select an option...</option>
                   <option value="audit">Code Audit & Consultation</option>
                   <option value="mvp">MVP / New Product Build / Website</option>
@@ -739,7 +864,13 @@ const ConsultingPage = () => {
               </div>
               <div className="space-y-2">
                 <label className="text-xs font-bold text-slate-400 uppercase tracking-wide">Estimated Budget</label>
-                <select name="budget" required className="w-full bg-slate-950/50 border border-slate-700/50 rounded-lg px-4 py-3 text-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all appearance-none">
+                <select 
+                  name="budget" 
+                  required 
+                  onFocus={() => handleFieldFocus('budget')}
+                  onBlur={handleFieldBlur}
+                  className="w-full bg-slate-950/50 border border-slate-700/50 rounded-lg px-4 py-3 text-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all appearance-none"
+                >
                   <option value="">Select your budget range...</option>
                   <option value="under_5k">Under $5,000</option>
                   <option value="5k_15k">$5,000 - $15,000</option>
@@ -750,7 +881,15 @@ const ConsultingPage = () => {
 
               <div className="space-y-2">
                 <label className="text-xs font-bold text-slate-400 uppercase tracking-wide">Project Details</label>
-                <textarea name="message" required rows="5" className="w-full bg-slate-950/50 border border-slate-700/50 rounded-lg px-4 py-3 text-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all resize-none placeholder:text-slate-700" placeholder="Briefly describe your project, timeline, and current tech stack..."></textarea>
+                <textarea 
+                  name="message" 
+                  required 
+                  rows="5" 
+                  onFocus={() => handleFieldFocus('message')}
+                  onBlur={handleFieldBlur}
+                  className="w-full bg-slate-950/50 border border-slate-700/50 rounded-lg px-4 py-3 text-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all resize-none placeholder:text-slate-700" 
+                  placeholder="Briefly describe your project, timeline, and current tech stack..."
+                ></textarea>
               </div>
 
               <button 
@@ -794,7 +933,7 @@ const ConsultingPage = () => {
                     href={s.link} 
                     target="_blank" 
                     rel="noopener noreferrer" 
-                    onClick={() => trackEvent('click_social', 'Footer', s.name)}
+                    onClick={() => trackNavigation.social(s.name)}
                     className="p-3 rounded-full bg-slate-900 border border-white/5 text-slate-400 hover:text-white hover:bg-indigo-600 hover:border-indigo-600 transition-all duration-300"
                     >
                        <s.icon size={20} />
