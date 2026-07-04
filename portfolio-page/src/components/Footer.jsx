@@ -22,8 +22,8 @@ const Footer = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
             <div>
               <p className="font-semibold text-lg mb-2">Yogesh Bhavsar</p>
-              <p className="text-sm">Front-End React Developer</p>
-              <p className="text-xs mt-1">Crafting responsive and accessible web interfaces.</p>
+              <p className="text-sm">Senior Frontend Engineer & Technical Architect</p>
+              <p className="text-xs mt-1">Crafting scalable, accessible, high-performance React and Next.js systems.</p>
             </div>
             <div>
               <p className="font-semibold text-lg mb-2">Quick Links</p>
@@ -31,6 +31,7 @@ const Footer = () => {
                 <li><a href="#home" className="hover:text-primary transition-colors">Home</a></li>
                 <li><a href="#about" className="hover:text-primary transition-colors">About</a></li>
                 <li><a href="#projects" className="hover:text-primary transition-colors">Projects</a></li>
+                <li><a href="https://consult.yogeshbhavsar.com/" className="hover:text-primary transition-colors">Available for fractional engagements - Consulting</a></li>
                 <li><a href="#contact" className="hover:text-primary transition-colors">Contact</a></li>
               </ul>
             </div>

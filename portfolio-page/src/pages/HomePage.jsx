@@ -87,9 +87,9 @@ const HomePage = () => {
           variants={itemVariants}
           className="text-5xl md:text-7xl font-extrabold tracking-tight mb-6"
         >
-          Senior Frontend <br className="hidden md:block" />
+          Yogesh Bhavsar <br className="hidden md:block" />
           <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary via-purple-500 to-accent">
-           Consultant
+           Senior Frontend Engineer & Technical Architect
           </span>
         </motion.h1>
 
@@ -98,12 +98,12 @@ const HomePage = () => {
           variants={itemVariants}
           className="text-xl text-muted-foreground mb-10 max-w-2xl leading-relaxed"
         >
-          I help companies and Startups build 
-          <span className="text-foreground font-semibold"> pixel-perfect</span>, 
-          <span className="text-foreground font-semibold"> high-performance </span> 
-          React/ Web applications. 
+          I help teams design and ship
+          <span className="text-foreground font-semibold"> scalable</span>,
+          <span className="text-foreground font-semibold"> high-performance </span>
+          React and Next.js applications.
           <span className="block mt-2 text-sm opacity-80">
-            Specializing in React.js, Next.js, Architecture, Accessibility and Data Visualization.
+            Specializing in frontend architecture, Core Web Vitals, accessibility, and maintainable UI systems.
           </span>
         </motion.p>
 
@@ -170,6 +170,96 @@ const HomePage = () => {
              </div>
           </div>
         </motion.div>
+
+        <motion.section
+          variants={itemVariants}
+          aria-label="Core Expertise"
+          className="mt-16 w-full max-w-5xl grid gap-4 text-left md:grid-cols-3"
+        >
+          <article className="rounded-lg border border-border/60 bg-background/70 p-5">
+            <h2 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">What I Build</h2>
+            <h3 className="mt-3 text-lg font-bold">Scalable Frontend Architecture</h3>
+            <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+              React, Next.js App Router, Server Components, SSR, SSG, ISR, Edge Runtime, and design system foundations.
+            </p>
+          </article>
+          <article className="rounded-lg border border-border/60 bg-background/70 p-5">
+            <h3 className="text-lg font-bold">Performance Engineering</h3>
+            <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+              Core Web Vitals, INP, hydration cost, bundle splitting, image strategy, caching, and rendering diagnostics.
+            </p>
+          </article>
+          <article className="rounded-lg border border-border/60 bg-background/70 p-5">
+            <h3 className="text-lg font-bold">Component Systems</h3>
+            <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+              Accessible UI architecture, reusable component patterns, monorepo-friendly structure, and product-minded delivery.
+            </p>
+          </article>
+        </motion.section>
+
+        <motion.section
+          variants={itemVariants}
+          aria-label="Experience Proof"
+          className="mt-8 w-full max-w-5xl rounded-lg border border-border/60 bg-background/70 p-6 text-left"
+        >
+          <h2 className="text-2xl font-bold">Experience</h2>
+          <h3 className="mt-4 text-lg font-semibold">Millipixels Interactive (Reach Plc) - Senior Frontend Engineer</h3>
+          <p className="mt-2 text-muted-foreground leading-relaxed">
+            I work on frontend systems where product quality, rendering strategy, accessibility, and long-term maintainability matter.
+            My day-to-day vocabulary includes React architecture, Next.js performance, design systems, and practical tradeoffs for teams shipping at speed.
+          </p>
+        </motion.section>
+
+        <motion.section
+          variants={itemVariants}
+          aria-label="Independent Work"
+          className="mt-8 w-full max-w-5xl grid gap-4 text-left md:grid-cols-2"
+        >
+          <article className="rounded-lg border border-border/60 bg-background/70 p-6">
+            <h2 className="text-2xl font-bold">Independent Engineering Work</h2>
+            <h3 className="mt-4 text-lg font-semibold">Products Built as Solo Engineer</h3>
+            <p className="mt-2 text-muted-foreground leading-relaxed">
+              Projects like Her Sanctuary and Frontendyogi are treated as engineering case studies: product constraints, privacy-first architecture,
+              data handling, UX clarity, and sustainable frontend structure.
+            </p>
+          </article>
+          <article className="rounded-lg border border-border/60 bg-background/70 p-6">
+            <h2 className="text-2xl font-bold">Available for Fractional Architecture Engagements</h2>
+            <p className="mt-4 text-muted-foreground leading-relaxed">
+              I take on <a href="https://consult.yogeshbhavsar.com/" className="font-semibold text-primary underline-offset-4 hover:underline">frontend architecture consulting</a>,
+              performance-focused audits, and codebase reviews for teams that need senior React and Next.js judgment without adding full-time headcount.
+            </p>
+          </article>
+        </motion.section>
+
+        <motion.section
+          variants={itemVariants}
+          aria-label="Speaking"
+          className="mt-8 w-full max-w-5xl rounded-lg border border-border/60 bg-background/70 p-6 text-left"
+        >
+          <h2 className="text-2xl font-bold">Speaking & Technical Writing</h2>
+          <p className="mt-3 text-muted-foreground leading-relaxed">
+            I write and speak about local-first software architecture, privacy-first frontend decisions, Core Web Vitals, and scalable frontend systems for small teams.
+          </p>
+        </motion.section>
+
+        <motion.section
+          variants={itemVariants}
+          aria-label="Creative Identity"
+          className="mt-8 w-full max-w-5xl rounded-lg border border-border/60 bg-background/70 p-6 text-left"
+        >
+          <h2 className="text-2xl font-bold">Beyond Engineering</h2>
+          <div className="mt-4 grid gap-4 md:grid-cols-2">
+            <div>
+              <h3 className="font-semibold">Author of "Love, Loss and Life"</h3>
+              <p className="mt-2 text-sm text-muted-foreground">A creative body of work kept separate from the engineering credibility path.</p>
+            </div>
+            <div>
+              <h3 className="font-semibold">Makhanchor - Hinglish Storytelling</h3>
+              <p className="mt-2 text-sm text-muted-foreground">A distinct creative identity connected as background context, not mixed into the technical positioning.</p>
+            </div>
+          </div>
+        </motion.section>
 
         {/* 8. FLOATING SOCIALS */}
         <motion.div 

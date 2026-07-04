@@ -7,20 +7,23 @@ const SEO = () => {
     "@graph": [
       {
         "@type": "Person",
-        "@id": "https://yogeshbhavsar.com/",
+        "@id": "https://yogeshbhavsar.com/#person",
         "name": "Yogesh Bhavsar",
-        "url": "https://yogeshbhavsar.com",
+        "url": "https://yogeshbhavsar.com/",
         "image": "https://yogeshbhavsar.com/YogeshBhavsar.png",
-        "jobTitle": "Senior Frontend Engineer / React Architect",
+        "jobTitle": "Senior Frontend Engineer & Technical Architect",
         "description":
           "Senior Frontend Engineer with 7+ years of experience building scalable, high-performance web applications using React, Next.js, and modern frontend architecture. Focused on product thinking, performance, and long-term maintainability.",
         "sameAs": [
           "https://www.linkedin.com/in/yogeshbhavsarui",
-          "https://github.com/yogeshu"
+          "https://github.com/yogeshu",
+          "https://twitter.com/Yogesh04rock",
+          "https://www.instagram.com/the.makhanchor",
+          "https://consult.yogeshbhavsar.com/"
         ],
         "worksFor": {
           "@type": "Organization",
-          "name": "Millipixels Interactive",
+          "name": "Millipixels Interactive (Reach Plc)",
           "url": "https://www.millipixels.com/"
         },
         "alumniOf": {
@@ -39,12 +42,32 @@ const SEO = () => {
           "SEO for SPAs",
           "Accessibility (WCAG)",
           "Scalable UI Systems"
+        ],
+        "subjectOf": {
+          "@type": "CreativeWork",
+          "name": "Love, Loss and Life",
+          "url": "https://makhanchor.in/"
+        }
+      },
+      {
+        "@type": "ProfessionalService",
+        "@id": "https://yogeshbhavsar.com/#service",
+        "name": "Yogesh Bhavsar - Frontend Architecture Consulting",
+        "provider": {
+          "@id": "https://yogeshbhavsar.com/#person"
+        },
+        "url": "https://consult.yogeshbhavsar.com/",
+        "areaServed": "Worldwide",
+        "serviceType": [
+          "Next.js Performance Audit",
+          "Fractional Frontend Architecture",
+          "Frontend Codebase Audit"
         ]
       },
       {
         "@type": "WebSite",
         "@id": "https://yogeshbhavsar.com/#website",
-        "url": "https://yogeshbhavsar.com",
+        "url": "https://yogeshbhavsar.com/",
         "name": "Yogesh Bhavsar — Senior Frontend Engineer & React Architect",
         "publisher": {
           "@id": "https://yogeshbhavsar.com/#person"
@@ -72,8 +95,8 @@ const SEO = () => {
         property="og:description"
         content="I design and build high-performance frontend systems using React, Next.js, and modern web architecture."
       />
-      <meta property="og:url" content="https://yogeshbhavsar.com" />
-      <meta property="og:image" content="https://yogeshbhavsar.com/avatar.jpg" />
+      <meta property="og:url" content="https://yogeshbhavsar.com/" />
+      <meta property="og:image" content="https://yogeshbhavsar.com/og-image.png" />
 
       {/* Twitter */}
       <meta name="twitter:card" content="summary_large_image" />
