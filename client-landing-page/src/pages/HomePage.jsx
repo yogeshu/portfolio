@@ -67,10 +67,10 @@ const Toast = ({ message, type, onClose }) => {
 
 // --- Static Data ---
 const STATS = [
-  { val: "$2.4M+", label: "Revenue Enabled" },
-  { val: "100%", label: "Code Ownership" },
-  { val: "Top 1%", label: "Performance Scores" },
-  { val: "React", label: "Specialist" },
+  { val: "CWV", label: "Performance Audits" },
+  { val: "RUM", label: "Evidence-Led Diagnostics" },
+  { val: "Next.js", label: "Rendering Strategy" },
+  { val: "Retainer", label: "Fractional Support" },
 ];
 
 const BRAND_LOGOS = [
@@ -80,72 +80,72 @@ const BRAND_LOGOS = [
 ];
 
 const EXPERTISE_CARDS = [
-  { icon: AlertTriangle, color: "text-red-400", bg: "bg-red-500/10", title: "Performance Bottlenecks", desc: "Is your React app re-rendering unnecessarily? Slow dashboards kill user trust.", fix: "Optimized Core Web Vitals" },
-  { icon: DollarSign, color: "text-yellow-400", bg: "bg-yellow-500/10", title: "Spaghetti Codebase", desc: "Scaling is impossible when code is fragile. I implement strict architecture & CI/CD.", fix: "Scalable Standards Enforced" },
-  { icon: Rocket, color: "text-purple-400", bg: "bg-purple-500/10", title: "Complex Visualization", desc: "Bridging the gap between raw financial data and intuitive UI components.", fix: "Fintech Fluent" }
+  { icon: AlertTriangle, color: "text-red-400", bg: "bg-red-500/10", title: "Core Web Vitals Bottlenecks", desc: "Diagnose slow LCP, INP regressions, hydration cost, render-blocking scripts, and heavy client bundles.", fix: "Prioritized CWV Fixes" },
+  { icon: DollarSign, color: "text-yellow-400", bg: "bg-yellow-500/10", title: "Architecture Drift", desc: "Map fragile React and Next.js code paths, component boundaries, data loading decisions, and scaling risks.", fix: "Maintainable Frontend Plan" },
+  { icon: Rocket, color: "text-purple-400", bg: "bg-purple-500/10", title: "Fractional Leadership Gap", desc: "Embedded technical direction for teams that need senior frontend architecture without full-time headcount.", fix: "Audit-Then-Retainer Model" }
 ];
 
 const SERVICES = [
   { 
     id: 'audit', 
-    tag: 'FIX', 
-    title: 'Code/UI Audit', 
-    price: '$299', 
-    type: 'One-Time Check', 
-    features: ['Review your existing code', 'Find performance issues', 'UI/UX Improvement list', 'Video walkthrough of fixes'] 
+    tag: 'AUDIT', 
+    title: 'Next.js Performance Audit', 
+    price: 'Scoped', 
+    type: 'Written Report + Walkthrough', 
+    features: ['Core Web Vitals and Lighthouse review', 'RUM, waterfall, and bundle analyzer findings', 'Rendering strategy and hydration boundary review', 'Prioritized fixes ranked by impact and effort'] 
   },
   { 
-    id: 'mvp', 
-    tag: 'BUILD', 
-    title: 'Web App Development', 
-    price: 'Project Based', 
+    id: 'architecture', 
+    tag: 'FRACTIONAL', 
+    title: 'Fractional Frontend Architecture', 
+    price: 'Retainer', 
     type: 'Most Popular',
     popular: true,
-    features: ['React/Next.js Application', 'Mobile Responsive', 'Admin Dashboard', 'Deployment Setup'] 
+    features: ['Embedded architectural leadership', 'React and Next.js decision records', 'Design system and component boundaries', 'Sprint-based implementation guidance'] 
   },
   { 
-    id: 'monthly', 
-    tag: 'PARTNER', 
-    title: 'Dedicated Developer', 
-    price: 'Monthly', 
-    type: 'Retainer', 
-    features: ['Ongoing Feature Development', 'Bug Fixes & Maintenance', 'Direct Slack/WhatsApp Access', 'Flexible Hours'] 
+    id: 'codebase', 
+    tag: 'REVIEW', 
+    title: 'Frontend Codebase Audit', 
+    price: 'One-Time', 
+    type: 'Structural Review', 
+    features: ['Maintainability and module boundary review', 'Accessibility and UI consistency scan', 'State, data fetching, and routing assessment', 'Remediation roadmap for product teams'] 
   }
 ];
 
 const PROCESS = [
   { 
-    title: "Discovery & Strategy", 
+    title: "Diagnostic", 
     icon: HelpCircle, 
-    desc: "We discuss your idea. I listen to what you need and tell you exactly what is possible within your budget." 
+    desc: "Collect RUM data, Lighthouse traces, WebPageTest waterfalls, bundle analyzer output, and current product constraints." 
   },
   { 
-    title: "The Architecture Blueprint", 
+    title: "Root-Cause Mapping", 
     icon: GitBranch, 
-    desc: "I don't just start coding. I design a scalable system map, choosing the right database, state management, and infrastructure." 
+    desc: "Trace issues across rendering strategy, caching, hydration, route structure, third-party scripts, and component boundaries." 
   },
   { 
-    title: "Development & Weekly Builds", 
+    title: "Prioritized Plan", 
     icon: Code2, 
-    desc: "Development begins. You get a link to view progress every Friday so you're never guessing where we are." 
+    desc: "Turn findings into a ranked remediation plan with expected Core Web Vitals impact, effort, and ownership notes." 
   },
   { 
-    title: "Refinement & QA", 
+    title: "Implementation Support", 
     icon: PenTool, 
-    desc: "We test the app together. I polish the UI, fix bugs, ensure mobile responsiveness, and run performance scores." 
+    desc: "Support the team through fixes, architecture decisions, and follow-up measurement when deeper engagement is useful." 
   },
   { 
-    title: "Launch & Handoff", 
+    title: "Measurement", 
     icon: Zap, 
-    desc: "I deploy your app to the live server and hand over all the code to you. You own everything." 
+    desc: "Validate changes against field data, synthetic tests, conversion-sensitive journeys, and ongoing performance budgets." 
   }
 ];
 
 const FAQS = [
   { q: "Are you an agency or a freelancer?", a: "I am a solo specialist. This means you work directly with me—no account managers, no miscommunication, and no overhead costs." },
   { q: "Do you work with agencies or directly with founders?", a: "Both. I often partner with agencies as a specialist architect for complex projects, and I work directly with non-technical founders to build their MVPs correctly from day one." },
-  { q: "What is your tech stack?", a: "I specialize in the React ecosystem: Next.js, TypeScript, Tailwind CSS, and Node.js. For databases, I prefer PostgreSQL (Supabase) or MongoDB." },
-  { q: "How do you charge?", a: "For audits, it's a fixed fee. For development, I prefer project-based pricing so you know exactly what you're paying. For ongoing advisory, I work on a monthly retainer." },
+  { q: "What is your tech stack?", a: "I specialize in the React ecosystem: Next.js, TypeScript, Tailwind CSS, modern rendering strategies, and performance diagnostics for production web apps." },
+  { q: "How do you charge?", a: "Audits are scoped as a fixed deliverable. Fractional architecture work is usually a monthly retainer after the first diagnostic engagement." },
   { q: "What if I'm not happy with the code?", a: "I work in milestones. You review and approve every stage (Design, Alpha, Beta) before we move forward. You are never stuck with a final product you didn't see coming." },
   { q: "How do we communicate?", a: "I believe in deep work. We'll have a weekly sync call, and for everything else, I use email or Loom videos to keep you updated without endless meetings." },
   { q: "Do you do design?", a: "I am a developer with a good eye for design. If you have a Figma file, I build it perfectly. If not, I can create a clean, modern UI for you." }
@@ -347,7 +347,7 @@ const ConsultingPage = () => {
       {/* Navbar */}
       <nav className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? 'bg-[#020617]/90 border-b border-white/5 backdrop-blur-xl py-3' : 'bg-transparent py-6'}`}>
         <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
-          <a href="#" onClick={() => trackEvent('click_logo', 'Navigation', 'Home')} className="text-xl font-bold tracking-tight text-white flex items-center gap-2 group">
+          <a href="#" onClick={() => trackNavigation.click('Logo', 'home')} className="text-xl font-bold tracking-tight text-white flex items-center gap-2 group">
             <span className="w-2 h-2 rounded-full bg-indigo-500 group-hover:shadow-[0_0_10px_rgba(99,102,241,0.8)] transition-shadow duration-300"></span>
             Yogesh Bhavsar
           </a>
@@ -434,37 +434,37 @@ const ConsultingPage = () => {
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-indigo-500"></span>
             </span>
-            Available for New Projects
+            Available for Architecture Audits
           </div>
 
           <h1 className="text-5xl md:text-7xl font-bold text-white leading-[1.1] mb-8 tracking-tight">
-            I turn your ideas into <br />
+            Fractional Frontend Architecture <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-emerald-400 animate-gradient">
-              real, working products.
+              & Next.js Performance Consulting
             </span>
           </h1>
 
           <p className="text-xl text-slate-400 leading-relaxed max-w-2xl mb-10">
-            You don't need a bloated agency. You need a <strong> Product Specialist</strong> who can build your web app, dashboard, or MVP with clean code and modern design.
+            For engineering teams shipping React and Next.js at scale who need architectural clarity, measurable Core Web Vitals gains, or senior frontend judgment embedded into delivery.
           </p>
 
           <div className="flex flex-wrap gap-4">
             <a 
                 href="#contact" 
                 onClick={() => {
-                  trackNavigation.click('Discuss Project CTA', 'contact');
+                  trackNavigation.click('Book Performance Audit CTA', 'contact');
                   trackEngagement.sectionView('Hero CTA Click');
                 }}
                 className="px-8 py-4 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold rounded-lg transition-all flex items-center gap-2 shadow-lg hover:-translate-y-1"
             >
-               Discuss Your Project <ArrowRight size={18} />
+               Book a Performance Audit <ArrowRight size={18} />
             </a>
             <a 
                 href="#work" 
                 onClick={() => trackNavigation.click('See My Work', 'work')}
                 className="px-8 py-4 bg-slate-900 hover:bg-slate-800 text-white font-medium rounded-lg transition-all border border-slate-700 hover:border-slate-500"
             >
-              See My Work
+              Review Case Studies
             </a>
           </div>
         </FadeIn>
@@ -500,8 +500,8 @@ const ConsultingPage = () => {
       <section id="expertise" className="py-24 border-t border-white/5 relative z-10">
         <div className="max-w-7xl mx-auto px-6">
           <FadeIn className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">What I Bring to the Table</h2>
-            <p className="text-slate-400 text-lg">I bridge the gap between "Make it pretty" and "Make it work."</p>
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">What I Diagnose</h2>
+            <p className="text-slate-400 text-lg">Performance and architecture problems that compound quietly until delivery slows down.</p>
           </FadeIn>
 
           <div className="grid md:grid-cols-3 gap-6">
@@ -653,7 +653,7 @@ const ConsultingPage = () => {
           <FadeIn className="text-center mb-16">
             <div className="text-indigo-500 font-bold tracking-widest uppercase text-xs mb-2">The Blueprint</div>
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">How I Deliver Certainty</h2>
-            <p className="text-slate-400 text-lg max-w-2xl mx-auto">Most projects fail due to poor communication and vague requirements. My 4-step process eliminates that risk.</p>
+            <p className="text-slate-400 text-lg max-w-2xl mx-auto">A practical audit flow for finding the cause, ranking the fix, and measuring the result.</p>
           </FadeIn>
 
           <div className="grid md:grid-cols-4 gap-6">
@@ -682,7 +682,7 @@ const ConsultingPage = () => {
         <div className="max-w-7xl mx-auto px-6">
           <FadeIn className="mb-16 text-center max-w-2xl mx-auto">
             <h2 className="text-3xl font-bold text-white mb-4">Engagement Models</h2>
-            <p className="text-slate-400">Direct access to a Senior Architect. No middlemen, no jargon.</p>
+            <p className="text-slate-400">Start with a scoped diagnostic. Continue into fractional support only when the roadmap justifies it.</p>
           </FadeIn>
 
           <div className="grid md:grid-cols-3 gap-6">
@@ -724,7 +724,7 @@ const ConsultingPage = () => {
                     : 'bg-slate-800 hover:bg-slate-700 text-white border border-slate-700'
                   }`}
                 >
-                  {service.id === 'audit' ? 'Get Audited' : service.id === 'mvp' ? 'Start Your MVP' : 'Apply for Retainer'}
+                  {service.id === 'audit' ? 'Book Performance Audit' : service.id === 'architecture' ? 'Discuss Retainer' : 'Request Codebase Review'}
                 </a>
               </FadeIn>
             ))}
@@ -774,12 +774,25 @@ const ConsultingPage = () => {
         </div>
       </section>
 
+      {/* Consultant Credibility */}
+      <section aria-label="Credibility Link" className="py-20 border-t border-white/5 bg-slate-900/20 relative z-10">
+        <div className="max-w-4xl mx-auto px-6">
+          <FadeIn className={`${glassPanelClass} p-8 md:p-10 rounded-2xl`}>
+            <h2 className="text-3xl font-bold text-white mb-4">About the Consultant</h2>
+            <p className="text-slate-400 leading-relaxed">
+              I am Yogesh Bhavsar, a Senior Frontend Engineer & Technical Architect focused on React, Next.js, performance engineering, and maintainable UI systems.
+              For the broader portfolio, experience, and independent product work, visit <a href="https://yogeshbhavsar.com/" className="text-indigo-300 hover:text-white underline underline-offset-4">yogeshbhavsar.com</a>.
+            </p>
+          </FadeIn>
+        </div>
+      </section>
+
       {/* Contact Form */}
       <section id="contact" className="py-24 border-t border-white/5 bg-slate-900/30 relative z-10">
         <div className="max-w-3xl mx-auto px-6">
           <FadeIn className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-white mb-4">Let's Build Something Scalable</h2>
-            <p className="text-slate-400">Tell me about your project. I usually respond within 12 hours.</p>
+            <h2 className="text-3xl font-bold text-white mb-4">Start With an Audit</h2>
+            <p className="text-slate-400">Send the context for your React or Next.js app. I usually respond within 12 hours.</p>
           </FadeIn>
 
           <FadeIn className={`${glassPanelClass} p-8 md:p-12 rounded-2xl border border-white/10 shadow-2xl`}>
@@ -790,8 +803,8 @@ const ConsultingPage = () => {
                      <Calendar size={24} />
                    </div>
                    <div>
-                     <h3 className="font-bold text-white text-lg">Skip the email tag.</h3>
-                     <p className="text-sm text-indigo-300">Book a 15-min intro call directly on my calendar.</p>
+                     <h3 className="font-bold text-white text-lg">Book a scoped audit call.</h3>
+                     <p className="text-sm text-indigo-300">Use 15 minutes to confirm whether a performance audit is the right first deliverable.</p>
                    </div>
                </div>
                <a 
@@ -801,13 +814,13 @@ const ConsultingPage = () => {
                 onClick={() => trackConversion.bookCall('Contact Section - Calendar CTA')}
                 className="px-6 py-3 bg-white text-indigo-950 font-bold rounded-lg hover:bg-indigo-50 hover:shadow-lg transition-all whitespace-nowrap"
                 >
-                  Book Time Now
+                  Book Audit Call
                </a>
             </div>
 
             <div className="relative flex py-6 items-center">
                 <div className="flex-grow border-t border-slate-800"></div>
-                <span className="flex-shrink-0 mx-4 text-slate-500 text-xs uppercase font-bold tracking-widest">Or send a message</span>
+                <span className="flex-shrink-0 mx-4 text-slate-500 text-xs uppercase font-bold tracking-widest">Or send audit context</span>
                 <div className="flex-grow border-t border-slate-800"></div>
             </div>
 
@@ -856,9 +869,9 @@ const ConsultingPage = () => {
                   className="w-full bg-slate-950/50 border border-slate-700/50 rounded-lg px-4 py-3 text-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all appearance-none"
                 >
                   <option value="">Select an option...</option>
-                  <option value="audit">Code Audit & Consultation</option>
-                  <option value="mvp">MVP / New Product Build / Website</option>
-                  <option value="retainer">Ongoing Technical Advisory</option>
+                  <option value="audit">Next.js Performance Audit</option>
+                  <option value="codebase">Frontend Codebase Audit</option>
+                  <option value="retainer">Fractional Frontend Architecture</option>
                   <option value="other">Other Inquiry</option>
                 </select>
               </div>
@@ -888,7 +901,7 @@ const ConsultingPage = () => {
                   onFocus={() => handleFieldFocus('message')}
                   onBlur={handleFieldBlur}
                   className="w-full bg-slate-950/50 border border-slate-700/50 rounded-lg px-4 py-3 text-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all resize-none placeholder:text-slate-700" 
-                  placeholder="Briefly describe your project, timeline, and current tech stack..."
+                  placeholder="Briefly describe the app, current performance or architecture problem, stack, and any Core Web Vitals/RUM data you have..."
                 ></textarea>
               </div>
 
@@ -900,7 +913,7 @@ const ConsultingPage = () => {
                 {isSubmitting ? (
                     <><Loader2 className="animate-spin" size={20}/> Sending...</>
                 ) : (
-                    <>Send Inquiry <Send size={18} /></>
+                    <>Request Audit <Send size={18} /></>
                 )}
               </button>
             </form>
@@ -918,7 +931,7 @@ const ConsultingPage = () => {
                 Yogesh Bhavsar
               </a>
               <p className="text-slate-500 text-sm leading-relaxed max-w-sm">
-                Technical Partner for businesses that value speed, scalability, and revenue.
+                Frontend architecture and performance consulting for teams that value speed, scalability, and measurable outcomes.
               </p>
             </div>
             
@@ -944,7 +957,7 @@ const ConsultingPage = () => {
           
           <div className="border-t border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-slate-600 font-mono">
             <div>&copy; 2026 Yogesh Bhavsar. All rights reserved.</div>
-            <a href="https://yogeshbhavsar.com" className="hover:text-indigo-400 transition-colors">← Back to Main Portfolio</a>
+            <a href="https://yogeshbhavsar.com/" className="hover:text-indigo-400 transition-colors">About Yogesh - yogeshbhavsar.com</a>
           </div>
         </div>
       </footer>
