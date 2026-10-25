@@ -1,0 +1,35 @@
+# Yogesh Bhavsar — Senior Frontend Engineer & Technical Architect
+
+> Senior Frontend Engineer and Technical Architect with 7+ years of experience specializing in React, Next.js, Frontend Architecture, Core Web Vitals, and Web Performance Optimization. Available for small business website development, freelance frontend engineering, and technical consulting.
+
+## Core Capabilities & Services
+- [Small Business Website Development](https://yogeshbhavsar.com/web-development): Fast, modern, responsive websites designed to convert visitors into clients for founders and small businesses.
+- [Freelance Frontend Engineering](https://yogeshbhavsar.com/frontend-development): Senior React and TypeScript engineering for product teams and growing startups.
+- [React & Next.js Development](https://yogeshbhavsar.com/react-nextjs-development): Production App Router, Server Components, SSR, and clean scalable component hierarchies.
+- [Frontend Architecture & Performance Consulting](https://yogeshbhavsar.com/frontend-consulting): Performance audits, Core Web Vitals fixes (LCP, INP, CLS), and design systems.
+
+## Featured Products
+- [FrontendYogi](https://yogeshbhavsar.com/projects/frontendyogi): Privacy-first browser utilities and developer workspaces with client-side file processing.
+- [Writer Mirror](https://yogeshbhavsar.com/projects/writer-mirror): Focused writing interface with diagnostic workflows and rich text processing.
+- [Her Sanctuary](https://yogeshbhavsar.com/projects/her-sanctuary): Content-led digital experience featuring brand architecture and accessible design systems.
+
+## In-Depth Engineering Case Studies
+- [Building Privacy-First Browser Tools](https://yogeshbhavsar.com/case-studies/privacy-first-browser-tools): Processing files locally in the browser, minimizing server uploads, and maintaining fast export workflows.
+- [Designing a Better Image Comparison Tool](https://yogeshbhavsar.com/case-studies/image-comparison-ux): Interactive comparison UX with synchronized pan/zoom and difference visualization.
+- [Building a Local-First Document and Presentation Workflow](https://yogeshbhavsar.com/case-studies/local-first-document-workflows): Trade-offs and architecture of browser-based document processing without cloud dependency.
+- [Processing Large Photo Collections Locally](https://yogeshbhavsar.com/case-studies/local-photo-processing): High-throughput client-side media manipulation, caching, and batch exports.
+- [Frontend Architecture for Complex Interactive Applications](https://yogeshbhavsar.com/case-studies/react-application-architecture): State management, bundle isolation, and component boundary strategies.
+- [Building a Reliable Research Ingestion Workflow](https://yogeshbhavsar.com/case-studies/research-workflow-engineering): Parsing, caching, and resilient error recovery for data pipelines.
+
+## Background & Experience
+- [About Yogesh](https://yogeshbhavsar.com/about): Philosophy, background, technical approach, and career journey.
+- [Work Experience](https://yogeshbhavsar.com/experience): 7+ years across Reach Plc (Millipixels Interactive), Clix Capital, and independent software products.
+- [Technical Skills](https://yogeshbhavsar.com/skills): React, Next.js, TypeScript, Tailwind CSS, State Machines, Vite, Node.js, Web Performance, and WCAG Accessibility.
+
+## Direct Contact & Links
+- [Contact Form](https://yogeshbhavsar.com/contact): Inquiries for projects, advisory, and contracts.
+- [Consulting Portal](https://consult.yogeshbhavsar.com/): Dedicated consulting calendar and booking.
+- Email: contact@yogeshbhavsar.com
+- LinkedIn: https://www.linkedin.com/in/yogeshbhavsarui
+- GitHub: https://github.com/yogeshu
+- Twitter/X: https://twitter.com/Yogesh04rock

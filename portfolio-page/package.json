@@ -5,9 +5,12 @@
   "private": true,
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && node scripts/prerender.js",
     "preview": "vite preview",
-    "lint": "eslint \"src*.{js,jsx}\" --quiet"
+    "test": "npm run test:theme && npm run test:seo",
+    "test:theme": "node scripts/test-theme-studio.js",
+    "test:seo": "node scripts/verify-seo.js",
+    "lint": "eslint \"src/**/*.{js,jsx}\" --quiet"
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",

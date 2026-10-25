@@ -8,6 +8,17 @@ import { useLocation } from 'react-router-dom';
 
 const Layout = ({ children }) => {
   const location = useLocation();
+  const isThemeStudio = location.pathname.startsWith('/theme-studio');
+
+  if (isThemeStudio) {
+    return (
+      <>
+        {children}
+        <Toaster />
+      </>
+    );
+  }
+
   return (
     <div className="flex flex-col min-h-screen bg-gradient-to-br from-background via-background to-secondary/20 dark:from-background dark:via-background dark:to-secondary/10">
       <Navbar />

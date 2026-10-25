@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+Sitemap: https://yogeshbhavsar.com/sitemap.xml
+# Related property: https://consult.yogeshbhavsar.com/sitemap.xml

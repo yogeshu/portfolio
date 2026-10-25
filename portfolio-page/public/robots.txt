@@ -1,4 +1,8 @@
 User-agent: *
 Allow: /
+
 Sitemap: https://yogeshbhavsar.com/sitemap.xml
-# Related property: https://consult.yogeshbhavsar.com/sitemap.xml
+Agentmap: https://yogeshbhavsar.com/llms.txt
+
+# Machine-readable Agent Catalog (Lighthouse ARD conformance)
+AI-Catalog: https://yogeshbhavsar.com/.well-known/ai-catalog.json

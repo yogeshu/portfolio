@@ -1,0 +1,187 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  /* =========================================================
+     ANTI-AI THEME 1: RAW TERRACOTTA & WARM LINEN (Default)
+     Natural unbleached linen, Sumi carbon ink & fired terracotta pigment
+     ========================================================= */
+  :root,
+  .theme-terracotta {
+    --background: 38 30% 93%; /* Unbleached warm linen #f4efe6 */
+    --foreground: 24 9% 12%;  /* Sumi charcoal ink #1f1c1a */
+    --card: 38 25% 89%;        /* Warm parchment #ece5d8 */
+    --card-foreground: 24 9% 12%;
+    --popover: 38 25% 89%;
+    --popover-foreground: 24 9% 12%;
+    --primary: 16 62% 45%;     /* Fired Burnt Terracotta #b8522c */
+    --primary-foreground: 38 30% 96%;
+    --secondary: 38 20% 86%;
+    --secondary-foreground: 24 9% 14%;
+    --muted: 38 20% 86%;
+    --muted-foreground: 34 11% 41%; /* Raw stone #73695d */
+    --accent: 36 67% 47%;      /* Aged Ochre Gold #c98928 */
+    --accent-foreground: 24 9% 12%;
+    --destructive: 0 65% 45%;
+    --destructive-foreground: 38 30% 96%;
+    --border: 38 20% 80%;      /* Book-cloth edge line #d8cebe */
+    --input: 38 20% 80%;
+    --ring: 16 62% 45%;
+    --radius: 0.625rem;
+  }
+
+  .dark,
+  .dark.theme-terracotta {
+    --background: 20 12% 7%;  /* Deep Sumi Carbon #141211 */
+    --foreground: 38 35% 92%;  /* Warm Cream Bone #f2ede4 */
+    --card: 24 14% 10.5%;      /* Roasted Walnut #1d1a18 */
+    --card-foreground: 38 35% 92%;
+    --popover: 24 14% 10.5%;
+    --popover-foreground: 38 35% 92%;
+    --primary: 16 68% 54%;     /* Warm Terracotta Flame #d96b43 */
+    --primary-foreground: 20 12% 7%;
+    --secondary: 24 11% 15%;
+    --secondary-foreground: 38 35% 92%;
+    --muted: 24 11% 15%;
+    --muted-foreground: 34 11% 58%; /* Warm pumice stone #9e9488 */
+    --accent: 37 72% 56%;      /* Radiant Ochre #e0a23e */
+    --accent-foreground: 20 12% 7%;
+    --destructive: 0 62% 45%;
+    --destructive-foreground: 38 35% 92%;
+    --border: 24 11% 16%;      /* Roasted charcoal line #2c2723 */
+    --input: 24 11% 16%;
+    --ring: 16 68% 54%;
+  }
+
+  /* =========================================================
+     ANTI-AI THEME 2: DEEP FOREST & BOOKCLOTH
+     Natural cotton rag paper, British Racing Moss & Cognac leather
+     ========================================================= */
+  .theme-forest {
+    --background: 86 16% 94%;  /* Natural cotton paper #f1f3ee */
+    --foreground: 137 14% 10%; /* Deep pine charcoal #151c17 */
+    --card: 86 14% 91%;        /* Soft sage paper #e7ebe2 */
+    --card-foreground: 137 14% 10%;
+    --popover: 86 14% 91%;
+    --popover-foreground: 137 14% 10%;
+    --primary: 142 32% 24%;    /* British Racing Moss #284a35 */
+    --primary-foreground: 86 16% 97%;
+    --secondary: 86 12% 86%;
+    --secondary-foreground: 137 14% 10%;
+    --muted: 86 12% 86%;
+    --muted-foreground: 137 10% 42%;
+    --accent: 21 51% 42%;      /* Warm Cognac Leather #a05934 */
+    --accent-foreground: 86 16% 97%;
+    --destructive: 0 65% 45%;
+    --destructive-foreground: 86 16% 97%;
+    --border: 88 12% 80%;      /* Tactile rule line #cad3c4 */
+    --input: 88 12% 80%;
+    --ring: 142 32% 24%;
+  }
+
+  .dark.theme-forest {
+    --background: 146 20% 7%;  /* Deep spruce night #0e1511 */
+    --foreground: 135 15% 94%; /* Pale mint bone #edf2ee */
+    --card: 142 19% 10.5%;     /* Deep pine shadow #151f19 */
+    --card-foreground: 135 15% 94%;
+    --popover: 142 19% 10.5%;
+    --popover-foreground: 135 15% 94%;
+    --primary: 145 35% 42%;    /* Crisp Forest Sage #478c63 */
+    --primary-foreground: 146 20% 7%;
+    --secondary: 144 11% 16%;
+    --secondary-foreground: 135 15% 94%;
+    --muted: 144 11% 16%;
+    --muted-foreground: 140 10% 60%;
+    --accent: 21 55% 53%;      /* Warm Cognac Amber #c97444 */
+    --accent-foreground: 146 20% 7%;
+    --destructive: 0 62% 45%;
+    --destructive-foreground: 135 15% 94%;
+    --border: 144 11% 17%;     /* Deep moss hairline #233229 */
+    --input: 144 11% 17%;
+    --ring: 145 35% 42%;
+  }
+
+  /* =========================================================
+     ANTI-AI THEME 3: RAW CARBON & INDUSTRIAL OCHRE
+     Warm cast iron, architectural chalk & toolmaker amber
+     ========================================================= */
+  .theme-carbon {
+    --background: 45 14% 94%;  /* Architectural chalk #f3f2ee */
+    --foreground: 240 6% 10%;  /* Heavy matte iron #18181a */
+    --card: 45 12% 90%;        /* Crisp light stone #e9e8e2 */
+    --card-foreground: 240 6% 10%;
+    --popover: 45 12% 90%;
+    --popover-foreground: 240 6% 10%;
+    --primary: 36 82% 43%;     /* Industrial Tooling Ochre #c67d13 */
+    --primary-foreground: 45 14% 97%;
+    --secondary: 45 10% 86%;
+    --secondary-foreground: 240 6% 10%;
+    --muted: 45 10% 86%;
+    --muted-foreground: 45 8% 44%;
+    --accent: 0 57% 46%;       /* Red Wax Stamp #b83232 */
+    --accent-foreground: 45 14% 97%;
+    --destructive: 0 65% 45%;
+    --destructive-foreground: 45 14% 97%;
+    --border: 45 11% 79%;      /* Milled edge #cfccc2 */
+    --input: 45 11% 79%;
+    --ring: 36 82% 43%;
+  }
+
+  .dark.theme-carbon {
+    --background: 240 4% 7%;   /* Cast Iron Charcoal #121213 */
+    --foreground: 45 15% 93%;  /* Warm chalk bone #f0efea */
+    --card: 240 5% 11%;        /* Matte graphite #1b1b1d */
+    --card-foreground: 45 15% 93%;
+    --popover: 240 5% 11%;
+    --popover-foreground: 45 15% 93%;
+    --primary: 37 82% 52%;     /* Toolmaker Amber #e59a24 */
+    --primary-foreground: 240 4% 7%;
+    --secondary: 240 5% 17%;
+    --secondary-foreground: 45 15% 93%;
+    --muted: 240 5% 17%;
+    --muted-foreground: 45 8% 62%;
+    --accent: 0 65% 56%;       /* Warm Venetian Red #d94444 */
+    --accent-foreground: 240 4% 7%;
+    --destructive: 0 62% 45%;
+    --destructive-foreground: 45 15% 93%;
+    --border: 240 5% 18%;      /* Milled steel hairline #2b2b2f */
+    --input: 240 5% 18%;
+    --ring: 37 82% 52%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    transition: background-color 0.25s ease, color 0.25s ease;
+    letter-spacing: -0.015em;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-bold tracking-tight text-foreground;
+  }
+  h1 { @apply text-4xl lg:text-5xl; }
+  h2 { @apply text-3xl lg:text-4xl; }
+  h3 { @apply text-2xl lg:text-3xl; }
+  p { @apply leading-relaxed; }
+}
+
+/* Tactile physical scrollbar */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+::-webkit-scrollbar-track {
+  background: hsl(var(--background));
+}
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--border));
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--muted-foreground));
+}
