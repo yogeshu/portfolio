@@ -113,8 +113,8 @@ if (!fs.existsSync(robotsPath)) {
   if (!robotsContent.includes('Sitemap: https://yogeshbhavsar.com/sitemap.xml')) {
     console.error('❌ robots.txt does not link to sitemap.xml');
     failed = true;
-  } else if (!robotsContent.includes('Agentmap: https://yogeshbhavsar.com/llms.txt')) {
-    console.error('❌ robots.txt missing Agentmap directive for Lighthouse ARD compliance');
+  } else if (!robotsContent.includes('Agentmap: https://yogeshbhavsar.com/.well-known/ai-catalog.json')) {
+    console.error('❌ robots.txt missing Agentmap directive pointing to ai-catalog.json for Lighthouse ARD compliance');
     failed = true;
   } else {
     console.log('✓ robots.txt verified: Allow directives, sitemap, and Agentmap correct.');

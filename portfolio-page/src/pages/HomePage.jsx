@@ -22,6 +22,7 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import YogeshPic from '@/assets/YogeshBhavsar.png';
+import YogeshPicWebp from '@/assets/YogeshBhavsar.webp';
 import SEO from '@/components/SEO';
 import { logCtaClick } from '@/utils/analytics';
 
@@ -124,14 +125,20 @@ const HomePage = () => {
           <motion.div variants={itemVariants} className="relative mb-8 group">
             <div className="absolute -inset-1 bg-gradient-to-r from-primary to-purple-600 rounded-full blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
             
-            <Avatar className="w-40 h-40 border-4 border-background shadow-2xl relative">
-              <AvatarImage 
-                src={YogeshPic} 
-                alt="Yogesh Bhavsar — Senior Frontend Engineer and Technical Architect" 
-                className="object-cover" 
-              />
-              <AvatarFallback className="bg-muted text-4xl font-bold text-muted-foreground">YB</AvatarFallback>
-            </Avatar>
+            <div className="w-40 h-40 rounded-full border-4 border-background shadow-2xl relative overflow-hidden bg-muted">
+              <picture>
+                <source srcSet={YogeshPicWebp} type="image/webp" />
+                <img 
+                  src={YogeshPic} 
+                  alt="Yogesh Bhavsar — Senior Frontend Engineer and Technical Architect" 
+                  width={160}
+                  height={160}
+                  loading="eager"
+                  fetchPriority="high"
+                  className="w-full h-full object-cover" 
+                />
+              </picture>
+            </div>
 
             <motion.div 
               initial={{ scale: 0 }}
