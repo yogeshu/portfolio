@@ -113,11 +113,18 @@ if (!fs.existsSync(robotsPath)) {
   if (!robotsContent.includes('Sitemap: https://yogeshbhavsar.com/sitemap.xml')) {
     console.error('❌ robots.txt does not link to sitemap.xml');
     failed = true;
-  } else if (!robotsContent.includes('Agentmap: https://yogeshbhavsar.com/.well-known/ai-catalog.json')) {
-    console.error('❌ robots.txt missing Agentmap directive pointing to ai-catalog.json for Lighthouse ARD compliance');
-    failed = true;
   } else {
-    console.log('✓ robots.txt verified: Allow directives, sitemap, and Agentmap correct.');
+    // Check for non-standard un-commented directives that cause Lighthouse SEO audit to fail
+    const lines = robotsContent.split('\n').map(l => l.trim()).filter(l => l && !l.startsWith('#'));
+    const validDirectives = ['user-agent:', 'allow:', 'disallow:', 'sitemap:', 'crawl-delay:'];
+    const invalidLines = lines.filter(l => !validDirectives.some(vd => l.toLowerCase().startsWith(vd)));
+    
+    if (invalidLines.length > 0) {
+      console.error('❌ robots.txt contains invalid RFC 9309 directives (breaks Lighthouse SEO audit):', invalidLines);
+      failed = true;
+    } else {
+      console.log('✓ robots.txt verified: 100% RFC 9309 compliant (0 unknown directives, valid sitemap).');
+    }
   }
 }
 

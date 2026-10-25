@@ -22,7 +22,8 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import YogeshPic from '@/assets/YogeshBhavsar.png';
-import YogeshPicWebp from '@/assets/YogeshBhavsar.webp';
+import YogeshPic160 from '@/assets/YogeshBhavsar-160.webp';
+import YogeshPic320 from '@/assets/YogeshBhavsar-320.webp';
 import SEO from '@/components/SEO';
 import { logCtaClick } from '@/utils/analytics';
 
@@ -127,14 +128,21 @@ const HomePage = () => {
             
             <div className="w-40 h-40 rounded-full border-4 border-background shadow-2xl relative overflow-hidden bg-muted">
               <picture>
-                <source srcSet={YogeshPicWebp} type="image/webp" />
+                <source 
+                  type="image/webp" 
+                  srcSet={`${YogeshPic160} 160w, ${YogeshPic320} 320w`} 
+                  sizes="(max-width: 640px) 152px, 160px"
+                />
                 <img 
-                  src={YogeshPic} 
+                  src={YogeshPic160} 
+                  srcSet={`${YogeshPic160} 160w, ${YogeshPic320} 320w`}
+                  sizes="(max-width: 640px) 152px, 160px"
                   alt="Yogesh Bhavsar — Senior Frontend Engineer and Technical Architect" 
                   width={160}
                   height={160}
                   loading="eager"
                   fetchPriority="high"
+                  decoding="async"
                   className="w-full h-full object-cover" 
                 />
               </picture>
@@ -248,7 +256,7 @@ const HomePage = () => {
           >
             <div className="mb-8 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
               <div>
-                <p className="text-xs font-semibold uppercase tracking-wider text-primary flex items-center gap-1.5">
+                <p className="text-xs font-bold uppercase tracking-wider text-primary flex items-center gap-1.5">
                   <Sparkles size={14} /> Services & Solutions
                 </p>
                 <h2 className="mt-2 text-3xl font-extrabold text-foreground md:text-4xl">How I Can Help Your Business</h2>
@@ -275,7 +283,7 @@ const HomePage = () => {
                   <div className="mt-6 pt-4 border-t border-border/50">
                     <Link
                       to={service.link}
-                      className="inline-flex items-center text-sm font-semibold text-primary group-hover:underline gap-1.5"
+                      className="inline-flex items-center text-sm font-bold text-primary hover:text-primary/90 group-hover:underline gap-1.5"
                     >
                       <span>{service.action}</span>
                       <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
@@ -335,7 +343,7 @@ const HomePage = () => {
                 <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-lg bg-foreground text-background">
                   <Briefcase className="h-5 w-5" />
                 </div>
-                <p className="text-xs font-semibold uppercase tracking-wider text-primary">Experience Proof</p>
+                <p className="text-xs font-bold uppercase tracking-wider text-primary">Experience Proof</p>
                 <h2 className="mt-2 text-2xl font-extrabold text-foreground">Millipixels Interactive (Reach Plc)</h2>
                 <p className="mt-2 text-sm font-medium text-muted-foreground">Senior Frontend Specialist • Technical Ownership & Architecture</p>
               </div>
@@ -365,7 +373,7 @@ const HomePage = () => {
               <div className="mb-5 flex h-11 w-11 items-center justify-center rounded-lg bg-accent/10 text-accent ring-1 ring-accent/15">
                 <ShieldCheck className="h-5 w-5" />
               </div>
-              <p className="text-xs font-semibold uppercase tracking-wider text-primary">Independent Work</p>
+              <p className="text-xs font-bold uppercase tracking-wider text-primary">Independent Work</p>
               <h2 className="mt-2 text-2xl font-extrabold">Products Built as Solo Engineer</h2>
               <p className="mt-2 text-muted-foreground leading-relaxed">
                 Projects like Her Sanctuary and Frontendyogi are treated as engineering case studies: product constraints, privacy-first architecture,
@@ -377,7 +385,7 @@ const HomePage = () => {
               <div className="mb-5 flex h-11 w-11 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-lg shadow-primary/20">
                 <Sparkles className="h-5 w-5" />
               </div>
-              <p className="text-xs font-semibold uppercase tracking-wider text-primary">Consulting</p>
+              <p className="text-xs font-bold uppercase tracking-wider text-primary">Consulting</p>
               <h2 className="mt-2 text-2xl font-extrabold">Available for Fractional Architecture Engagements</h2>
               <p className="mt-4 text-muted-foreground leading-relaxed">
                 I take on <Link to="/frontend-consulting" className="font-semibold text-primary underline-offset-4 hover:underline">frontend architecture consulting</Link>,
@@ -408,7 +416,7 @@ const HomePage = () => {
               <div className="mb-5 flex h-11 w-11 items-center justify-center rounded-lg bg-primary/10 text-primary ring-1 ring-primary/15">
                 <PenLine className="h-5 w-5" />
               </div>
-              <p className="text-xs font-semibold uppercase tracking-wider text-primary">Speaking & Writing</p>
+              <p className="text-xs font-bold uppercase tracking-wider text-primary">Speaking & Writing</p>
               <h2 className="mt-2 text-2xl font-extrabold">Technical Ideas With a Point of View</h2>
               <p className="mt-3 text-muted-foreground leading-relaxed">
                 I write and speak about local-first software architecture, privacy-first frontend decisions, Core Web Vitals, and scalable frontend systems for small teams.

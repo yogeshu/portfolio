@@ -135,6 +135,7 @@ window.fetch = function(...args) {
 
 const addTransformIndexHtml = {
 	name: 'add-transform-index-html',
+	apply: 'serve', // Only inject dev error handlers during development, never in production build
 	transformIndexHtml(html) {
 		return {
 			html,

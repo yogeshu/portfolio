@@ -2,8 +2,7 @@ User-agent: *
 Allow: /
 
 Sitemap: https://yogeshbhavsar.com/sitemap.xml
-Agentmap: https://yogeshbhavsar.com/.well-known/ai-catalog.json
 
 # Machine-readable Agent Discovery (Lighthouse Agentic Browsing & ARD Conformance)
-AI-Catalog: https://yogeshbhavsar.com/.well-known/ai-catalog.json
-LLMs-Txt: https://yogeshbhavsar.com/llms.txt
+# AI-Catalog: https://yogeshbhavsar.com/.well-known/ai-catalog.json
+# LLMs-Txt: https://yogeshbhavsar.com/llms.txt
