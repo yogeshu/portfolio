@@ -3,11 +3,11 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-route
 import { HelmetProvider } from 'react-helmet-async';
 import { ThemeProvider } from '@/context/ThemeContext';
 import Layout from '@/components/Layout';
-import HomePage from '@/pages/HomePage';
 import { AnimatePresence } from 'framer-motion';
 import { initGA, logPageView } from '@/utils/analytics';
 
-// Route Code Splitting: Lazy-load subpages to reduce initial bundle size for Core Web Vitals
+// Route Code Splitting: Lazy-load all pages including Home to minimize initial bundle size and eliminate unused JavaScript
+const HomePage = lazy(() => import('@/pages/HomePage'));
 const AboutPage = lazy(() => import('@/pages/AboutPage'));
 const ExperiencePage = lazy(() => import('@/pages/ExperiencePage'));
 const ProjectsPage = lazy(() => import('@/pages/ProjectsPage'));

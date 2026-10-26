@@ -1,55 +1,62 @@
 {
-  "$schema": "https://agentic.dev/schemas/ard-v1.json",
-  "name": "Yogesh Bhavsar Portfolio & Services Catalog",
-  "description": "Machine-readable catalog of engineering services, portfolio projects, and case studies by Yogesh Bhavsar (Senior Frontend Engineer & Technical Architect).",
-  "version": "1.0.0",
-  "url": "https://yogeshbhavsar.com/",
-  "documentation": "https://yogeshbhavsar.com/llms.txt",
-  "provider": {
-    "name": "Yogesh Bhavsar",
-    "role": "Senior Frontend Engineer & Technical Architect",
-    "email": "contact@yogeshbhavsar.com",
-    "website": "https://yogeshbhavsar.com/",
-    "consulting": "https://consult.yogeshbhavsar.com/",
-    "social": {
-      "linkedin": "https://www.linkedin.com/in/yogeshbhavsarui",
-      "github": "https://github.com/yogeshu",
-      "twitter": "https://twitter.com/Yogesh04rock"
-    }
+  "specVersion": "1.0",
+  "host": {
+    "displayName": "Yogesh Bhavsar",
+    "identifier": "https://yogeshbhavsar.com"
   },
-  "endpoints": {
-    "contact": "https://yogeshbhavsar.com/contact",
-    "sitemap": "https://yogeshbhavsar.com/sitemap.xml",
-    "llms": "https://yogeshbhavsar.com/llms.txt"
-  },
-  "services": [
+  "entries": [
     {
-      "id": "small-business-websites",
-      "name": "Small Business Website Development",
-      "url": "https://yogeshbhavsar.com/web-development",
-      "description": "Fast, high-converting websites for businesses & founders",
-      "tags": ["web development", "small business", "landing pages", "conversion"]
+      "identifier": "urn:air:yogeshbhavsar.com:service:small-business-websites",
+      "displayName": "Small Business Website Development",
+      "type": "text/markdown",
+      "url": "https://yogeshbhavsar.com/llms.txt",
+      "description": "Custom, high-speed website development and conversion-focused landing pages for small businesses and founders.",
+      "representativeQueries": [
+        "web developer for small business",
+        "small business website development",
+        "hire web developer for small business",
+        "custom website developer for founders",
+        "fast business landing page developer"
+      ]
     },
     {
-      "id": "freelance-frontend",
-      "name": "Freelance Frontend Engineering",
-      "url": "https://yogeshbhavsar.com/frontend-development",
-      "description": "Senior React & TypeScript engineering for product teams",
-      "tags": ["react", "typescript", "frontend", "freelance", "contract"]
+      "identifier": "urn:air:yogeshbhavsar.com:service:frontend-development",
+      "displayName": "Freelance Frontend Engineering",
+      "type": "text/markdown",
+      "url": "https://yogeshbhavsar.com/llms.txt",
+      "description": "Senior React and TypeScript engineering capacity for product teams, scale-ups, and startups.",
+      "representativeQueries": [
+        "freelance frontend developer",
+        "senior react engineer",
+        "freelance typescript developer",
+        "contract frontend specialist"
+      ]
     },
     {
-      "id": "react-nextjs-development",
-      "name": "React & Next.js Development",
-      "url": "https://yogeshbhavsar.com/react-nextjs-development",
-      "description": "Production App Router, Server Components & SSR",
-      "tags": ["next.js", "app router", "ssr", "server components", "react 18/19"]
+      "identifier": "urn:air:yogeshbhavsar.com:service:react-nextjs-development",
+      "displayName": "React & Next.js Development",
+      "type": "text/markdown",
+      "url": "https://yogeshbhavsar.com/llms.txt",
+      "description": "Production Next.js App Router, Server Components, and SSR architectures built for speed and scale.",
+      "representativeQueries": [
+        "react next.js developer",
+        "hire next.js specialist",
+        "next.js app router consultant",
+        "production react engineering"
+      ]
     },
     {
-      "id": "frontend-consulting",
-      "name": "Frontend Architecture & Performance Consulting",
-      "url": "https://yogeshbhavsar.com/frontend-consulting",
-      "description": "Core Web Vitals, performance audits & architecture",
-      "tags": ["core web vitals", "performance audit", "architecture", "cwv", "inp"]
+      "identifier": "urn:air:yogeshbhavsar.com:service:frontend-consulting",
+      "displayName": "Frontend Architecture & Performance Consulting",
+      "type": "text/markdown",
+      "url": "https://yogeshbhavsar.com/llms.txt",
+      "description": "Core Web Vitals audits, performance fixes (INP, LCP, CLS), and frontend codebase reviews.",
+      "representativeQueries": [
+        "core web vitals audit",
+        "frontend performance consultant",
+        "next.js performance optimization",
+        "fractional frontend architect"
+      ]
     }
   ]
 }

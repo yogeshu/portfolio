@@ -1,10 +1,10 @@
-
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import { Toaster } from '@/components/ui/toaster';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLocation } from 'react-router-dom';
+
+const Toaster = lazy(() => import('@/components/ui/toaster').then(m => ({ default: m.Toaster })));
 
 const Layout = ({ children }) => {
   const location = useLocation();
@@ -14,7 +14,9 @@ const Layout = ({ children }) => {
     return (
       <>
         {children}
-        <Toaster />
+        <Suspense fallback={null}>
+          <Toaster />
+        </Suspense>
       </>
     );
   }
@@ -35,10 +37,11 @@ const Layout = ({ children }) => {
         </motion.main>
       </AnimatePresence>
       <Footer />
-      <Toaster />
+      <Suspense fallback={null}>
+        <Toaster />
+      </Suspense>
     </div>
   );
 };
 
 export default Layout;
-  

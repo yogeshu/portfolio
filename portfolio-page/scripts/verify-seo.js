@@ -8,7 +8,7 @@ const DIST_DIR = path.resolve(__dirname, '../dist');
 
 const expectedRoutes = [
   { path: '', canonical: 'https://yogeshbhavsar.com/', expectedTitle: 'Yogesh Bhavsar' },
-  { path: 'web-development', canonical: 'https://yogeshbhavsar.com/web-development', expectedTitle: 'Small Business Website Development' },
+  { path: 'web-development', canonical: 'https://yogeshbhavsar.com/web-development', expectedTitle: 'Web Developer for Small Business' },
   { path: 'frontend-development', canonical: 'https://yogeshbhavsar.com/frontend-development', expectedTitle: 'Freelance Frontend Developer' },
   { path: 'react-nextjs-development', canonical: 'https://yogeshbhavsar.com/react-nextjs-development', expectedTitle: 'React & Next.js Development' },
   { path: 'frontend-consulting', canonical: 'https://yogeshbhavsar.com/frontend-consulting', expectedTitle: 'Frontend Architecture & Performance Consulting' },
@@ -152,11 +152,17 @@ if (!fs.existsSync(aiCatalogPath)) {
 } else {
   try {
     const catalog = JSON.parse(fs.readFileSync(aiCatalogPath, 'utf-8'));
-    if (!catalog.services || !Array.isArray(catalog.services)) {
-      console.error('❌ ai-catalog.json missing services array');
+    if (catalog.specVersion !== "1.0" || !Array.isArray(catalog.entries)) {
+      console.error('❌ ai-catalog.json must have specVersion: "1.0" and an entries array (ARD Schema v1)');
       failed = true;
     } else {
-      console.log('✓ .well-known/ai-catalog.json verified: ARD catalog valid JSON Schema.');
+      const allValid = catalog.entries.every(e => e.identifier && e.displayName && e.type && (e.url || e.data));
+      if (!allValid) {
+        console.error('❌ ai-catalog.json entries must have identifier, displayName, type, and url/data');
+        failed = true;
+      } else {
+        console.log(`✓ .well-known/ai-catalog.json verified: 100% ARD Schema v1 compliant (${catalog.entries.length} valid entries).`);
+      }
     }
   } catch (err) {
     console.error('❌ ai-catalog.json parse error:', err.message);

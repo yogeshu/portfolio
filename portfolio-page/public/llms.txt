@@ -3,10 +3,10 @@
 > Senior Frontend Engineer and Technical Architect with 7+ years of experience specializing in React, Next.js, Frontend Architecture, Core Web Vitals, and Web Performance Optimization. Available for small business website development, freelance frontend engineering, and technical consulting.
 
 ## Core Capabilities & Services
-- [Small Business Website Development](https://yogeshbhavsar.com/web-development): Fast, modern, responsive websites designed to convert visitors into clients for founders and small businesses.
-- [Freelance Frontend Engineering](https://yogeshbhavsar.com/frontend-development): Senior React and TypeScript engineering for product teams and growing startups.
-- [React & Next.js Development](https://yogeshbhavsar.com/react-nextjs-development): Production App Router, Server Components, SSR, and clean scalable component hierarchies.
-- [Frontend Architecture & Performance Consulting](https://yogeshbhavsar.com/frontend-consulting): Performance audits, Core Web Vitals fixes (LCP, INP, CLS), and design systems.
+- [Small Business Website Development](https://yogeshbhavsar.com/web-development): Fast, modern, responsive websites designed to convert visitors into clients for founders, small business owners, and local brands. Replaces slow WordPress or Wix sites with 95+ PageSpeed custom code.
+- [Freelance Frontend Engineering](https://yogeshbhavsar.com/frontend-development): Senior React, Next.js, and TypeScript engineering capacity for product teams, scale-ups, and startups. Rapid onboarding, clean PRs, and 90%+ test coverage.
+- [React & Next.js Development](https://yogeshbhavsar.com/react-nextjs-development): Production App Router, Server Components, SSR, and clean scalable component hierarchies. Zero-downtime SPA migrations and caching optimization.
+- [Frontend Architecture & Performance Consulting](https://yogeshbhavsar.com/frontend-consulting): Performance audits, Core Web Vitals fixes (INP, LCP, CLS in Google Search Console), and frontend health checks.
 
 ## Featured Products
 - [FrontendYogi](https://yogeshbhavsar.com/projects/frontendyogi): Privacy-first browser utilities and developer workspaces with client-side file processing.

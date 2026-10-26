@@ -14,7 +14,11 @@ import {
   Workflow, 
   AlertTriangle, 
   Zap, 
-  FileCode 
+  FileCode,
+  Sparkles,
+  TrendingUp,
+  Clock,
+  CheckCircle
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -22,72 +26,110 @@ import { Badge } from '@/components/ui/badge';
 import SEO from '@/components/SEO';
 import { logServicePageView, logCtaClick } from '@/utils/analytics';
 
-const consultingPillars = [
+const businessRisks = [
   {
-    icon: Gauge,
-    title: "Core Web Vitals & Performance Audit",
-    description: "In-depth profiling of real-user performance: resolving high Interaction to Next Paint (INP), slow Largest Contentful Paint (LCP), and Cumulative Layout Shift (CLS) on mobile devices."
+    title: "Google Search Console 'Failing URLs' Penalty",
+    problem: "When Google flags your site for failing Core Web Vitals (especially INP or LCP), your organic search rankings take a direct hit, and paid Google Ads cost more due to low landing page experience scores.",
+    solution: "I perform deep lab and real-user (CrUX) profiling to pinpoint the exact scripts, re-renders, and network waterfalls dragging down your scores, bringing your URLs into the green."
   },
   {
-    icon: Layers,
-    title: "Next.js & React Architecture Review",
-    description: "Evaluate your rendering strategies (RSC, SSR, SSG), boundary separation between Server and Client Components, caching policies, and bundle splitting to eliminate architectural debt."
+    title: "Mobile Bounce Rates Bleeding Conversions",
+    problem: "Every 1-second delay in mobile responsiveness decreases conversion rates by up to 20%. If buttons lag when tapped or layouts shift unexpectedly, users bounce to competitors.",
+    solution: "I isolate main-thread blocking tasks, untangle heavy hydration loops, and optimize asset delivery so interactions feel instant on mobile networks."
   },
   {
-    icon: Search,
-    title: "Frontend Codebase & Health Audit",
-    description: "Comprehensive code quality inspection: identifying re-render loops, dead code, dependency bloat, fragile state logic, and accessibility (a11y) barriers across your application."
-  },
-  {
-    icon: ShieldCheck,
-    title: "Fractional Technical Leadership",
-    description: "Provide senior technical direction, architectural RFC reviews, developer mentorship, and high-standard PR reviews for engineering teams without full-time headcount cost."
+    title: "Roadmap Stagnation from Technical Debt",
+    problem: "Your internal engineering team wants to fix performance, but they are under pressure to ship product features. Without dedicated senior performance expertise, issues linger for quarters.",
+    solution: "Get a senior, independent diagnostic without pulling your team off sprint work. I deliver a prioritized, high-ROI action plan and can author the remediation PRs directly."
   }
 ];
 
-const auditDeliverables = [
+const consultingOfferings = [
   {
-    title: "Executive Performance Diagnostic",
-    description: "A clear, plain-language assessment of your application's current health, Core Web Vitals status, and real business impact on conversions and bounce rates."
+    badge: "Most Requested",
+    title: "Core Web Vitals & INP/LCP Audit",
+    duration: "5 to 7 business days",
+    description: "A comprehensive investigation of your real-user performance data (CrUX), lab traces, and bundle bottlenecks with guaranteed root-cause diagnosis.",
+    deliverables: [
+      "In-depth analysis of Interaction to Next Paint (INP) delays and main-thread long tasks",
+      "Largest Contentful Paint (LCP) optimization for critical hero assets and server TTFB",
+      "Cumulative Layout Shift (CLS) eradication and font/image stabilization",
+      "Executive summary for leadership + prioritized code-level task list for engineers"
+    ]
   },
   {
-    title: "Technical Findings & Root-Cause Breakdown",
-    description: "Granular, code-level analysis showing the exact files, component re-renders, bundle bloat, and network waterfalls causing performance drag."
+    badge: "Architecture & Scale",
+    title: "Next.js & React Codebase Health Check",
+    duration: "1 to 2 weeks",
+    description: "An exhaustive architectural evaluation of your React/Next.js repository before product scale, major feature launches, or investor technical due diligence.",
+    deliverables: [
+      "Server vs Client component boundary inspection and hydration audit",
+      "State management analysis (identifying unnecessary re-render cascades)",
+      "Bundle size breakdown and tree-shaking dead-dependency cleanup",
+      "Automated testing gap analysis (Jest, RTL, CI/CD regression protection)"
+    ]
   },
   {
-    title: "Prioritized Remediation Roadmap",
-    description: "A step-by-step implementation guide ranked by business impact versus engineering effort, enabling your team to tackle the highest-ROI fixes immediately."
-  },
-  {
-    title: "Implementation Pairing & Verification",
-    description: "Hands-on guidance and pull requests delivering verified performance gains with before-and-after benchmark proofs."
+    badge: "Ongoing Advisory",
+    title: "Fractional Frontend Technical Leadership",
+    duration: "Flexible monthly retainer",
+    description: "Senior architectural oversight for engineering teams that need senior direction without the $250k+ overhead of a full-time Staff/Principal hire.",
+    deliverables: [
+      "Weekly architectural RFC reviews and technology selection guidance",
+      "High-standard code reviews on critical, high-risk pull requests",
+      "Developer mentorship on performance, accessibility (WCAG), and modern standards",
+      "Bi-weekly syncs with CTO / Head of Engineering on frontend roadmap risks"
+    ]
   }
 ];
 
-const symptoms = [
-  "Your application feels sluggish on mobile devices or lower-powered laptops.",
-  "Google Search Console shows failing Core Web Vitals (especially INP or LCP) hurting your SEO rankings.",
-  "Your JavaScript bundle has ballooned, causing slow initial page loads and high memory usage.",
-  "Engineers are reluctant to touch legacy components due to fragile state management and lack of tests.",
-  "Your team is struggling with Next.js App Router caching, hydration errors, or Server/Client component boundaries."
+const comparisonMatrix = [
+  {
+    factor: "Focus & Depth",
+    yogesh: "Specialized React, Next.js & Web Performance expert",
+    bigFirm: "Generalist management consultants; theoretical reports",
+    internalTeam: "Distracted by ongoing sprint features and backlog"
+  },
+  {
+    factor: "Actionability",
+    yogesh: "Prioritized PR-ready remediation code & file breakdowns",
+    bigFirm: "High-level 80-page slide deck with generic advice",
+    internalTeam: "Trial-and-error guessing without dedicated profiling"
+  },
+  {
+    factor: "Implementation",
+    yogesh: "Can author & verify the PRs directly in your repo",
+    bigFirm: "Hands off report; leaves implementation to you",
+    internalTeam: "Often postponed due to tight product deadlines"
+  },
+  {
+    factor: "Turnaround Time",
+    yogesh: "5 to 7 business days from repository access",
+    bigFirm: "4 to 8 weeks of workshops and overhead",
+    internalTeam: "Takes months of ad-hoc investigation"
+  }
 ];
 
 const faqs = [
   {
-    q: "How does a Frontend Performance Audit work?",
-    a: "We begin by collecting real-user telemetry (CrUX / Core Web Vitals) and replicating bottlenecks in lab environments using Chrome DevTools, performance traces, and bundle analyzers. I then inspect your repository to identify root causes and deliver a prioritized remediation roadmap."
+    q: "How does failing Core Web Vitals in Google Search Console impact our business?",
+    a: "Google officially uses Core Web Vitals (LCP, INP, and CLS) as a ranking signal in search results. Failing URLs are demoted in mobile rankings, reducing organic search traffic. Furthermore, slow landing page experience increases Google Ads Cost-Per-Click (CPC) and lowers Quality Scores, directly increasing your customer acquisition costs while mobile conversion rates drop."
   },
   {
-    q: "Can you implement the recommended fixes yourself, or just provide a report?",
-    a: "I offer both. You can engage me solely for an independent audit and architectural roadmap, or have me stay on to author PRs, pair with your engineering team, and verify the performance improvements in production."
+    q: "What is Interaction to Next Paint (INP) and why are our React apps failing it?",
+    a: "INP replaced FID (First Input Delay) as a Core Web Vital. It measures the latency of every single user interaction (clicks, taps, keystrokes) across the entire page lifecycle. In React applications, INP usually fails due to heavy CPU-bound re-renders, bloated component trees, un-memoized context updates, or excessive JavaScript executing during hydration. I specialize in profiling these long tasks and decomposing them so interactions respond in under 200ms."
   },
   {
-    q: "What is the difference between this page and consult.yogeshbhavsar.com?",
-    a: "This page provides an overview of consulting capabilities on my primary portfolio domain. For specialized fractional architecture packages, deep advisory scopes, and enterprise consulting retainers, you can also explore my dedicated portal at consult.yogeshbhavsar.com."
+    q: "Can you implement the recommended fixes yourself, or do you only deliver an audit report?",
+    a: "I offer both paths. Many engineering leaders prefer an initial standalone audit with an executive summary and prioritized remediation roadmap for their in-house team. However, I am also frequently engaged to author the pull requests directly, refactor bottleneck components, and verify the performance improvements in production."
   },
   {
-    q: "How long does a typical frontend audit take?",
-    a: "A focused Core Web Vitals or Next.js architecture audit typically takes 5 to 7 business days from repository access to final deliverable presentation and roadmap walkthrough."
+    q: "How long does a frontend performance audit take?",
+    a: "A focused Core Web Vitals or Next.js architecture audit typically takes 5 to 7 business days from the moment repository and telemetry access is granted. You receive an initial briefing call, the complete diagnostic roadmap, and an engineering walkthrough."
+  },
+  {
+    q: "What do you need from our team to get started?",
+    a: "To conduct a thorough audit, I typically need read-only access to your frontend GitHub repository, access to Google Search Console (or CrUX / analytics telemetry if available), and a brief 30-minute kickoff conversation to understand your key conversion paths and business priorities."
   }
 ];
 
@@ -135,18 +177,30 @@ const FrontendConsultingPage = () => {
     ]
   };
 
+  const faqSchema = {
+    "@type": "FAQPage",
+    "mainEntity": faqs.map(faq => ({
+      "@type": "Question",
+      "name": faq.q,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": faq.a
+      }
+    }))
+  };
+
   return (
     <>
       <SEO
         title="Frontend Architecture & Performance Consulting | Yogesh Bhavsar"
         description="Senior Frontend Architecture & Core Web Vitals Consulting by Yogesh Bhavsar. Fix INP/LCP regressions, optimize Next.js App Router performance, and audit React codebases for scale."
         canonical="/frontend-consulting"
-        schema={[serviceSchema, breadcrumbsSchema]}
-        keywords="frontend architecture consultant, React performance optimization, Next.js performance audit, Core Web Vitals consulting, Core Web Vitals optimization, frontend codebase audit, design system development, frontend consulting services"
+        schema={[serviceSchema, breadcrumbsSchema, faqSchema]}
+        keywords="frontend architecture consulting, core web vitals consultant, fix failing core web vitals, interaction to next paint optimization, next.js performance audit, fractional frontend architect, react codebase audit"
       />
 
       <div className="min-h-screen py-12 px-4 sm:px-6 lg:px-8 bg-background selection:bg-primary/20">
-        <div className="max-w-6xl mx-auto space-y-16">
+        <div className="max-w-6xl mx-auto space-y-20">
 
           {/* Hero */}
           <motion.header
@@ -155,170 +209,206 @@ const FrontendConsultingPage = () => {
             transition={{ duration: 0.6 }}
             className="text-center max-w-4xl mx-auto space-y-6 pt-4"
           >
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-semibold border border-primary/20">
-              <Gauge size={14} />
-              <span>Fractional Architecture & Advisory</span>
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary/10 text-primary text-xs sm:text-sm font-semibold border border-primary/25 shadow-sm">
+              <Gauge size={14} className="text-primary" />
+              <span>Core Web Vitals & Frontend Advisory</span>
             </div>
 
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-tight">
-              Frontend Consulting for <br className="hidden sm:block" />
+            <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-tight text-foreground">
+              Frontend Architecture & <br className="hidden sm:block" />
               <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary via-purple-500 to-accent">
-                Performance, Architecture & UI Systems
+                Core Web Vitals Consulting
               </span>
             </h1>
 
             <p className="text-lg sm:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-              Resolve Core Web Vitals regressions, eliminate React/Next.js technical debt, 
-              and scale frontend architectures with direct senior engineering judgment.
+              Stop guessing why your React or Next.js application feels sluggish. I help CTOs and product teams <strong>diagnose root-cause bottlenecks, fix failing Core Web Vitals (INP & LCP)</strong>, and modernize fragile frontend architectures.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">
-              <Button asChild size="lg" className="w-full sm:w-auto text-base h-12 px-8 shadow-lg shadow-primary/20">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-2">
+              <Button asChild size="lg" className="w-full sm:w-auto text-base h-12 px-8 shadow-lg shadow-primary/20 font-semibold">
                 <Link 
                   to="/contact"
                   onClick={() => logCtaClick('consulting_hero_contact', '/contact')}
                 >
-                  Request a Codebase Audit
+                  Book a Performance Diagnostic
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </Button>
-              <Button asChild variant="outline" size="lg" className="w-full sm:w-auto text-base h-12 px-8">
+              <Button asChild variant="outline" size="lg" className="w-full sm:w-auto text-base h-12 px-8 font-semibold">
                 <a 
-                  href="https://consult.yogeshbhavsar.com/" 
-                  target="_blank" 
+                  href="https://consult.yogeshbhavsar.com/"
+                  target="_blank"
                   rel="noopener noreferrer"
-                  onClick={() => logCtaClick('consulting_portal_link', 'consult.yogeshbhavsar.com')}
+                  className="inline-flex items-center gap-2"
                 >
-                  Explore Dedicated Consulting Portal
-                  <ExternalLink className="ml-2 h-4 w-4" />
+                  Visit Dedicated Advisory Portal
+                  <ExternalLink size={14} />
                 </a>
               </Button>
             </div>
+
+            <p className="text-xs text-muted-foreground pt-1">
+              ✓ 5–7 Day Diagnostic Turnaround &nbsp;|&nbsp; ✓ Actionable PR-Ready Fixes &nbsp;|&nbsp; ✓ Zero Guesswork
+            </p>
           </motion.header>
 
-          {/* Key Metrics */}
+          {/* Quick Stats */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {[
-              { label: "Core Web Vitals", value: "INP & LCP", detail: "Diagnose & fix field regressions" },
-              { label: "Bundle Reductions", value: "Up to 30%", detail: "Splitting & modular CSS" },
-              { label: "Audit Timeline", value: "5-7 Days", detail: "Fast, comprehensive delivery" },
-              { label: "Engagement", value: "Fractional / Sprint", detail: "No long-term lock-in" }
+              { label: "Target INP", value: "< 200ms", sub: "Green status in Search Console" },
+              { label: "Target LCP", value: "< 2.0s", sub: "Fast mobile first-content" },
+              { label: "Audit Timeline", value: "5-7 Days", sub: "From repo access to roadmap" },
+              { label: "Implementation", value: "Direct PRs", sub: "Verified production improvements" }
             ].map((stat, i) => (
-              <Card key={i} className="text-center p-4 bg-card/60 border-muted/60">
+              <Card key={i} className="text-center p-4 bg-card/60 border-muted/60 shadow-sm">
                 <p className="text-xs uppercase tracking-wider text-muted-foreground font-semibold">{stat.label}</p>
-                <p className="text-xl sm:text-2xl font-black text-primary mt-1">{stat.value}</p>
-                <p className="text-xs text-muted-foreground mt-0.5">{stat.detail}</p>
+                <p className="text-2xl font-black text-primary mt-1">{stat.value}</p>
+                <p className="text-xs text-muted-foreground mt-0.5">{stat.sub}</p>
               </Card>
             ))}
           </div>
 
-          {/* When to Bring in a Consultant */}
-          <section className="rounded-2xl border border-border/80 bg-muted/20 p-8 sm:p-10 space-y-6">
-            <div className="max-w-2xl">
-              <Badge variant="outline" className="mb-2 text-primary border-primary/30">Common Challenges</Badge>
-              <h2 className="text-2xl sm:text-3xl font-extrabold">When Teams Bring Me In</h2>
-              <p className="text-muted-foreground mt-2 text-sm sm:text-base">
-                Engineering teams hire me when performance debt is impacting conversions, user satisfaction, or developer velocity:
+          {/* Indirect Sales Pitch: The Business Cost of Slow Frontend Performance */}
+          <section className="rounded-2xl border border-border/80 bg-muted/20 p-8 sm:p-12 space-y-8">
+            <div className="text-center max-w-3xl mx-auto space-y-3">
+              <Badge variant="outline" className="text-primary border-primary/30 font-semibold">The High Cost of Sluggish Frontends</Badge>
+              <h2 className="text-2xl sm:text-3xl font-extrabold text-foreground">
+                Slow Performance Isn't Just Tech Debt — It's Lost Revenue
+              </h2>
+              <p className="text-muted-foreground text-sm sm:text-base leading-relaxed">
+                Google penalties, climbing customer acquisition costs, and frustrated users are the direct result of unoptimized frontends. Here is what is quietly hurting your growth:
               </p>
             </div>
 
-            <div className="grid sm:grid-cols-2 gap-4 pt-2">
-              {symptoms.map((symptom, idx) => (
-                <div key={idx} className="flex items-start gap-3 p-4 rounded-xl bg-card border border-border/60">
-                  <AlertTriangle className="h-5 w-5 text-amber-500 mt-0.5 flex-shrink-0" />
-                  <span className="text-sm sm:text-base text-foreground/90 font-medium">{symptom}</span>
+            <div className="grid md:grid-cols-3 gap-6">
+              {businessRisks.map((item, idx) => (
+                <div key={idx} className="p-6 rounded-xl bg-card border border-border/80 shadow-sm space-y-4 flex flex-col justify-between">
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-2 text-rose-500 font-bold text-base">
+                      <AlertTriangle className="h-5 w-5 flex-shrink-0" />
+                      <span>{item.title}</span>
+                    </div>
+                    <p className="text-sm text-muted-foreground leading-relaxed">
+                      {item.problem}
+                    </p>
+                  </div>
+                  <div className="pt-3 border-t border-border/60">
+                    <p className="text-xs font-bold uppercase tracking-wider text-primary mb-1">How I Intervene:</p>
+                    <p className="text-sm text-foreground/90 font-medium leading-relaxed">
+                      {item.solution}
+                    </p>
+                  </div>
                 </div>
               ))}
             </div>
           </section>
 
-          {/* Core Consulting Pillars */}
+          {/* Comparison Matrix */}
           <section className="space-y-8">
-            <div className="text-center max-w-2xl mx-auto">
-              <h2 className="text-3xl font-extrabold text-foreground">Consulting Capabilities</h2>
-              <p className="text-muted-foreground mt-2">
-                Actionable technical guidance backed by 7+ years of building production frontend architectures.
+            <div className="text-center max-w-2xl mx-auto space-y-2">
+              <Badge variant="outline" className="text-primary border-primary/30 font-semibold">Comparison Matrix</Badge>
+              <h2 className="text-3xl font-extrabold text-foreground">Why Engage a Dedicated Performance Specialist?</h2>
+              <p className="text-muted-foreground text-sm sm:text-base">
+                How working with a senior frontend practitioner beats generic consulting slides and unblocks your internal team.
               </p>
             </div>
 
-            <div className="grid md:grid-cols-2 gap-6">
-              {consultingPillars.map((pillar, index) => (
-                <Card key={index} className="border-border/70 bg-card/80 shadow-sm hover:shadow-md transition-shadow">
-                  <CardHeader className="flex flex-row items-center gap-4 pb-2">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary">
-                      <pillar.icon className="h-6 w-6" />
-                    </div>
-                    <CardTitle className="text-xl font-bold">{pillar.title}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-muted-foreground leading-relaxed text-sm sm:text-base">
-                      {pillar.description}
-                    </p>
-                  </CardContent>
+            <div className="overflow-x-auto rounded-xl border border-border/70 bg-card shadow-sm">
+              <table className="w-full text-left text-sm">
+                <thead className="bg-muted/50 border-b border-border/70 text-xs uppercase tracking-wider text-muted-foreground font-bold">
+                  <tr>
+                    <th className="py-4 px-6">Approach</th>
+                    <th className="py-4 px-6 text-primary font-extrabold bg-primary/5">Yogesh Bhavsar (Specialist)</th>
+                    <th className="py-4 px-6">Generic Consulting Agency</th>
+                    <th className="py-4 px-6">Internal Team Tasking</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-border/60">
+                  {comparisonMatrix.map((row, idx) => (
+                    <tr key={idx} className="hover:bg-muted/20 transition-colors">
+                      <td className="py-4 px-6 font-semibold text-foreground">{row.factor}</td>
+                      <td className="py-4 px-6 font-bold text-primary bg-primary/5">{row.yogesh}</td>
+                      <td className="py-4 px-6 text-muted-foreground">{row.bigFirm}</td>
+                      <td className="py-4 px-6 text-muted-foreground">{row.internalTeam}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          {/* Consulting Offerings */}
+          <section className="space-y-8">
+            <div className="text-center max-w-2xl mx-auto space-y-2">
+              <h2 className="text-3xl font-extrabold text-foreground">Consulting & Advisory Engagements</h2>
+              <p className="text-muted-foreground text-sm sm:text-base">
+                Structured scopes designed to deliver immediate, high-ROI engineering clarity.
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-3 gap-6">
+              {consultingOfferings.map((pkg, index) => (
+                <Card key={index} className="border-border/80 bg-card flex flex-col justify-between shadow-sm hover:shadow-md transition-shadow">
+                  <div>
+                    <CardHeader className="space-y-2 pb-4">
+                      <div className="flex justify-between items-center">
+                        <Badge variant="secondary" className="font-semibold text-xs text-primary">
+                          {pkg.badge}
+                        </Badge>
+                        <span className="text-xs text-muted-foreground font-medium flex items-center gap-1">
+                          <Clock size={12} /> {pkg.duration}
+                        </span>
+                      </div>
+                      <CardTitle className="text-xl font-bold">{pkg.title}</CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <p className="text-sm text-muted-foreground leading-relaxed">
+                        {pkg.description}
+                      </p>
+                      <div className="space-y-2 pt-2 border-t border-border/60">
+                        <p className="text-xs font-bold uppercase tracking-wider text-foreground">Deliverables:</p>
+                        <ul className="space-y-2">
+                          {pkg.deliverables.map((item, dIdx) => (
+                            <li key={dIdx} className="flex items-start gap-2 text-xs sm:text-sm text-foreground/90">
+                              <CheckCircle2 className="h-4 w-4 text-emerald-500 mt-0.5 flex-shrink-0" />
+                              <span>{item}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </CardContent>
+                  </div>
+                  <div className="p-6 pt-0">
+                    <Button asChild className="w-full" variant="outline">
+                      <Link to="/contact">Request Scope & Availability</Link>
+                    </Button>
+                  </div>
                 </Card>
               ))}
             </div>
           </section>
 
-          {/* What You Receive */}
-          <section className="space-y-8">
-            <div className="text-center max-w-2xl mx-auto">
-              <h2 className="text-3xl font-extrabold text-foreground">What You Receive in an Audit</h2>
-              <p className="text-muted-foreground mt-2">
-                Every audit produces tangible, engineering-ready documentation and concrete code solutions.
-              </p>
-            </div>
-
-            <div className="grid sm:grid-cols-2 gap-6">
-              {auditDeliverables.map((deliv, idx) => (
-                <div key={idx} className="p-6 rounded-xl border border-border/70 bg-card space-y-3">
-                  <div className="flex items-center gap-2">
-                    <CheckCircle2 className="h-5 w-5 text-green-500 flex-shrink-0" />
-                    <h3 className="font-bold text-lg text-foreground">{deliv.title}</h3>
-                  </div>
-                  <p className="text-muted-foreground text-sm leading-relaxed pl-7">
-                    {deliv.description}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </section>
-
-          {/* Dedicated Portal Callout */}
-          <section className="rounded-2xl border border-primary/25 bg-gradient-to-br from-primary/10 via-primary/5 to-transparent p-8 sm:p-10 space-y-6">
-            <div className="max-w-2xl space-y-3">
-              <Badge className="bg-primary text-primary-foreground">Specialized Consulting Portal</Badge>
-              <h2 className="text-2xl sm:text-3xl font-extrabold text-foreground">
-                Explore consult.yogeshbhavsar.com
-              </h2>
-              <p className="text-muted-foreground leading-relaxed">
-                For detailed audit tiers, fractional architecture scopes, and in-depth case analyses of Next.js performance tuning, 
-                visit my specialized consulting sub-property.
-              </p>
-            </div>
-            <div>
-              <Button asChild size="lg" className="gap-2">
-                <a href="https://consult.yogeshbhavsar.com/" target="_blank" rel="noopener noreferrer">
-                  Visit consult.yogeshbhavsar.com <ExternalLink size={16} />
-                </a>
-              </Button>
-            </div>
-          </section>
-
-          {/* FAQs */}
+          {/* FAQ Section */}
           <section className="space-y-6 max-w-4xl mx-auto">
-            <div className="text-center">
-              <h2 className="text-2xl sm:text-3xl font-extrabold text-foreground">Frequently Asked Questions</h2>
+            <div className="text-center space-y-2">
+              <Badge variant="outline" className="text-primary border-primary/30 font-semibold">Consulting FAQs</Badge>
+              <h2 className="text-2xl sm:text-3xl font-extrabold text-foreground">
+                Everything Leaders Ask About Frontend Audits
+              </h2>
+              <p className="text-muted-foreground text-sm sm:text-base">
+                Clear answers regarding methodology, deliverables, and implementation support.
+              </p>
             </div>
 
-            <div className="space-y-4">
+            <div className="space-y-4 pt-2">
               {faqs.map((faq, idx) => (
-                <div key={idx} className="p-6 rounded-xl border border-border/70 bg-card/70">
-                  <h3 className="font-bold text-lg text-foreground flex items-center gap-2">
+                <div key={idx} className="p-6 rounded-xl border border-border/70 bg-card/80 space-y-2">
+                  <h3 className="font-bold text-base sm:text-lg text-foreground flex items-center gap-2.5">
                     <HelpCircle className="h-5 w-5 text-primary flex-shrink-0" />
                     {faq.q}
                   </h3>
-                  <p className="text-muted-foreground text-sm sm:text-base mt-2 pl-7 leading-relaxed">
+                  <p className="text-muted-foreground text-sm sm:text-base pl-7 leading-relaxed">
                     {faq.a}
                   </p>
                 </div>
@@ -326,15 +416,20 @@ const FrontendConsultingPage = () => {
             </div>
           </section>
 
-          {/* Bottom Banner */}
-          <div className="text-center bg-card border border-border/70 rounded-2xl p-10 space-y-4">
-            <h2 className="text-3xl font-extrabold text-foreground">Ready to Solve Your Frontend Performance Bottlenecks?</h2>
-            <p className="text-muted-foreground max-w-xl mx-auto">
-              Send me your website URL or a brief description of the technical challenges your team is facing.
+          {/* Final CTA */}
+          <div className="text-center bg-gradient-to-r from-card via-card/90 to-card border border-border/80 rounded-2xl p-8 sm:p-12 space-y-5 shadow-sm">
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-foreground tracking-tight">
+              Ready to Fix Your Core Web Vitals & Frontend Performance?
+            </h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto text-sm sm:text-base leading-relaxed">
+              Send me your application URL or describe your performance bottleneck. I will review it and reply with initial diagnostic observations and recommended next steps.
             </p>
-            <div className="pt-2">
-              <Button asChild size="lg" className="px-8 h-12 text-base">
-                <Link to="/contact">Request Architectural Consultation</Link>
+            <div className="pt-2 flex flex-col sm:flex-row justify-center gap-4">
+              <Button asChild size="lg" className="px-8 h-12 text-base font-semibold shadow-md shadow-primary/20">
+                <Link to="/contact">Request Your Performance Audit</Link>
+              </Button>
+              <Button asChild variant="outline" size="lg" className="px-8 h-12 text-base font-semibold">
+                <a href="mailto:yogeshbhavsar1994@gmail.com">Email Me Directly</a>
               </Button>
             </div>
           </div>

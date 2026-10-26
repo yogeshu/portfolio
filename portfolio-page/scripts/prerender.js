@@ -83,24 +83,53 @@ const routes = [
   },
   {
     path: '/web-development',
-    title: 'Small Business Website Development | Fast, Modern Websites — Yogesh Bhavsar',
-    description: 'Custom website development for small businesses and founders. Fast, mobile-responsive, and SEO-ready websites built with React and modern frontend standards by Yogesh Bhavsar.',
+    title: 'Web Developer for Small Business | Fast Custom Websites — Yogesh Bhavsar',
+    description: 'Hire Yogesh Bhavsar, Senior Web Developer for small businesses and founders. Fast, mobile-responsive custom websites with 95+ PageSpeed, zero agency overhead, and built-in Google SEO.',
     schema: [
       basePerson,
       baseWebSite,
       {
         "@type": "Service",
         "@id": `${SITE_URL}/web-development/#service`,
-        "name": "Small Business Website Development",
-        "serviceType": "Web Development Services",
+        "name": "Web Developer for Small Business",
+        "serviceType": "Small Business Website Development",
         "provider": { "@id": `${SITE_URL}/#person` },
-        "description": "Custom website development for small businesses and founders. High performance, mobile-first design, and built-in technical SEO."
+        "description": "Custom website development for small businesses, founders, and growing companies. High performance, mobile-first design, and built-in technical SEO."
       },
       {
         "@type": "BreadcrumbList",
         "itemListElement": [
           { "@type": "ListItem", "position": 1, "name": "Home", "item": `${SITE_URL}/` },
-          { "@type": "ListItem", "position": 2, "name": "Web Development", "item": `${SITE_URL}/web-development` }
+          { "@type": "ListItem", "position": 2, "name": "Web Development for Small Business", "item": `${SITE_URL}/web-development` }
+        ]
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Why hire a custom web developer instead of using WordPress or Wix for a small business?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Generic page-builders load dozens of unoptimized plugins, resulting in slow load times (hurting Google rankings and mobile bounce rates) and security vulnerabilities. A custom-built website by a senior engineer is lightweight, loads in under 1 second, scores 95+ on Google PageSpeed, and converts visitors directly into leads."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How long does a small business website project take to build?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Most focused small business websites and landing pages are designed, developed, audited, and deployed within 2 to 4 weeks with transparent sprint milestones."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Will my small business website be mobile-friendly and optimized for Google search?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. Every website is built mobile-first and tested across all screen resolutions. Technical SEO (clean semantic HTML, JSON-LD schema, open graph tags, sitemaps, and Core Web Vitals) is built directly into the codebase from day one."
+            }
+          }
         ]
       }
     ]
@@ -126,6 +155,35 @@ const routes = [
           { "@type": "ListItem", "position": 1, "name": "Home", "item": `${SITE_URL}/` },
           { "@type": "ListItem", "position": 2, "name": "Frontend Development", "item": `${SITE_URL}/frontend-development` }
         ]
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "How does hiring a freelance senior frontend developer compare to hiring full-time?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Hiring a full-time senior engineer typically takes 3 to 6 months of interviewing, tens of thousands in recruitment fees, plus permanent salary, equity, and benefits. Engaging me as a senior freelance contractor gives you immediate senior engineering capacity within days. You get enterprise-grade output for your critical sprints or project milestones without long-term overhead or hiring lock-in."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What is your remote availability and timezone overlap?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "I work remotely from India (IST, GMT+5:30) with established, flexible overlap hours for North American (EST/PST), European/UK (GMT/CET), and APAC teams. I emphasize asynchronous excellence—delivering crystal-clear daily summaries, detailed PR documentation, and Loom video walkthroughs so your team never waits on me."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How quickly can you onboard into our codebase and start shipping code?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Typically within 24 to 48 hours of receiving GitHub repository and documentation access. With 7+ years across enterprise platforms like Reach Plc and Jio, I am accustomed to jumping into large, unfamiliar codebases, spinning up local environments quickly, and picking up Jira/Linear backlog tickets without hand-holding."
+            }
+          }
+        ]
       }
     ]
   },
@@ -149,6 +207,27 @@ const routes = [
         "itemListElement": [
           { "@type": "ListItem", "position": 1, "name": "Home", "item": `${SITE_URL}/` },
           { "@type": "ListItem", "position": 2, "name": "React & Next.js Development", "item": `${SITE_URL}/react-nextjs-development` }
+        ]
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Why should we migrate from a React SPA (Create React App / Vite) to Next.js?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Standard client-side SPAs ship an empty HTML shell. The user's device must download, parse, and execute megabytes of JavaScript before anything appears on screen. This destroys your mobile conversion rate, produces poor Core Web Vitals (slow LCP), and prevents search engines and social platforms from reliably indexing your pages. Next.js delivers fully formed HTML from the server in milliseconds, dramatically improving SEO, perceived performance, and user retention."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How do you prevent the common pitfalls of Next.js App Router (like caching bugs and hydration errors)?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "App Router requires a disciplined mental model. I enforce strict boundaries: all data fetching and heavy business logic remain in React Server Components, while 'use client' is pushed down to the smallest interactive UI leaves (buttons, modals, dropdowns). I configure deterministic caching with explicit fetch tags, avoiding unintentional stale data."
+            }
+          }
         ]
       }
     ]
@@ -180,6 +259,27 @@ const routes = [
         "itemListElement": [
           { "@type": "ListItem", "position": 1, "name": "Home", "item": `${SITE_URL}/` },
           { "@type": "ListItem", "position": 2, "name": "Frontend Consulting", "item": `${SITE_URL}/frontend-consulting` }
+        ]
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "How does failing Core Web Vitals in Google Search Console impact our business?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Google officially uses Core Web Vitals (LCP, INP, and CLS) as a ranking signal in search results. Failing URLs are demoted in mobile rankings, reducing organic search traffic. Furthermore, slow landing page experience increases Google Ads Cost-Per-Click (CPC) and lowers Quality Scores, directly increasing your customer acquisition costs while mobile conversion rates drop."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What is Interaction to Next Paint (INP) and why are our React apps failing it?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "INP replaced FID (First Input Delay) as a Core Web Vital. It measures the latency of every single user interaction across the entire page lifecycle. In React applications, INP usually fails due to heavy CPU-bound re-renders, bloated component trees, un-memoized context updates, or excessive JavaScript executing during hydration. I specialize in profiling these long tasks and decomposing them so interactions respond in under 200ms."
+            }
+          }
         ]
       }
     ]

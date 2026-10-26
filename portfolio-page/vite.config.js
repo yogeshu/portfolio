@@ -198,4 +198,35 @@ export default defineConfig({
 			'@': path.resolve(__dirname, './src'),
 		},
 	},
+	build: {
+		target: 'es2020',
+		sourcemap: false,
+		minify: 'terser',
+		terserOptions: {
+			compress: {
+				drop_console: true,
+				drop_debugger: true,
+			},
+		},
+		rollupOptions: {
+			output: {
+				manualChunks(id) {
+					if (id.includes('node_modules')) {
+						if (id.includes('framer-motion')) {
+							return 'vendor-motion';
+						}
+						if (id.includes('react-router') || id.includes('@remix-run')) {
+							return 'vendor-router';
+						}
+						if (id.includes('react-helmet-async')) {
+							return 'vendor-helmet';
+						}
+						if (id.includes('react-dom') || id.includes('/react/') || id.includes('scheduler')) {
+							return 'vendor-react';
+						}
+					}
+				},
+			},
+		},
+	},
 });

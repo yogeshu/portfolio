@@ -51,10 +51,10 @@ const expertiseCards = [
 const commercialServices = [
   {
     icon: Globe,
-    title: "Small Business Website Development",
+    title: "Web Developer for Small Business",
     description: "Custom, high-speed websites for small businesses and founders. Built with modern React standards, mobile-first responsiveness, and built-in technical SEO.",
     link: "/web-development",
-    action: "Explore Website Services"
+    action: "Hire Small Business Web Developer"
   },
   {
     icon: Code2,
