@@ -22,7 +22,7 @@ const Layout = ({ children }) => {
   }
 
   return (
-    <div className="flex flex-col min-h-screen bg-gradient-to-br from-background via-background to-secondary/20 dark:from-background dark:via-background dark:to-secondary/10">
+    <div className="flex flex-col min-h-screen bg-gradient-to-br from-background via-background to-secondary/20 dark:from-background dark:via-background dark:to-secondary/10 w-full overflow-x-hidden">
       <Navbar />
       <AnimatePresence mode="wait">
         <motion.main

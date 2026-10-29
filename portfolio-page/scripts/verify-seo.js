@@ -68,6 +68,13 @@ for (const route of expectedRoutes) {
     failed = true;
   }
 
+  // Viewport check (Mandatory for responsive mobile layout & preventing desktop zoom emulation)
+  const viewportMatch = html.match(/<meta\s+name="viewport"\s+content="([^"]*)"\s*\/?>/i);
+  if (!viewportMatch || !viewportMatch[1].includes('width=device-width')) {
+    console.error(`❌ Viewport meta check failed for /${route.path}. Missing width=device-width!`);
+    failed = true;
+  }
+
   // Structured Data JSON-LD check
   const jsonLdMatch = html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/i);
   if (!jsonLdMatch) {
