@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Yogesh Bhavsar — Engineering Notes &amp; Technical Essays</title>
+    <link>https://yogeshbhavsar.com/blog</link>
+    <description>Technical essays on React internals, Next.js performance, local-first architecture, web workers, and software craftsmanship by Yogesh Bhavsar.</description>
+    <language>en-US</language>
+    <lastBuildDate>Sat, 31 Oct 2026 16:58:17 GMT</lastBuildDate>
+    <atom:link href="https://yogeshbhavsar.com/feed.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>Engineering Core Web Vitals to 99+ on Production Next.js &amp; React Apps</title>
+      <link>https://yogeshbhavsar.com/blog/engineering-core-web-vitals-99-nextjs-react</link>
+      <guid isPermaLink="true">https://yogeshbhavsar.com/blog/engineering-core-web-vitals-99-nextjs-react</guid>
+      <pubDate>Thu, 15 Oct 2026 09:00:00 GMT</pubDate>
+      <description><![CDATA[Most web performance advice stops at image compression and lazy loading. Here is the architectural playbook I use to diagnose long tasks, optimize interaction latency, and keep Core Web Vitals strictly in the 99th percentile.]]></description>
+      <author>yogeshbhavsar1994@gmail.com (Yogesh Bhavsar)</author>
+      <category>engineering-frontend</category>
+    </item>
+    <item>
+      <title>Why We Built FrontendYogi as a Local-First Browser Tool Suite</title>
+      <link>https://yogeshbhavsar.com/blog/why-we-built-frontendyogi-local-first</link>
+      <guid isPermaLink="true">https://yogeshbhavsar.com/blog/why-we-built-frontendyogi-local-first</guid>
+      <pubDate>Mon, 28 Sep 2026 11:00:00 GMT</pubDate>
+      <description><![CDATA[Most web utilities upload your photos, documents, and code snippets to an opaque cloud server. When designing FrontendYogi, I chose a radical architecture: 100% client-side execution using Web Workers and Canvas.]]></description>
+      <author>yogeshbhavsar1994@gmail.com (Yogesh Bhavsar)</author>
+      <category>building-in-public</category>
+    </item>
+    <item>
+      <title>The Case for Local-First Architecture: Zero Data Ingestion as a Product Feature</title>
+      <link>https://yogeshbhavsar.com/blog/case-for-local-first-architecture-zero-data-ingestion</link>
+      <guid isPermaLink="true">https://yogeshbhavsar.com/blog/case-for-local-first-architecture-zero-data-ingestion</guid>
+      <pubDate>Thu, 10 Sep 2026 10:00:00 GMT</pubDate>
+      <description><![CDATA[Every database record you store is a liability waiting to be breached. Here is how adopting a local-first computing model protects your users, accelerates your development velocity, and reduces infrastructure overhead.]]></description>
+      <author>yogeshbhavsar1994@gmail.com (Yogesh Bhavsar)</author>
+      <category>privacy-tech</category>
+    </item>
+    <item>
+      <title>Why Premature Framework Migrations Cripple Engineering Velocity</title>
+      <link>https://yogeshbhavsar.com/blog/premature-framework-migrations-cripple-velocity</link>
+      <guid isPermaLink="true">https://yogeshbhavsar.com/blog/premature-framework-migrations-cripple-velocity</guid>
+      <pubDate>Sat, 22 Aug 2026 08:30:00 GMT</pubDate>
+      <description><![CDATA[Every eighteen months, the frontend community crowns a new paradigm. But before rewriting your production app in the latest alpha framework, consider the compounding costs of rewrite churn versus shipping real customer value.]]></description>
+      <author>yogeshbhavsar1994@gmail.com (Yogesh Bhavsar)</author>
+      <category>opinions</category>
+    </item>
+    <item>
+      <title>Profiling React Memory Leaks and Micro-Task Thrashing in Complex SPAs</title>
+      <link>https://yogeshbhavsar.com/blog/profiling-react-memory-leaks-microtask-thrashing</link>
+      <guid isPermaLink="true">https://yogeshbhavsar.com/blog/profiling-react-memory-leaks-microtask-thrashing</guid>
+      <pubDate>Tue, 04 Aug 2026 13:00:00 GMT</pubDate>
+      <description><![CDATA[Single Page Applications that stay open for hours often degrade in performance. Here is how to take heap snapshots, locate retained DOM trees, and clean up subtle closure leaks in modern React.]]></description>
+      <author>yogeshbhavsar1994@gmail.com (Yogesh Bhavsar)</author>
+      <category>experiments-learnings</category>
+    </item>
+  </channel>
+</rss>

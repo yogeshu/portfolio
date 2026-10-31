@@ -8,9 +8,9 @@ const Toaster = lazy(() => import('@/components/ui/toaster').then(m => ({ defaul
 
 const Layout = ({ children }) => {
   const location = useLocation();
-  const isThemeStudio = location.pathname.startsWith('/theme-studio');
+  const isCustomLayout = location.pathname.startsWith('/theme-studio') || location.pathname.startsWith('/admin');
 
-  if (isThemeStudio) {
+  if (isCustomLayout) {
     return (
       <>
         {children}

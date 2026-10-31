@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import Image from "next/image";
-import { siteConfig } from "@/lib/content";
 
 export const metadata: Metadata = {
   title: "Selected Work — Yogesh Bhavsar",

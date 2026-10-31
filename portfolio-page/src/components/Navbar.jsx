@@ -32,6 +32,7 @@ const serviceLinks = [
 const mainNavItems = [
   { name: 'Home', path: '/' },
   { name: 'Projects', path: '/projects' },
+  { name: 'Blog', path: '/blog' },
   { name: 'Experience', path: '/experience' },
   { name: 'About', path: '/about' },
   { name: 'Skills', path: '/skills' },

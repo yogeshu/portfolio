@@ -7,10 +7,11 @@
     "dev": "vite",
     "build": "vite build && node scripts/prerender.js",
     "preview": "vite preview",
-    "test": "npm run test:theme && npm run test:seo",
+    "test": "npm run test:theme && npm run test:seo && npm run test:blog",
     "test:theme": "node scripts/test-theme-studio.js",
     "test:seo": "node scripts/verify-seo.js",
-    "lint": "eslint \"src/**/*.{js,jsx}\" --quiet"
+    "lint": "eslint \"src/**/*.{js,jsx}\" --quiet",
+    "test:blog": "node scripts/test-blog.js"
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
@@ -28,11 +29,13 @@
     "clsx": "^2.0.0",
     "framer-motion": "^10.16.4",
     "lucide-react": "^0.292.0",
+    "marked": "^18.1.2",
+    "prismjs": "^1.30.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-ga4": "^2.1.0",
     "react-helmet-async": "^2.0.5",
-    "react-router-dom": "^6.16.0",
+    "react-router-dom": "^7.18.5",
     "tailwind-merge": "^1.14.0",
     "tailwindcss-animate": "^1.0.7"
   },
@@ -42,7 +45,7 @@
     "@types/react-dom": "^18.2.7",
     "@vitejs/plugin-react": "^4.0.3",
     "autoprefixer": "^10.4.16",
-    "eslint": "^8.57.1",
+    "eslint": "^10.14.0",
     "eslint-config-react-app": "^7.0.1",
     "postcss": "^8.4.31",
     "tailwindcss": "^3.3.3",

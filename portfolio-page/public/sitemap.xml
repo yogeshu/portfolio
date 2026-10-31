@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <!-- Primary Identity & Brand Anchor -->
   <url>
     <loc>https://yogeshbhavsar.com/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
-
-  <!-- Commercial Landing Pages -->
   <url>
     <loc>https://yogeshbhavsar.com/web-development</loc>
     <changefreq>weekly</changefreq>
@@ -20,40 +17,54 @@
   </url>
   <url>
     <loc>https://yogeshbhavsar.com/react-nextjs-development</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://yogeshbhavsar.com/frontend-consulting</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
   </url>
-
-  <!-- Portfolio Hub -->
   <url>
     <loc>https://yogeshbhavsar.com/projects</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
   </url>
-
-  <!-- Featured Products -->
+  <url>
+    <loc>https://yogeshbhavsar.com/experience</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://yogeshbhavsar.com/about</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://yogeshbhavsar.com/skills</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://yogeshbhavsar.com/contact</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
   <url>
     <loc>https://yogeshbhavsar.com/projects/frontendyogi</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.85</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://yogeshbhavsar.com/projects/writer-mirror</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.85</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://yogeshbhavsar.com/projects/her-sanctuary</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.85</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
   </url>
-
-  <!-- Engineering Case Studies -->
   <url>
     <loc>https://yogeshbhavsar.com/case-studies/privacy-first-browser-tools</loc>
     <changefreq>monthly</changefreq>
@@ -84,25 +95,63 @@
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-
-  <!-- Career, Authority & Contact -->
   <url>
-    <loc>https://yogeshbhavsar.com/experience</loc>
+    <loc>https://yogeshbhavsar.com/blog</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yogeshbhavsar.com/blog/engineering-core-web-vitals-99-nextjs-react</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://yogeshbhavsar.com/about</loc>
+    <loc>https://yogeshbhavsar.com/blog/why-we-built-frontendyogi-local-first</loc>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://yogeshbhavsar.com/skills</loc>
+    <loc>https://yogeshbhavsar.com/blog/case-for-local-first-architecture-zero-data-ingestion</loc>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://yogeshbhavsar.com/contact</loc>
+    <loc>https://yogeshbhavsar.com/blog/premature-framework-migrations-cripple-velocity</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://yogeshbhavsar.com/blog/profiling-react-memory-leaks-microtask-thrashing</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://yogeshbhavsar.com/blog/category/engineering-frontend</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://yogeshbhavsar.com/blog/category/building-in-public</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://yogeshbhavsar.com/blog/category/product-startups</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://yogeshbhavsar.com/blog/category/privacy-tech</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://yogeshbhavsar.com/blog/category/opinions</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://yogeshbhavsar.com/blog/category/experiments-learnings</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>

@@ -26,6 +26,11 @@ const expectedRoutes = [
   { path: 'about', canonical: 'https://yogeshbhavsar.com/about', expectedTitle: 'About Yogesh Bhavsar' },
   { path: 'skills', canonical: 'https://yogeshbhavsar.com/skills', expectedTitle: 'Technical Skills' },
   { path: 'contact', canonical: 'https://yogeshbhavsar.com/contact', expectedTitle: 'Contact Yogesh Bhavsar' },
+  { path: 'blog', canonical: 'https://yogeshbhavsar.com/blog', expectedTitle: 'Engineering Notes' },
+  { path: 'blog/engineering-core-web-vitals-99-nextjs-react', canonical: 'https://yogeshbhavsar.com/blog/engineering-core-web-vitals-99-nextjs-react', expectedTitle: 'Engineering Core Web Vitals' },
+  { path: 'blog/why-we-built-frontendyogi-local-first', canonical: 'https://yogeshbhavsar.com/blog/why-we-built-frontendyogi-local-first', expectedTitle: 'FrontendYogi' },
+  { path: 'blog/category/engineering-frontend', canonical: 'https://yogeshbhavsar.com/blog/category/engineering-frontend', expectedTitle: 'Engineering' },
+  { path: 'blog/search', canonical: 'https://yogeshbhavsar.com/blog/search', expectedTitle: 'Search', skipSitemap: true },
 ];
 
 let failed = false;
@@ -94,6 +99,22 @@ for (const route of expectedRoutes) {
   }
 }
 
+
+// Feed check
+const feedPath = path.join(DIST_DIR, 'feed.xml');
+if (!fs.existsSync(feedPath)) {
+  console.error('❌ Missing feed.xml in dist');
+  failed = true;
+} else {
+  const feedContent = fs.readFileSync(feedPath, 'utf-8');
+  if (!feedContent.includes('<rss version="2.0"') || !feedContent.includes('<channel>') || !feedContent.includes('<item>')) {
+    console.error('❌ feed.xml is not a valid RSS 2.0 feed');
+    failed = true;
+  } else {
+    console.log('✓ feed.xml verified: Valid RSS 2.0 feed with published articles.');
+  }
+}
+
 // Sitemap check
 const sitemapPath = path.join(DIST_DIR, 'sitemap.xml');
 if (!fs.existsSync(sitemapPath)) {
@@ -102,6 +123,7 @@ if (!fs.existsSync(sitemapPath)) {
 } else {
   const sitemapContent = fs.readFileSync(sitemapPath, 'utf-8');
   for (const route of expectedRoutes) {
+    if (route.skipSitemap) continue;
     if (!sitemapContent.includes(route.canonical)) {
       console.error(`❌ Sitemap missing URL: ${route.canonical}`);
       failed = true;

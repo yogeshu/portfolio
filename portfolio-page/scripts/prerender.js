@@ -1,3 +1,4 @@
+import { initialArticles, initialCategories, initialTags } from '../src/data/blogPosts.js';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -603,6 +604,100 @@ const routes = [
   }
 ];
 
+
+// ---------------------------------------------------------------------------
+// Blog Routes Expansion (Articles, Categories, Search)
+// ---------------------------------------------------------------------------
+const publishedArticles = initialArticles.filter((a) => a.status === 'published');
+
+const blogRoutes = [
+  {
+    path: '/blog',
+    title: 'Engineering Notes & Architecture Essays | Yogesh Bhavsar',
+    description: 'Technical essays on React internals, Next.js performance, local-first architecture, web workers, and software craftsmanship by Yogesh Bhavsar.',
+    schema: [
+      basePerson,
+      baseWebSite,
+      {
+        "@type": "Blog",
+        "@id": `${SITE_URL}/blog/#blog`,
+        "name": "Yogesh Bhavsar Technical Blog & Engineering Essays",
+        "description": "Technical essays on React internals, Next.js performance, local-first architecture, web workers, and software craftsmanship.",
+        "url": `${SITE_URL}/blog`,
+        "publisher": { "@id": `${SITE_URL}/#person` }
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": `${SITE_URL}/` },
+          { "@type": "ListItem", "position": 2, "name": "Blog", "item": `${SITE_URL}/blog` }
+        ]
+      }
+    ]
+  },
+  {
+    path: '/blog/search',
+    title: 'Search Technical Articles | Yogesh Bhavsar',
+    description: 'Search through engineering deep dives, frontend architecture essays, and performance optimization guides by Yogesh Bhavsar.',
+    schema: [basePerson, baseWebSite]
+  },
+  ...publishedArticles.map((article) => ({
+    path: `/blog/${article.slug}`,
+    title: `${article.seoTitle || article.title} — Yogesh Bhavsar`,
+    description: article.seoDescription || article.excerpt,
+    schema: [
+      basePerson,
+      baseWebSite,
+      {
+        "@type": "BlogPosting",
+        "@id": `${SITE_URL}/blog/${article.slug}/#article`,
+        "headline": article.seoTitle || article.title,
+        "description": article.seoDescription || article.excerpt,
+        "datePublished": article.publishedAt,
+        "dateModified": article.updatedAt || article.publishedAt,
+        "mainEntityOfPage": `${SITE_URL}/blog/${article.slug}`,
+        "author": { "@id": `${SITE_URL}/#person` },
+        "publisher": { "@id": `${SITE_URL}/#person` }
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": `${SITE_URL}/` },
+          { "@type": "ListItem", "position": 2, "name": "Blog", "item": `${SITE_URL}/blog` },
+          { "@type": "ListItem", "position": 3, "name": article.title, "item": `${SITE_URL}/blog/${article.slug}` }
+        ]
+      }
+    ]
+  })),
+  ...initialCategories.map((cat) => ({
+    path: `/blog/category/${cat.slug}`,
+    title: `${cat.name} Articles — Yogesh Bhavsar`,
+    description: cat.description,
+    schema: [
+      basePerson,
+      baseWebSite,
+      {
+        "@type": "CollectionPage",
+        "@id": `${SITE_URL}/blog/category/${cat.slug}/#collection`,
+        "name": `${cat.name} Articles`,
+        "description": cat.description,
+        "url": `${SITE_URL}/blog/category/${cat.slug}`
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": `${SITE_URL}/` },
+          { "@type": "ListItem", "position": 2, "name": "Blog", "item": `${SITE_URL}/blog` },
+          { "@type": "ListItem", "position": 3, "name": cat.name, "item": `${SITE_URL}/blog/category/${cat.slug}` }
+        ]
+      }
+    ]
+  }))
+];
+
+routes.push(...blogRoutes);
+
+
 function generateHtmlForRoute(templateHtml, route) {
   const canonicalUrl = `${SITE_URL}${route.path === '/' ? '/' : route.path}`;
   const graph = {
@@ -662,6 +757,75 @@ function generateHtmlForRoute(templateHtml, route) {
   return html;
 }
 
+
+function generateSitemap(routesList) {
+  let xml = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n';
+
+  for (const r of routesList) {
+    if (r.path === '/blog/search' || r.path.startsWith('/admin')) continue;
+    const canonical = `${SITE_URL}${r.path === '/' ? '/' : r.path}`;
+    let priority = '0.8';
+    let changefreq = 'monthly';
+    if (r.path === '/') {
+      priority = '1.0';
+      changefreq = 'weekly';
+    } else if (r.path === '/blog' || r.path === '/web-development' || r.path === '/frontend-development') {
+      priority = '0.9';
+      changefreq = 'weekly';
+    } else if (r.path.startsWith('/blog/')) {
+      priority = '0.8';
+      changefreq = 'monthly';
+    }
+
+    xml += `  <url>\n    <loc>${canonical}</loc>\n    <changefreq>${changefreq}</changefreq>\n    <priority>${priority}</priority>\n  </url>\n`;
+  }
+  xml += '</urlset>\n';
+
+  fs.writeFileSync(path.join(DIST_DIR, 'sitemap.xml'), xml, 'utf-8');
+  fs.writeFileSync(path.resolve(__dirname, '../public/sitemap.xml'), xml, 'utf-8');
+  console.log('  ✓ Generated sitemap.xml with all blog and portfolio routes');
+}
+
+function generateRssFeed() {
+  const published = initialArticles.filter((a) => a.status === 'published');
+  const lastBuildDate = new Date().toUTCString();
+
+  let rss = `<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Yogesh Bhavsar — Engineering Notes &amp; Technical Essays</title>
+    <link>${SITE_URL}/blog</link>
+    <description>Technical essays on React internals, Next.js performance, local-first architecture, web workers, and software craftsmanship by Yogesh Bhavsar.</description>
+    <language>en-US</language>
+    <lastBuildDate>${lastBuildDate}</lastBuildDate>
+    <atom:link href="${SITE_URL}/feed.xml" rel="self" type="application/rss+xml"/>
+`;
+
+  for (const art of published) {
+    const articleUrl = `${SITE_URL}/blog/${art.slug}`;
+    const pubDate = new Date(art.publishedAt || art.updatedAt).toUTCString();
+    const safeTitle = art.title.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    const safeExcerpt = (art.excerpt || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+    rss += `    <item>
+      <title>${safeTitle}</title>
+      <link>${articleUrl}</link>
+      <guid isPermaLink="true">${articleUrl}</guid>
+      <pubDate>${pubDate}</pubDate>
+      <description><![CDATA[${art.excerpt || art.subtitle || ''}]]></description>
+      <author>yogeshbhavsar1994@gmail.com (Yogesh Bhavsar)</author>
+      <category>${art.category}</category>
+    </item>\n`;
+  }
+
+  rss += '  </channel>\n</rss>\n';
+
+  fs.writeFileSync(path.join(DIST_DIR, 'feed.xml'), rss, 'utf-8');
+  fs.writeFileSync(path.resolve(__dirname, '../public/feed.xml'), rss, 'utf-8');
+  console.log('  ✓ Generated feed.xml (RSS 2.0) with published articles');
+}
+
+
 function prerender() {
   if (!fs.existsSync(BASE_HTML_PATH)) {
     console.error(`Base template not found at ${BASE_HTML_PATH}. Run vite build first.`);
@@ -688,6 +852,8 @@ function prerender() {
     }
   }
 
+  generateSitemap(routes);
+  generateRssFeed();
   console.log('Pre-rendering complete: All routes have static HTML with unique metadata and schema.');
 }
 

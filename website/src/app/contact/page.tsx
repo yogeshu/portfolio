@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { siteConfig } from "@/lib/content";
-import { ArrowUpRight, CheckCircle2, AlertCircle } from "lucide-react";
+import { CheckCircle2, AlertCircle } from "lucide-react";
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -44,8 +44,8 @@ export default function ContactPage() {
     setFormState({ status: "submitting", message: "" });
 
     try {
-      if (typeof window !== "undefined" && (window as any).gtag) {
-        (window as any).gtag("event", "generate_lead", {
+      if (typeof window !== "undefined" && ('gtag' in window)) {
+        ((window as Window & { gtag?: (c: string, a: string, p: Record<string, unknown>) => void }).gtag ?? (() => {}))("event", "generate_lead", {
           service_type: formData.serviceType,
           budget_range: formData.budget,
         });
@@ -58,7 +58,7 @@ export default function ContactPage() {
       });
 
       setFormData((prev) => ({ ...prev, message: "" }));
-    } catch (err) {
+    } catch {
       setFormState({
         status: "error",
         message: "An unexpected error occurred. Please feel free to email me directly at " + siteConfig.email,

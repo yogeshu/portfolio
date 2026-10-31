@@ -58,7 +58,7 @@ export default function WritingPage() {
         </div>
 
         <div className="divide-y divide-[var(--line)] border-t border-[var(--line)]">
-          {articles.map((article, idx) => (
+          {articles.map((article) => (
             <article key={article.slug} className="py-[36px] flex flex-col gap-4">
               <div className="flex items-center gap-3 text-xs font-mono-meta text-[var(--muted)]">
                 <span className="font-bold text-[var(--forest)] uppercase">{article.category}</span>

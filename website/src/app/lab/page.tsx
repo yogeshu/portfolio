@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { products, siteConfig } from "@/lib/content";
 
 export const metadata: Metadata = {
   title: "Products & Laboratory — Yogesh Bhavsar",
@@ -12,8 +11,6 @@ export const metadata: Metadata = {
 };
 
 export default function LabPage() {
-  const featured = products.find((p) => p.name === "FrontendYogi") || products[0];
-  const list = products.filter((p) => p.name !== "FrontendYogi");
 
   return (
     <div className="wrap">

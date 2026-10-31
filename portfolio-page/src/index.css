@@ -480,3 +480,94 @@ html {
   overflow-x: hidden;
   max-width: 100%;
 }
+
+/* =========================================================================
+   Prism.js Syntax Highlighting & Editorial Typography
+   ========================================================================= */
+.token.comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+  color: #6b7280;
+  font-style: italic;
+}
+.token.punctuation {
+  color: #94a3b8;
+}
+.token.property,
+.token.tag,
+.token.constant,
+.token.symbol,
+.token.deleted {
+  color: #f43f5e;
+}
+.token.boolean,
+.token.number {
+  color: #fb923c;
+}
+.token.selector,
+.token.attr-name,
+.token.string,
+.token.char,
+.token.builtin,
+.token.inserted {
+  color: #34d399;
+}
+.token.operator,
+.token.entity,
+.token.url,
+.language-css .token.string,
+.style .token.string {
+  color: #38bdf8;
+}
+.token.atrule,
+.token.attr-value,
+.token.keyword {
+  color: #818cf8;
+  font-weight: 600;
+}
+.token.function,
+.token.class-name {
+  color: #facc15;
+}
+.token.regex,
+.token.important,
+.token.variable {
+  color: #e879f9;
+}
+
+/* Editorial prose styling */
+.editorial-prose ul {
+  list-style-type: disc;
+  margin-left: 1.5rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+.editorial-prose ol {
+  list-style-type: decimal;
+  margin-left: 1.5rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+.editorial-prose li {
+  margin-top: 0.35rem;
+  margin-bottom: 0.35rem;
+}
+.editorial-prose table th {
+  padding: 0.75rem 1rem;
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+.editorial-prose table td {
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+}
+.editorial-prose code:not(pre code) {
+  padding: 0.2rem 0.4rem;
+  border-radius: 0.375rem;
+  background-color: hsl(var(--secondary));
+  color: hsl(var(--foreground));
+  font-family: monospace;
+  font-size: 0.875em;
+  border: 1px solid hsl(var(--border) / 0.5);
+}
