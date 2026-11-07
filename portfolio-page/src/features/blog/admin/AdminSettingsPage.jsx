@@ -15,7 +15,7 @@ import {
   importBlogData,
   resetBlogDataToDefaults,
 } from '@/lib/blogStorage';
-import { changeAdminPassword } from './adminAuth';
+import { changeAdminPassword, isProductionEnvironment, isEnvConfigured } from './adminAuth';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 
@@ -221,63 +221,89 @@ const AdminSettingsPage = () => {
         <div className="space-y-1">
           <h2 className="text-lg font-bold text-foreground flex items-center gap-2">
             <Shield className="h-5 w-5 text-primary" />
-            <span>Change Admin Password</span>
+            <span>Admin Credential Management</span>
           </h2>
           <p className="text-xs text-muted-foreground">
-            Update your master admin password used to authenticate into the CMS.
+            Manage your master administrative authentication settings.
           </p>
         </div>
 
-        {passwordMsg && (
-          <div
-            className={`p-3 rounded-xl text-xs flex items-center gap-2 ${
-              passwordMsg.type === 'success'
-                ? 'bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400'
-                : 'bg-destructive/10 border border-destructive/20 text-destructive'
-            }`}
-          >
-            <span>{passwordMsg.message}</span>
+        {isProductionEnvironment() || isEnvConfigured() ? (
+          <div className="p-4 rounded-xl border border-border/60 bg-secondary/20 space-y-2">
+            <div className="flex items-center gap-2 text-xs font-semibold text-foreground">
+              <Lock className="h-4 w-4 text-emerald-500" />
+              <span>Production Build Variable Active</span>
+            </div>
+            <p className="text-xs text-muted-foreground leading-relaxed">
+              Your site is secured via <code className="px-1 py-0.5 rounded bg-muted font-mono text-[11px] font-semibold text-foreground">VITE_ADMIN_PASSWORD_HASH</code>.
+              In-browser password modifications are permanently disabled on production to prevent unauthorized overrides.
+            </p>
+            <div className="pt-2 text-xs text-muted-foreground">
+              <span className="font-medium text-foreground">To rotate your password:</span>
+              <ol className="list-decimal list-inside space-y-1 mt-1 text-[11px]">
+                <li>Run <code className="px-1 py-0.5 rounded bg-muted font-mono">node scripts/generate-password-hash.js "YourNewPassword"</code></li>
+                <li>Update <code className="px-1 py-0.5 rounded bg-muted font-mono">VITE_ADMIN_PASSWORD_HASH</code> in your <code className="font-mono">.env.local</code></li>
+                <li>Run <code className="px-1 py-0.5 rounded bg-muted font-mono">npm run build</code> and upload the build.</li>
+              </ol>
+            </div>
           </div>
+        ) : (
+          <>
+            {passwordMsg && (
+              <div
+                className={`p-3 rounded-xl text-xs flex items-center gap-2 ${
+                  passwordMsg.type === 'success'
+                    ? 'bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400'
+                    : 'bg-destructive/10 border border-destructive/20 text-destructive'
+                }`}
+              >
+                <span>{passwordMsg.message}</span>
+              </div>
+            )}
+
+            <form onSubmit={handleChangePassword} className="space-y-3 max-w-md pt-2">
+              <div className="space-y-1">
+                <label className="text-xs font-semibold text-foreground">Current Password</label>
+                <Input
+                  type="password"
+                  autoComplete="current-password"
+                  placeholder="Current admin password"
+                  value={currentPassword}
+                  onChange={(e) => setCurrentPassword(e.target.value)}
+                  className="text-xs h-9 bg-secondary/30"
+                />
+              </div>
+
+              <div className="space-y-1">
+                <label className="text-xs font-semibold text-foreground">New Password (min 8 chars)</label>
+                <Input
+                  type="password"
+                  autoComplete="new-password"
+                  placeholder="New secure password"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  className="text-xs h-9 bg-secondary/30"
+                />
+              </div>
+
+              <div className="space-y-1">
+                <label className="text-xs font-semibold text-foreground">Confirm New Password</label>
+                <Input
+                  type="password"
+                  autoComplete="new-password"
+                  placeholder="Confirm new password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  className="text-xs h-9 bg-secondary/30"
+                />
+              </div>
+
+              <Button type="submit" size="sm" disabled={passwordLoading} className="text-xs">
+                {passwordLoading ? 'Updating...' : 'Update Password'}
+              </Button>
+            </form>
+          </>
         )}
-
-        <form onSubmit={handleChangePassword} className="space-y-3 max-w-md pt-2">
-          <div className="space-y-1">
-            <label className="text-xs font-semibold text-foreground">Current Password</label>
-            <Input
-              type="password"
-              placeholder="Current admin password"
-              value={currentPassword}
-              onChange={(e) => setCurrentPassword(e.target.value)}
-              className="text-xs h-9 bg-secondary/30"
-            />
-          </div>
-
-          <div className="space-y-1">
-            <label className="text-xs font-semibold text-foreground">New Password (min 8 chars)</label>
-            <Input
-              type="password"
-              placeholder="New secure password"
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
-              className="text-xs h-9 bg-secondary/30"
-            />
-          </div>
-
-          <div className="space-y-1">
-            <label className="text-xs font-semibold text-foreground">Confirm New Password</label>
-            <Input
-              type="password"
-              placeholder="Confirm new password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              className="text-xs h-9 bg-secondary/30"
-            />
-          </div>
-
-          <Button type="submit" size="sm" disabled={passwordLoading} className="text-xs">
-            {passwordLoading ? 'Updating...' : 'Update Password'}
-          </Button>
-        </form>
       </div>
     </div>
   );

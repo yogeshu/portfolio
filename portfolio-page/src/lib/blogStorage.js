@@ -444,20 +444,72 @@ export function exportAllBlogData() {
   };
 }
 
+function sanitizeString(val, maxLen = 500) {
+  if (typeof val !== 'string') return '';
+  return val.slice(0, maxLen);
+}
+
+function validateAndSanitizeArticle(art) {
+  if (!art || typeof art !== 'object') return null;
+  const id = String(art.id || '').replace(/[^\w-]/g, '').slice(0, 100);
+  const title = sanitizeString(art.title, 200).trim();
+  if (!id || !title) return null;
+
+  const validStatuses = ['published', 'draft', 'scheduled'];
+  const status = validStatuses.includes(art.status) ? art.status : 'draft';
+
+  return {
+    id,
+    title,
+    subtitle: sanitizeString(art.subtitle, 300),
+    slug: generateSlug(art.slug || title),
+    excerpt: sanitizeString(art.excerpt, 600),
+    content: typeof art.content === 'string' ? art.content : '',
+    category: sanitizeString(art.category, 100) || 'engineering-frontend',
+    tags: Array.isArray(art.tags)
+      ? art.tags.filter((t) => typeof t === 'string').map((t) => sanitizeString(t, 50)).slice(0, 20)
+      : [],
+    status,
+    publishedAt: art.publishedAt ? sanitizeString(art.publishedAt, 50) : null,
+    updatedAt: art.updatedAt ? sanitizeString(art.updatedAt, 50) : new Date().toISOString(),
+    featuredImage: sanitizeString(art.featuredImage, 500),
+    imageAlt: sanitizeString(art.imageAlt, 200),
+    seoTitle: sanitizeString(art.seoTitle, 150),
+    seoDescription: sanitizeString(art.seoDescription, 300),
+    canonicalUrl: sanitizeString(art.canonicalUrl, 300),
+    readingTime: calculateReadingTime(art.content || ''),
+    featured: Boolean(art.featured),
+    views: typeof art.views === 'number' && art.views >= 0 ? Math.floor(art.views) : 0,
+  };
+}
+
 export function importBlogData(backupData, options = { overwrite: false }) {
   if (!backupData || !Array.isArray(backupData.articles)) {
     throw new Error('Invalid backup file format: missing articles array.');
   }
 
+  // Validate and sanitize each article to prevent malformed or malicious payload ingestion
+  const sanitizedArticles = backupData.articles
+    .map(validateAndSanitizeArticle)
+    .filter(Boolean);
+
+  if (sanitizedArticles.length === 0 && backupData.articles.length > 0) {
+    throw new Error('All articles in backup failed validation.');
+  }
+
   ensureInitialized();
 
   if (options.overwrite) {
-    setStoredJSON(STORAGE_KEYS.ARTICLES, backupData.articles);
+    setStoredJSON(STORAGE_KEYS.ARTICLES, sanitizedArticles);
     if (Array.isArray(backupData.categories)) {
-      setStoredJSON(STORAGE_KEYS.CATEGORIES, backupData.categories);
+      const sanitizedCategories = backupData.categories.filter(
+        (c) => c && typeof c.slug === 'string' && typeof c.name === 'string'
+      );
+      setStoredJSON(STORAGE_KEYS.CATEGORIES, sanitizedCategories);
     }
     if (Array.isArray(backupData.tags)) {
-      setStoredJSON(STORAGE_KEYS.TAGS, backupData.tags);
+      const sanitizedTags = backupData.tags.filter((t) => typeof t === 'string');
+      setStoredJSON(STORAGE_KEYS.TAGS, sanitizedTags);
     }
   } else {
     // Merge without duplicate IDs
@@ -465,7 +517,7 @@ export function importBlogData(backupData, options = { overwrite: false }) {
     const existingIds = new Set(currentArticles.map((a) => a.id));
     const mergedArticles = [...currentArticles];
 
-    for (const art of backupData.articles) {
+    for (const art of sanitizedArticles) {
       if (!existingIds.has(art.id)) {
         mergedArticles.push(art);
       }

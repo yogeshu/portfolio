@@ -1,0 +1,50 @@
+# Apache / Hostinger SPA & Static routing configuration
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # 1. Directly serve existing files or directories (assets, images, scripts)
+  RewriteCond %{REQUEST_FILENAME} -f [OR]
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteRule ^ - [L]
+
+  # 2. Check if a pre-rendered static index.html exists in a matching subfolder
+  RewriteCond %{DOCUMENT_ROOT}/$1/index.html -f
+  RewriteRule ^(.*)/?$ $1/index.html [L]
+
+  # 3. Fallback for client-side routing (e.g. /admin, /admin/editor, /blog/search)
+  RewriteRule ^ index.html [L]
+</IfModule>
+
+# Security Headers & Defense-in-Depth
+<IfModule mod_headers.c>
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set X-Frame-Options "SAMEORIGIN"
+  Header always set X-XSS-Protection "1; mode=block"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set Permissions-Policy "camera=(), microphone=(), geolocation=()"
+  Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https: blob:; connect-src 'self' https://www.google-analytics.com https://api.emailjs.com; frame-ancestors 'self';"
+</IfModule>
+
+# Caching optimization for strong Core Web Vitals
+<IfModule mod_headers.c>
+  # Immutable long-term cache for hashed JS/CSS assets and fonts
+  <FilesMatch "\.(js|css|woff2|woff|ttf|eot)$">
+    Header set Cache-Control "max-age=31536000, public, immutable"
+  </FilesMatch>
+
+  # Media and image files cache (30 days)
+  <FilesMatch "\.(webp|png|jpg|jpeg|gif|ico|svg|pdf)$">
+    Header set Cache-Control "max-age=2592000, public"
+  </FilesMatch>
+
+  # HTML and feeds: revalidate so new blog updates & SEO are immediate
+  <FilesMatch "\.(html|xml|json|txt)$">
+    Header set Cache-Control "no-cache, must-revalidate"
+  </FilesMatch>
+</IfModule>
+
+# Gzip / Brotli compression for text assets
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/plain text/html text/xml text/css application/xml application/xhtml+xml application/rss+xml application/javascript application/x-javascript application/json
+</IfModule>

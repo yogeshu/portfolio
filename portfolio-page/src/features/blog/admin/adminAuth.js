@@ -10,8 +10,25 @@ const AUTH_CONFIG = {
   LOCKOUT_DURATION_MS: 5 * 60 * 1000, // 5 minutes
 };
 
+// In-memory brute-force defense in addition to persistent storage
+let inMemoryFailedAttempts = 0;
+let inMemoryLockoutUntil = 0;
+
 /**
- * Standard SHA-256 hash using the Web Crypto API
+ * Generate a cryptographically secure random session token
+ */
+export function generateSecureToken() {
+  const cryptoObj = typeof window !== 'undefined' ? window.crypto : globalThis.crypto;
+  if (cryptoObj?.getRandomValues) {
+    const bytes = new Uint8Array(24);
+    cryptoObj.getRandomValues(bytes);
+    return `adm_${Array.from(bytes).map((b) => b.toString(16).padStart(2, '0')).join('')}`;
+  }
+  return `adm_${Date.now()}_${Math.random().toString(36).substring(2)}`;
+}
+
+/**
+ * Standard SHA-256 hash using Web Crypto API (browser) or node:crypto (tests)
  */
 export async function sha256(message) {
   if (typeof window !== 'undefined' && window.crypto?.subtle) {
@@ -20,23 +37,113 @@ export async function sha256(message) {
     const hashArray = Array.from(new Uint8Array(hashBuffer));
     return hashArray.map((b) => b.toString(16).padStart(2, '0')).join('');
   }
-  // Fallback for Node test environments
   const nodeCrypto = await import('node:crypto');
   return nodeCrypto.createHash('sha256').update(message).digest('hex');
 }
 
 /**
- * Check if an admin credential has been configured (either via build-time env var or browser setup)
+ * PBKDF2 Key Derivation with 100,000 iterations for GPU attack resistance
+ */
+export async function derivePbkdf2Hash(password, saltHex, iterations = 100000) {
+  if (typeof window !== 'undefined' && window.crypto?.subtle) {
+    const enc = new TextEncoder();
+    const keyMaterial = await crypto.subtle.importKey(
+      'raw',
+      enc.encode(password),
+      'PBKDF2',
+      false,
+      ['deriveBits']
+    );
+    const saltBytes = new Uint8Array(
+      saltHex.match(/.{1,2}/g).map((byte) => parseInt(byte, 16))
+    );
+    const derived = await crypto.subtle.deriveBits(
+      {
+        name: 'PBKDF2',
+        salt: saltBytes,
+        iterations,
+        hash: 'SHA-256',
+      },
+      keyMaterial,
+      256
+    );
+    const hashArray = Array.from(new Uint8Array(derived));
+    return hashArray.map((b) => b.toString(16).padStart(2, '0')).join('');
+  }
+  const nodeCrypto = await import('node:crypto');
+  const saltBuf = Buffer.from(saltHex, 'hex');
+  return nodeCrypto.pbkdf2Sync(password, saltBuf, iterations, 32, 'sha256').toString('hex');
+}
+
+/**
+ * Verify password against stored hash (supports both PBKDF2 stretched hash and legacy SHA-256)
+ */
+export async function verifyPassword(password, expectedHash) {
+  if (!expectedHash) return false;
+  const cleanExpected = expectedHash.trim();
+
+  // 1. Check for PBKDF2 format: pbkdf2:<iterations>:<saltHex>:<hashHex>
+  if (cleanExpected.startsWith('pbkdf2:')) {
+    const parts = cleanExpected.split(':');
+    if (parts.length === 4) {
+      const iterations = parseInt(parts[1], 10) || 100000;
+      const saltHex = parts[2];
+      const targetHash = parts[3];
+      const derived = await derivePbkdf2Hash(password, saltHex, iterations);
+      return derived.toLowerCase() === targetHash.toLowerCase();
+    }
+  }
+
+  // 2. Fallback to standard SHA-256 comparison
+  const inputHash = await sha256(password);
+  return inputHash.toLowerCase() === cleanExpected.toLowerCase();
+}
+
+/**
+ * Returns true if running in production build (e.g. deployed on yogeshbhavsar.com)
+ */
+export function isProductionEnvironment() {
+  if (typeof import.meta !== 'undefined' && import.meta.env?.PROD) {
+    return true;
+  }
+  if (typeof window !== 'undefined' && window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
+    return true;
+  }
+  return false;
+}
+
+/**
+ * Check if the admin hash was provided via build environment variable
+ */
+export function isEnvConfigured() {
+  const envHash = typeof import.meta !== 'undefined' && import.meta.env?.VITE_ADMIN_PASSWORD_HASH;
+  return Boolean(envHash && envHash.trim());
+}
+
+/**
+ * Check if an admin credential has been configured
  */
 export function isAdminConfigured() {
   if (typeof window === 'undefined') return false;
   // 1. Environment variable hash configured in .env.local or deployment platform
-  const envHash = typeof import.meta !== 'undefined' && import.meta.env?.VITE_ADMIN_PASSWORD_HASH;
-  if (envHash && envHash.trim()) return true;
+  if (isEnvConfigured()) return true;
 
-  // 2. Custom hash stored securely in this browser instance
+  // 2. In production, we ONLY trust the environment variable VITE_ADMIN_PASSWORD_HASH.
+  // We NEVER allow public strangers on the live website to create an ad-hoc local password.
+  if (isProductionEnvironment()) {
+    return false;
+  }
+
+  // 3. In local development (localhost), allow local developer setup
   const customHash = localStorage.getItem(AUTH_CONFIG.PASSWORD_KEY);
   return Boolean(customHash && customHash.trim());
+}
+
+/**
+ * Check if the admin portal is completely locked (production without env hash configured)
+ */
+export function isProductionLocked() {
+  return isProductionEnvironment() && !isAdminConfigured();
 }
 
 /**
@@ -46,16 +153,23 @@ export async function getExpectedPasswordHash() {
   if (typeof window === 'undefined') return '';
   const envHash = typeof import.meta !== 'undefined' && import.meta.env?.VITE_ADMIN_PASSWORD_HASH;
   if (envHash && envHash.trim()) {
-    return envHash.trim().toLowerCase();
+    return envHash.replace(/\s+/g, '').trim();
   }
-  const customHash = localStorage.getItem(AUTH_CONFIG.PASSWORD_KEY);
-  return (customHash || '').trim().toLowerCase();
+  if (!isProductionEnvironment()) {
+    const customHash = localStorage.getItem(AUTH_CONFIG.PASSWORD_KEY);
+    return (customHash || '').replace(/\s+/g, '').trim();
+  }
+  return '';
 }
 
 /**
- * First-time initialization of master passphrase (when no env var or stored hash exists)
+ * First-time initialization of master passphrase (ALLOWED ONLY ON LOCALHOST)
  */
 export async function setupInitialPassword(newPassword) {
+  if (isProductionEnvironment()) {
+    throw new Error('Public registration is disabled. You must configure VITE_ADMIN_PASSWORD_HASH in your hosting environment variables.');
+  }
+
   if (isAdminConfigured()) {
     throw new Error('Admin passphrase has already been configured on this instance.');
   }
@@ -64,11 +178,21 @@ export async function setupInitialPassword(newPassword) {
     throw new Error('Passphrase must be at least 8 characters long.');
   }
 
-  const hash = await sha256(newPassword);
+  let hash;
+  if (typeof window !== 'undefined' && window.crypto?.getRandomValues) {
+    const saltBytes = new Uint8Array(16);
+    window.crypto.getRandomValues(saltBytes);
+    const saltHex = Array.from(saltBytes).map((b) => b.toString(16).padStart(2, '0')).join('');
+    const derived = await derivePbkdf2Hash(newPassword, saltHex, 100000);
+    hash = `pbkdf2:100000:${saltHex}:${derived}`;
+  } else {
+    hash = await sha256(newPassword);
+  }
+
   localStorage.setItem(AUTH_CONFIG.PASSWORD_KEY, hash);
 
-  // Automatically start authenticated session
-  const token = `adm_${Date.now()}_${Math.random().toString(36).substring(2)}`;
+  // Automatically start authenticated session with cryptographically secure token
+  const token = generateSecureToken();
   const sessionData = {
     token,
     expiresAt: Date.now() + AUTH_CONFIG.SESSION_DURATION_MS,
@@ -84,9 +208,15 @@ export async function setupInitialPassword(newPassword) {
 }
 
 export function checkLockout() {
+  const now = Date.now();
+  // Check memory lockout first
+  if (inMemoryLockoutUntil > now) {
+    const remainingSeconds = Math.ceil((inMemoryLockoutUntil - now) / 1000);
+    return { isLocked: true, remainingSeconds };
+  }
+
   if (typeof window === 'undefined') return { isLocked: false, remainingSeconds: 0 };
   const lockoutUntil = parseInt(localStorage.getItem(AUTH_CONFIG.LOCKOUT_UNTIL_KEY) || '0', 10);
-  const now = Date.now();
   if (lockoutUntil > now) {
     const remainingSeconds = Math.ceil((lockoutUntil - now) / 1000);
     return { isLocked: true, remainingSeconds };
@@ -95,6 +225,10 @@ export function checkLockout() {
 }
 
 export async function loginAdmin(password) {
+  if (isProductionLocked()) {
+    throw new Error('PRODUCTION_LOCKED');
+  }
+
   if (!isAdminConfigured()) {
     throw new Error('SETUP_REQUIRED');
   }
@@ -105,14 +239,16 @@ export async function loginAdmin(password) {
   }
 
   const expectedHash = await getExpectedPasswordHash();
-  const inputHash = await sha256(password);
+  const isValid = await verifyPassword(password, expectedHash);
 
-  if (inputHash.toLowerCase() === expectedHash) {
+  if (isValid) {
     // Reset failed attempts upon successful login
+    inMemoryFailedAttempts = 0;
+    inMemoryLockoutUntil = 0;
     localStorage.removeItem(AUTH_CONFIG.FAILED_ATTEMPTS_KEY);
     localStorage.removeItem(AUTH_CONFIG.LOCKOUT_UNTIL_KEY);
 
-    const token = `adm_${Date.now()}_${Math.random().toString(36).substring(2)}`;
+    const token = generateSecureToken();
     const sessionData = {
       token,
       expiresAt: Date.now() + AUTH_CONFIG.SESSION_DURATION_MS,
@@ -126,11 +262,14 @@ export async function loginAdmin(password) {
     sessionStorage.setItem(AUTH_CONFIG.SESSION_KEY, JSON.stringify(sessionData));
     return sessionData.user;
   } else {
-    const failedAttempts = parseInt(localStorage.getItem(AUTH_CONFIG.FAILED_ATTEMPTS_KEY) || '0', 10) + 1;
+    inMemoryFailedAttempts++;
+    const storedFailedAttempts = parseInt(localStorage.getItem(AUTH_CONFIG.FAILED_ATTEMPTS_KEY) || '0', 10) + 1;
+    const failedAttempts = Math.max(inMemoryFailedAttempts, storedFailedAttempts);
     localStorage.setItem(AUTH_CONFIG.FAILED_ATTEMPTS_KEY, failedAttempts.toString());
 
     if (failedAttempts >= AUTH_CONFIG.MAX_FAILED_ATTEMPTS) {
       const lockoutUntil = Date.now() + AUTH_CONFIG.LOCKOUT_DURATION_MS;
+      inMemoryLockoutUntil = lockoutUntil;
       localStorage.setItem(AUTH_CONFIG.LOCKOUT_UNTIL_KEY, lockoutUntil.toString());
       throw new Error('Account locked due to 5 consecutive failed attempts. Try again in 5 minutes.');
     }
@@ -175,10 +314,16 @@ export async function changeAdminPassword(currentPassword, newPassword) {
     throw new Error('Unauthorized');
   }
 
-  const expectedHash = await getExpectedPasswordHash();
-  const inputHash = await sha256(currentPassword);
+  if (isProductionEnvironment() || isEnvConfigured()) {
+    throw new Error(
+      'In-browser password change is restricted when using build environment variables or production hosting. Generate a new hash with scripts/generate-password-hash.js, update VITE_ADMIN_PASSWORD_HASH, and redeploy.'
+    );
+  }
 
-  if (inputHash.toLowerCase() !== expectedHash) {
+  const expectedHash = await getExpectedPasswordHash();
+  const isValid = await verifyPassword(currentPassword, expectedHash);
+
+  if (!isValid) {
     throw new Error('Current passphrase does not match.');
   }
 
@@ -186,7 +331,17 @@ export async function changeAdminPassword(currentPassword, newPassword) {
     throw new Error('New passphrase must be at least 8 characters long.');
   }
 
-  const newHash = await sha256(newPassword);
+  let newHash;
+  if (typeof window !== 'undefined' && window.crypto?.getRandomValues) {
+    const saltBytes = new Uint8Array(16);
+    window.crypto.getRandomValues(saltBytes);
+    const saltHex = Array.from(saltBytes).map((b) => b.toString(16).padStart(2, '0')).join('');
+    const derived = await derivePbkdf2Hash(newPassword, saltHex, 100000);
+    newHash = `pbkdf2:100000:${saltHex}:${derived}`;
+  } else {
+    newHash = await sha256(newPassword);
+  }
+
   localStorage.setItem(AUTH_CONFIG.PASSWORD_KEY, newHash);
   return true;
 }

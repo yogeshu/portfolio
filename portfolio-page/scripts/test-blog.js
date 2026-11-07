@@ -16,6 +16,11 @@ import {
   exportAllBlogData,
   importBlogData,
 } from '../src/lib/blogStorage.js';
+import {
+  derivePbkdf2Hash,
+  verifyPassword,
+  generateSecureToken,
+} from '../src/features/blog/admin/adminAuth.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -136,13 +141,44 @@ try {
 assert(importSuccess === true, 'importBlogData successfully validates and ingests backup JSON');
 
 // ---------------------------------------------------------------------------
-// 5. Authentication & Security Hashing
+// 5. Authentication & Cryptographic Hashing (PBKDF2 & SHA-256)
 // ---------------------------------------------------------------------------
 console.log('\n5. Testing Admin Authentication & Cryptographic Hashing');
 
 const samplePassphrase = `test-pass-${crypto.randomBytes(8).toString('hex')}`;
 const hash = crypto.createHash('sha256').update(samplePassphrase).digest('hex');
 assert(hash.length === 64, 'SHA-256 creates a standard 64-char hexadecimal hash');
+
+// PBKDF2 stretched hash verification
+const salt = crypto.randomBytes(16).toString('hex');
+const derived = await derivePbkdf2Hash(samplePassphrase, salt, 100000);
+const pbkdf2String = `pbkdf2:100000:${salt}:${derived}`;
+assert(derived.length === 64, 'PBKDF2 derives a 64-char 256-bit hash key');
+
+const isValidMatch = await verifyPassword(samplePassphrase, pbkdf2String);
+assert(isValidMatch === true, 'verifyPassword correctly authenticates matching PBKDF2 hash');
+
+const isInvalidMatch = await verifyPassword('wrong-password-123', pbkdf2String);
+assert(isInvalidMatch === false, 'verifyPassword rejects incorrect password against PBKDF2 hash');
+
+const isLegacyShaMatch = await verifyPassword(samplePassphrase, hash);
+assert(isLegacyShaMatch === true, 'verifyPassword maintains backward compatibility with legacy SHA-256');
+
+// Cryptographically secure token generation
+const secureToken = generateSecureToken();
+assert(secureToken.startsWith('adm_') && secureToken.length >= 36, 'generateSecureToken produces high-entropy token');
+
+// Malicious backup injection validation test
+const maliciousBackup = {
+  version: '1.0.0',
+  articles: [
+    { id: 'safe-id-1', title: 'Valid Article', content: 'Safe', status: 'published' },
+    { id: '', title: 'Missing ID Attack' }, // Should be dropped
+    { title: 'No ID at all' }, // Should be dropped
+  ]
+};
+const importWithMalicious = importBlogData(maliciousBackup, { overwrite: false });
+assert(importWithMalicious === true, 'importBlogData filters out malformed objects safely');
 
 // Lockout calculations
 const MAX_ATTEMPTS = 5;
